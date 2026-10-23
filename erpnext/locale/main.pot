@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ERPNext VERSION\n"
 "Report-Msgid-Bugs-To: hello@frappe.io\n"
-"POT-Creation-Date: 2026-10-23 11:54+0000\n"
-"PO-Revision-Date: 2026-10-23 11:54+0000\n"
+"POT-Creation-Date: 2026-10-23 12:26+0000\n"
+"PO-Revision-Date: 2026-10-23 12:26+0000\n"
 "Last-Translator: hello@frappe.io\n"
 "Language-Team: hello@frappe.io\n"
 "MIME-Version: 1.0\n"
@@ -336,9 +336,9 @@ msgstr ""
 msgid "'{0}' has been already added."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:181
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:193
 #, python-brace-format
-msgid "'{0}' is a reserved name and cannot be used as a line reference"
+msgid "'{0}' is a reserved name and cannot be used as a line reference."
 msgstr ""
 
 #: erpnext/setup/doctype/company/company.py:422
@@ -1801,7 +1801,7 @@ msgid "API Details"
 msgstr ""
 
 #: erpnext/accounts/doctype/financial_report_template/financial_report_template.js:300
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:49
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:59
 msgid "API Method Path"
 msgstr ""
 
@@ -2056,7 +2056,7 @@ msgid "Account Details"
 msgstr ""
 
 #: erpnext/accounts/doctype/financial_report_template/financial_report_template.js:299
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:48
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:58
 msgid "Account Filter"
 msgstr ""
 
@@ -4878,10 +4878,6 @@ msgstr ""
 msgid "Agenda"
 msgstr ""
 
-#: erpnext/setup/setup_wizard/data/sales_partner_type.txt:4
-msgid "Agent"
-msgstr ""
-
 #. Label of the agent_busy_message (Data) field in DocType 'Incoming Call
 #. Settings'
 #. Label of the agent_busy_message (Data) field in DocType 'Voice Call
@@ -4904,12 +4900,6 @@ msgstr ""
 #: erpnext/telephony/doctype/incoming_call_settings/incoming_call_settings.json:40
 #: erpnext/telephony/doctype/voice_call_settings/voice_call_settings.json:41
 msgid "Agent Unavailable Message"
-msgstr ""
-
-#. Label of the agent_list (Table MultiSelect) field in DocType 'Appointment
-#. Booking Settings'
-#: erpnext/crm/doctype/appointment_booking_settings/appointment_booking_settings.json:81
-msgid "Agents"
 msgstr ""
 
 #: erpnext/setup/setup_wizard/data/industry_type.txt:4
@@ -9263,8 +9253,8 @@ msgstr ""
 msgid "Balance Type"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:208
-msgid "Balance Type is required for Account Data"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:220
+msgid "Balance Type is required for Account Data."
 msgstr ""
 
 #: erpnext/stock/report/available_serial_no/available_serial_no.py:234
@@ -11679,7 +11669,7 @@ msgid "Calculating arrival times"
 msgstr ""
 
 #: erpnext/accounts/doctype/financial_report_template/financial_report_template.js:306
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:51
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:61
 msgid "Calculation Formula"
 msgstr ""
 
@@ -13090,7 +13080,6 @@ msgstr ""
 #. Description of the 'Not Applicable' (Check) field in DocType 'Item Tax
 #. Template Detail'
 #: erpnext/accounts/doctype/item_tax_template_detail/item_tax_template_detail.json:30
-#. Percent signs are literal; interpolation, if present, uses braces.
 #, no-python-format
 msgid "Check if this tax is not applicable to items (distinct from 0% rate)"
 msgstr ""
@@ -13311,9 +13300,9 @@ msgstr ""
 msgid "Circular Reference Error"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:281
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:291
 #, python-brace-format
-msgid "Circular dependency detected: {0}"
+msgid "Circular dependency detected: {0}."
 msgstr ""
 
 #. Label of the claimed_landed_cost_amount (Currency) field in DocType
@@ -14681,7 +14670,7 @@ msgid "Company is mandatory when Data Based On is Amount"
 msgstr ""
 
 #: banking/src/components/features/BankReconciliation/Rules/RuleForm.tsx:86
-#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1056
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1054
 #: erpnext/regional/report/uae_vat_201/uae_vat_201.py:25
 msgid "Company is required"
 msgstr ""
@@ -15890,14 +15879,6 @@ msgstr ""
 msgid "Cosmetics"
 msgstr ""
 
-#. Label of the cost (Currency) field in DocType 'Subscription Plan'
-#. Label of the cost (Currency) field in DocType 'BOM Secondary Item'
-#: erpnext/accounts/doctype/subscription_plan/subscription_plan.json:81
-#: erpnext/manufacturing/doctype/bom_secondary_item/bom_secondary_item.json:62
-#: erpnext/public/js/project_overview_breakdown.js:69
-msgid "Cost"
-msgstr ""
-
 #. Label of the cost_allocation_per (Percent) field in DocType 'BOM Secondary
 #. Item'
 #: erpnext/manufacturing/doctype/bom_secondary_item/bom_secondary_item.json:144
@@ -16415,9 +16396,9 @@ msgstr ""
 msgid "Could not update the header row."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:535
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:606
 #, python-brace-format
-msgid "Could not validate {0}: {1}"
+msgid "Could not validate {0}: {1}."
 msgstr ""
 
 #. Name of a UOM
@@ -17430,19 +17411,16 @@ msgid "Cubic Yard"
 msgstr ""
 
 #: erpnext/public/js/project_overview_progress.js:155
-#. Percent signs are literal; interpolation, if present, uses braces.
 #, no-python-format
 msgid "Cumulative % of task progress"
 msgstr ""
 
 #: erpnext/public/js/project_overview_progress.js:156
-#. Percent signs are literal; interpolation, if present, uses braces.
 #, no-python-format
 msgid "Cumulative % of task weight"
 msgstr ""
 
 #: erpnext/public/js/project_overview_progress.js:154
-#. Percent signs are literal; interpolation, if present, uses braces.
 #, no-python-format
 msgid "Cumulative % of tasks closed"
 msgstr ""
@@ -22297,9 +22275,9 @@ msgstr ""
 msgid "Duplicate languages found on Dunning Letter Text. Keep only one of them."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:192
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:204
 #, python-brace-format
-msgid "Duplicate line reference: '{0}'"
+msgid "Duplicate line reference: '{0}'."
 msgstr ""
 
 #: erpnext/projects/doctype/project/project.js:462
@@ -24810,9 +24788,9 @@ msgstr ""
 msgid "Fetching..."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:449
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:520
 #, python-brace-format
-msgid "Field '{0}' is not a valid Account field"
+msgid "Field '{0}' is not a valid Account field."
 msgstr ""
 
 #: erpnext/setup/doctype/transaction_deletion_record/transaction_deletion_record.py:230
@@ -24826,8 +24804,8 @@ msgstr ""
 msgid "Field Mapping"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:446
-msgid "Field and operator must be strings"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:517
+msgid "Field and operator must be strings."
 msgstr ""
 
 #. Label of the bank_transaction_field (Select) field in DocType 'Bank
@@ -24909,12 +24887,12 @@ msgstr ""
 msgid "Filter items..."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:441
-msgid "Filter must be [field, operator, value]"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:512
+msgid "Filter must be [field, operator, value]."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:478
-msgid "Filter must be a list or dict"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:549
+msgid "Filter must be a list or dict."
 msgstr ""
 
 #. Label of the invoice_name (Data) field in DocType 'Payment Reconciliation'
@@ -26006,22 +25984,29 @@ msgstr ""
 msgid "Formula Based Criteria"
 msgstr ""
 
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1339
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1368
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1375
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1383
+msgid "Formula Error"
+msgstr ""
+
 #: erpnext/accounts/doctype/financial_report_template/financial_report_template.js:364
 msgid "Formula Guide"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:345
-#, python-brace-format
-msgid "Formula evaluation error: {0}"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:349
+msgid "Formula exceeds maximum recursion depth."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:323
-msgid "Formula has unbalanced parentheses"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:342
+#, python-brace-format
+msgid "Formula has invalid syntax: {0}."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:370
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:356
 #, python-brace-format
-msgid "Formula must return a numeric value, got {0}"
+msgid "Formula is not allowed: {0}."
 msgstr ""
 
 #. Label of the calculation_formula (Code) field in DocType 'Financial Report
@@ -26030,9 +26015,19 @@ msgstr ""
 msgid "Formula or Account Filter"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:335
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:422
 #, python-brace-format
-msgid "Formula references itself ('{0}')"
+msgid "Formula references itself ('{0}')."
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:412
+#, python-brace-format
+msgid "Formula references undefined codes: {0}."
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:402
+#, python-brace-format
+msgid "Formula uses unknown functions: {0}."
 msgstr ""
 
 #: erpnext/templates/pages/help.html:35
@@ -30763,9 +30758,9 @@ msgstr ""
 msgid "Invalid Item Selection"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:424
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:495
 #, python-brace-format
-msgid "Invalid JSON format: {0}"
+msgid "Invalid JSON format: {0}."
 msgstr ""
 
 #. Name of a report
@@ -30984,9 +30979,9 @@ msgstr ""
 msgid "Invalid filter formula. Please check the syntax."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:173
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:185
 #, python-brace-format
-msgid "Invalid line reference format: '{0}'. Must start with a letter and contain only letters, numbers and underscores"
+msgid "Invalid line reference format: '{0}'. Must start with a letter and contain only letters, numbers and underscores."
 msgstr ""
 
 #: erpnext/selling/doctype/quotation/quotation.py:366
@@ -31006,9 +31001,9 @@ msgstr ""
 msgid "Invalid naming series (. missing) for {0}"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:454
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:525
 #, python-brace-format
-msgid "Invalid operator '{0}'"
+msgid "Invalid operator '{0}'."
 msgstr ""
 
 #: erpnext/stock/stock_ledger.py:2463
@@ -35672,16 +35667,16 @@ msgstr ""
 msgid "Log time against it"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:462
-msgid "Logical condition must have exactly one operator"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:533
+msgid "Logical condition must have exactly one operator."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:470
-msgid "Logical conditions need at least 1 sub-condition"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:541
+msgid "Logical conditions need at least 1 sub-condition."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:466
-msgid "Logical operators must be 'and' or 'or'"
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:537
+msgid "Logical operators must be 'and' or 'or'."
 msgstr ""
 
 #. Label of the logo (Attach) field in DocType 'Sales Partner'
@@ -37639,9 +37634,9 @@ msgstr ""
 msgid "Meter/Second"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:532
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:603
 #, python-brace-format
-msgid "Method '{0}' must be whitelisted and permit GET requests"
+msgid "Method '{0}' must be whitelisted and permit GET requests."
 msgstr ""
 
 #: erpnext/accounts/doctype/financial_report_template/financial_report_template.js:400
@@ -37653,7 +37648,7 @@ msgstr ""
 msgid "Method {0} is not allowed to be run on a Job Card."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:37
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:47
 #, python-brace-format
 msgid "Method {0} must permit GET requests"
 msgstr ""
@@ -37980,7 +37975,7 @@ msgstr ""
 msgid "Missing Asset"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1056
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1054
 #: erpnext/regional/report/uae_vat_201/uae_vat_201.py:25
 msgid "Missing Company"
 msgstr ""
@@ -37992,10 +37987,6 @@ msgstr ""
 
 #: erpnext/accounts/doctype/payment_entry/payment_entry.py:1192
 msgid "Missing Default in Company"
-msgstr ""
-
-#: erpnext/accounts/doctype/bank_statement_import_log/bank_statement_import_log.py:961
-msgid "Missing Dependency"
 msgstr ""
 
 #: erpnext/stock/doctype/stock_entry/services/disassemble.py:189
@@ -38150,11 +38141,6 @@ msgstr ""
 
 #: erpnext/accounts/doctype/pos_closing_entry/closing_voucher_details.html:35
 msgid "Mode of Payments"
-msgstr ""
-
-#. Label of the model (Data) field in DocType 'Vehicle'
-#: erpnext/setup/doctype/vehicle/vehicle.json:65
-msgid "Model"
 msgstr ""
 
 #. Label of the section_break_11 (Section Break) field in DocType 'POS Closing
@@ -41773,9 +41759,9 @@ msgstr ""
 msgid "Operations cannot be left blank"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:457
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:528
 #, python-brace-format
-msgid "Operator '{0}' requires a list value"
+msgid "Operator '{0}' requires a list value."
 msgstr ""
 
 #: erpnext/manufacturing/doctype/work_order/work_order.js:217
@@ -49560,7 +49546,6 @@ msgid "Proforma emailed"
 msgstr ""
 
 #: erpnext/projects/doctype/task/task.py:207
-#. Percent signs are literal; interpolation, if present, uses braces.
 #, no-python-format
 msgid "Progress % for a task must be between 0 and 100."
 msgstr ""
@@ -53545,15 +53530,6 @@ msgstr ""
 msgid "Recommended Action"
 msgstr ""
 
-#. Label of the section_break_1 (Section Break) field in DocType 'Bank
-#. Reconciliation Tool'
-#: banking/src/components/features/BankReconciliation/MatchAndReconcile.tsx:929
-#: erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.json:77
-#: erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.js:106
-#: erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.js:107
-msgid "Reconcile"
-msgstr ""
-
 #. Label of the reconcile_all_serial_batch (Check) field in DocType 'Stock
 #. Reconciliation Item'
 #: erpnext/stock/doctype/stock_reconciliation_item/stock_reconciliation_item.json:275
@@ -57400,8 +57376,7 @@ msgid "Row #{0}: Please use a different Finance Book."
 msgstr ""
 
 #: erpnext/manufacturing/doctype/bom/bom.py:483
-#. Percent signs are literal; interpolation, if present, uses braces.
-#, no-python-format, python-brace-format
+#, python-brace-format, no-python-format
 msgid "Row #{0}: Process Loss Percentage should be less than 100% for {1} Item {2}"
 msgstr ""
 
@@ -58592,12 +58567,6 @@ msgstr ""
 #: erpnext/controllers/accounts_controller.py:1065
 #, python-brace-format
 msgid "Row {0}: user has not applied the rule {1} on the item {2}"
-msgstr ""
-
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:68
-#, python-brace-format
-msgctxt "Financial Report Template"
-msgid "Row {0}: {1}"
 msgstr ""
 
 #: erpnext/accounts/doctype/accounting_dimension_filter/accounting_dimension_filter.py:64
@@ -63716,11 +63685,6 @@ msgstr ""
 msgid "Source Stock Entry {0} has no finished goods quantity"
 msgstr ""
 
-#. Label of the source_type (Select) field in DocType 'Support Search Source'
-#: erpnext/support/doctype/support_search_source/support_search_source.json:40
-msgid "Source Type"
-msgstr ""
-
 #. Label of the set_warehouse (Link) field in DocType 'POS Invoice'
 #. Label of the set_warehouse (Link) field in DocType 'Sales Invoice'
 #. Label of the source_warehouse (Link) field in DocType 'BOM Explosion Item'
@@ -67103,12 +67067,6 @@ msgstr ""
 msgid "Synchronize all accounts every hour"
 msgstr ""
 
-#. Label of the is_exchange_gain_loss (Check) field in DocType 'Payment Entry
-#. Deduction'
-#: erpnext/accounts/doctype/payment_entry_deduction/payment_entry_deduction.json:57
-msgid "System Generated"
-msgstr ""
-
 #: erpnext/accounts/doctype/account/account.py:719
 msgid "System In Use"
 msgstr ""
@@ -68189,6 +68147,17 @@ msgstr ""
 #. Label of the template_title (Data) field in DocType 'Journal Entry Template'
 #: erpnext/accounts/doctype/journal_entry_template/journal_entry_template.json:75
 msgid "Template Title"
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1352
+#, python-brace-format
+msgid "Template row {0} ({1})"
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:78
+#, python-brace-format
+msgctxt "Financial Report Template"
+msgid "Template row {0}: {1}"
 msgstr ""
 
 #: erpnext/stock/doctype/item/item.py:795
@@ -71057,29 +71026,6 @@ msgstr ""
 msgid "Too many columns. Export the report and print it using a spreadsheet application."
 msgstr ""
 
-#. Label of a Sidebar Item
-#. Label of a Card Break in the Manufacturing Workspace
-#. Label of the tools (Column Break) field in DocType 'Email Digest'
-#. Label of a Card Break in the Stock Workspace
-#. Label of a Workspace Sidebar Item
-#: erpnext/buying/doctype/purchase_order/purchase_order.js:559
-#: erpnext/buying/doctype/purchase_order/purchase_order.js:633
-#: erpnext/buying/doctype/request_for_quotation/request_for_quotation.js:60
-#: erpnext/buying/doctype/request_for_quotation/request_for_quotation.js:148
-#: erpnext/buying/doctype/request_for_quotation/request_for_quotation.js:456
-#: erpnext/buying/doctype/request_for_quotation/request_for_quotation.js:465
-#: erpnext/buying/doctype/supplier_quotation/supplier_quotation.js:87
-#: erpnext/buying/report/supplier_quotation_comparison/supplier_quotation_comparison.js:145
-#: erpnext/manufacturing/sidebar/manufacturing/manufacturing.json:295
-#: erpnext/manufacturing/workspace/manufacturing/manufacturing.json:296
-#: erpnext/setup/doctype/email_digest/email_digest.json:270
-#: erpnext/stock/sidebar/stock/stock.json:252
-#: erpnext/stock/workspace/stock/stock.json:554
-#: erpnext/workspace_sidebar/manufacturing.json:201
-#: erpnext/workspace_sidebar/stock.json:99
-msgid "Tools"
-msgstr ""
-
 #. Name of a dashboard chart
 #. Label of a chart in the ERPNext Settings Workspace
 #: erpnext/selling/dashboard_chart/top_customers/top_customers.json:2
@@ -73599,10 +73545,6 @@ msgstr ""
 msgid "Unverified Webhook Data"
 msgstr ""
 
-#: erpnext/accounts/doctype/bisect_accounting_statements/bisect_accounting_statements.js:17
-msgid "Up"
-msgstr ""
-
 #: erpnext/public/js/templates/shop_floor_template.html:960
 msgid "Up Next"
 msgstr ""
@@ -75689,7 +75631,7 @@ msgstr ""
 msgid "Warning: This action cannot be undone!"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:112
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:124
 msgid "Warnings"
 msgstr ""
 
@@ -77399,9 +77341,9 @@ msgstr ""
 msgid "[Important] [ERPNext] Auto Reorder Errors"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:412
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:422
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:530
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:483
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:493
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:601
 #, python-brace-format
 msgctxt "Financial Report Template"
 msgid "[{0}] {1}"
@@ -77442,6 +77384,10 @@ msgstr ""
 #: erpnext/stock/doctype/serial_and_batch_bundle/serial_and_batch_bundle.py:1934
 #, python-brace-format
 msgid "as of {0}"
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:372
+msgid "assignment expressions and lambdas are not supported"
 msgstr ""
 
 #: erpnext/www/book_appointment/index.html:43
@@ -77571,6 +77517,10 @@ msgstr ""
 
 #: erpnext/accounts/doctype/pos_closing_entry/pos_closing_entry.js:38
 msgid "issue"
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:385
+msgid "it exceeds the maximum recursion depth"
 msgstr ""
 
 #. Label of the lft (Int) field in DocType 'Cost Center'
@@ -78531,9 +78481,9 @@ msgstr ""
 msgid "{0} is required to get raw materials when {1} is set."
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:218
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:230
 #, python-brace-format
-msgid "{0} is required when {1} is {2}"
+msgid "{0} is required when {1} is {2}."
 msgstr ""
 
 #: erpnext/crm/doctype/lead/lead_kanban.js:13
@@ -78732,9 +78682,9 @@ msgstr ""
 msgid "{0} rows not started"
 msgstr ""
 
-#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:514
+#: erpnext/accounts/doctype/financial_report_template/financial_report_validation.py:585
 #, python-brace-format
-msgid "{0} should be in format: app.module.method"
+msgid "{0} should be in format: app.module.method."
 msgstr ""
 
 #: erpnext/public/js/project_overview.js:256
@@ -79164,8 +79114,7 @@ msgid "{0}% Delivered"
 msgstr ""
 
 #: erpnext/public/js/project_overview.js:159
-#. Percent signs are literal; interpolation, if present, uses braces.
-#, no-python-format, python-brace-format
+#, python-brace-format, no-python-format
 msgid "{0}% complete"
 msgstr ""
 
@@ -79222,6 +79171,21 @@ msgstr ""
 #: erpnext/stock/doctype/stock_ledger_entry/stock_ledger_entry.py:241
 #, python-brace-format
 msgid "{0}: expected \"{1}\", got \"{2}\""
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1372
+#, python-brace-format
+msgid "{0}: formula {1} couldn't be calculated: {2}."
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1365
+#, python-brace-format
+msgid "{0}: formula {1} divides by zero. Check the divisor first, for example {2}."
+msgstr ""
+
+#: erpnext/accounts/doctype/financial_report_template/financial_report_engine.py:1380
+#, python-brace-format
+msgid "{0}: formula {1} must return a number, got {2}."
 msgstr ""
 
 #: erpnext/stock/doctype/item/item.js:1259
@@ -79323,4 +79287,3 @@ msgstr ""
 #, python-brace-format
 msgid "{} invoices"
 msgstr ""
-
