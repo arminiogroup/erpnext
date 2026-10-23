@@ -81,16 +81,20 @@ class ServiceLevelAgreement(Document):
 			# Check if response and resolution time is set for every priority
 			if not priority.response_time:
 				frappe.throw(
-					_("Set Response Time for Priority {0} in row {1}.").format(
-						priority.priority, priority.idx
+					_("Set {0} for priority {1} in row {2}.").format(
+						frappe.get_meta("Service Level Priority").get_translated_label("response_time"),
+						priority.priority,
+						priority.idx,
 					)
 				)
 
 			if self.apply_sla_for_resolution:
 				if not priority.resolution_time:
 					frappe.throw(
-						_("Set Response Time for Priority {0} in row {1}.").format(
-							priority.priority, priority.idx
+						_("Set {0} for priority {1} in row {2}.").format(
+							frappe.get_meta("Service Level Priority").get_translated_label("resolution_time"),
+							priority.priority,
+							priority.idx,
 						)
 					)
 
@@ -129,14 +133,14 @@ class ServiceLevelAgreement(Document):
 			):
 				frappe.throw(
 					_("Start Time can't be greater than or equal to End Time for {0}.").format(
-						support_and_resolution.workday
+						_(support_and_resolution.workday)
 					)
 				)
 
 		# Check for repeated workday
 		if len(set(support_days)) != len(support_days):
-			repeated_days = get_repeated(support_days)
-			frappe.throw(_("Workday {0} has been repeated.").format(repeated_days))
+			repeated_days = ", ".join(_(day) for day in get_repeated(support_days).split(" "))
+			frappe.throw(_("Repeated workdays: {0}.").format(repeated_days))
 
 	def validate_doc(self):
 		if self.enabled and not frappe.db.get_single_value(
@@ -145,7 +149,7 @@ class ServiceLevelAgreement(Document):
 			frappe.throw(
 				_("{0} is not enabled in {1}").format(
 					frappe.bold(_("Track Service Level Agreement")),
-					get_link_to_form("Support Settings", "Support Settings"),
+					get_link_to_form("Support Settings", "Support Settings", label=_("Support Settings")),
 				)
 			)
 
@@ -158,7 +162,7 @@ class ServiceLevelAgreement(Document):
 			},
 		):
 			frappe.throw(
-				_("Default Service Level Agreement for {0} already exists.").format(self.document_type)
+				_("Default Service Level Agreement for {0} already exists.").format(_(self.document_type))
 			)
 
 		if self.start_date and self.end_date:
@@ -174,7 +178,7 @@ class ServiceLevelAgreement(Document):
 		):
 			frappe.throw(
 				_("Service Level Agreement for {0} {1} already exists.").format(
-					frappe.bold(self.entity_type), frappe.bold(self.entity)
+					frappe.bold(_(self.entity_type)), frappe.bold(self.entity)
 				)
 			)
 
@@ -205,7 +209,7 @@ class ServiceLevelAgreement(Document):
 			frappe.throw(
 				_(
 					"The Document Type {0} must have a Status field to configure Service Level Agreement"
-				).format(frappe.bold(self.document_type))
+				).format(frappe.bold(_(self.document_type)))
 			)
 
 	def validate_condition(self):

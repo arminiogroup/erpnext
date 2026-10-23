@@ -125,8 +125,8 @@ class MaintenanceSchedule(TransactionBase):
 			if no_email_sp:
 				frappe.msgprint(
 					_(
-						"Setting Events to {0}, since the Employee attached to the below Sales Persons does not have a User ID{1}"
-					).format(self.owner, "<br>" + "<br>".join(no_email_sp))
+						"The following sales persons will not be added as event participants because their linked employees have no User ID:{0}"
+					).format("<br>" + "<br>".join(no_email_sp))
 				)
 
 			scheduled_date = frappe.db.get_all(
@@ -387,7 +387,7 @@ class MaintenanceSchedule(TransactionBase):
 			delivery_date = delivery_dates.get(serial_no)
 			if delivery_date and getdate(delivery_date) >= getdate(amc_start_date):
 				throw(
-					_("Maintenance start date can not be before delivery date for Serial No {0}").format(
+					_("Maintenance start date must be after the delivery date for Serial No {0}.").format(
 						number
 					)
 				)

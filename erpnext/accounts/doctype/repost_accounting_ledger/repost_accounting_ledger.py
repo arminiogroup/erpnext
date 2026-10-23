@@ -496,14 +496,12 @@ def validate_docs_for_voucher_types(doc_voucher_types):
 	# Validate voucher types
 	voucher_types = set(doc_voucher_types)
 	if disallowed_types := voucher_types.difference(allowed_types):
-		message = "are" if len(disallowed_types) > 1 else "is"
 		frappe.throw(
-			_(
-				"{0} {1} not allowed to be reposted. You can enable it by adding it '{2}' table in {3}."
-			).format(
-				frappe.bold(comma_and(list(disallowed_types))),
-				message,
-				frappe.bold("Allowed Doctype"),
+			_("Reposting is not allowed for: {0}. To allow it, add the document types to {1} in {2}.").format(
+				frappe.bold(comma_and([_(doctype) for doctype in disallowed_types])),
+				frappe.bold(
+					frappe.get_meta("Accounts Settings").get_translated_label("repost_allowed_types")
+				),
 				frappe.utils.get_link_to_form("Accounts Settings"),
 			)
 		)

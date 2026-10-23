@@ -24,9 +24,7 @@ frappe.ui.form.on("Rename Tool", {
 				freeze_message: __("Scheduling..."),
 				callback: function () {
 					frappe.msgprint({
-						message: __("Rename jobs for doctype {0} have been enqueued.", [
-							frm.doc.select_doctype,
-						]),
+						message: __("Rename request for {0} sent.", [__(frm.doc.select_doctype)]),
 						alert: true,
 						indicator: "green",
 					});
@@ -37,9 +35,7 @@ frappe.ui.form.on("Rename Tool", {
 				},
 				error: function (r) {
 					frappe.msgprint({
-						message: __("Rename jobs for doctype {0} have not been enqueued.", [
-							frm.doc.select_doctype,
-						]),
+						message: __("Rename request for {0} failed.", [__(frm.doc.select_doctype)]),
 						alert: true,
 						indicator: "red",
 					});
@@ -73,7 +69,9 @@ frappe.ui.form.on("Rename Tool", {
 					<p><a href="/app/rq-job?queue=long&status=queued">${__("Queued")}: ${counts.queued}</a></p>
 					<p><a href="/app/rq-job?queue=long&status=started">${__("Started")}: ${counts.started}</a></p>
 					<p><a href="/app/rq-job?queue=long&status=finished">${__("Finished")}: ${counts.finished}</a></p>
-					<p><a href="/app/rq-job?queue=long&status=failed">${__("Failed")}: ${counts.failed}</a></p>
+					<p><a href="/app/rq-job?queue=long&status=failed">${__("Failed", null, "Rename Tool")}: ${
+					counts.failed
+				}</a></p>
 				`);
 			});
 	},

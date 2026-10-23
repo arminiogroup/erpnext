@@ -872,7 +872,7 @@ class WorkOrder(Document):
 		batch_auto_creation = frappe.get_cached_value("Item", self.production_item, "create_new_batch")
 		if not batch_auto_creation:
 			frappe.msgprint(
-				_("Batch not created for item {0} since it does not have a batch series.").format(
+				_("Batch not created for item {0} because automatic batch creation is disabled.").format(
 					frappe.bold(self.production_item)
 				),
 				alert=True,

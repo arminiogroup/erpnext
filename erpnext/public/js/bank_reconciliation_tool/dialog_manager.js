@@ -597,7 +597,7 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 	create_voucher(values, allow_edit = false) {
 		const voucher_type = this.get_voucher_types()[values.document_type];
 		if (!voucher_type) {
-			frappe.throw(__("Cannot create {0} from a Bank Transaction", [values.document_type]));
+			frappe.throw(__("Cannot create {0} from a Bank Transaction", [__(values.document_type)]));
 		}
 
 		return voucher_type.create(this, values, allow_edit).then((message) => {
@@ -609,7 +609,10 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 			}
 
 			frappe.show_alert(
-				__("Bank Transaction {0} added as {1}", [this.bank_transaction.name, values.document_type])
+				__("Bank Transaction {0} added as {1}", [
+					this.bank_transaction.name,
+					__(values.document_type),
+				])
 			);
 			this.update_dt_cards(message);
 			this.dialog.hide();

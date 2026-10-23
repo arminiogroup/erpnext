@@ -31,7 +31,9 @@ function handle_route_event() {
 }
 
 function should_fetch_company_details() {
-	const print_format = $('input[data-fieldname="print_format"]').val();
+	const print_format_input = $('input[data-fieldname="print_format"]');
+	const print_format_field = print_format_input.closest(".frappe-control").get(0)?.fieldobj;
+	const print_format = print_format_field ? print_format_field.get_input_value() : print_format_input.val();
 	const letterhead = $('input[data-fieldname="letterhead"]').val();
 
 	return allowed_print_formats.includes(print_format) || allowed_letterheads.includes(letterhead);

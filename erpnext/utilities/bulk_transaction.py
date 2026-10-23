@@ -37,7 +37,7 @@ def transaction_processing(
 	skipped_msg = ""
 
 	if skipped_records:
-		skipped_msg = _("{0} creation for the following records will be skipped.").format(to_doctype)
+		skipped_msg = _("{0} creation for the following records will be skipped.").format(_(to_doctype))
 
 		skipped_msg += (
 			"<br><br><ul>"
@@ -50,7 +50,9 @@ def transaction_processing(
 		return
 
 	frappe.msgprint(
-		_("Started a background job to create {1} {0}. {2}").format(to_doctype, length_of_data, skipped_msg)
+		_("Starting a background job to create documents of type {0} from {1} records. {2}").format(
+			_(to_doctype), length_of_data, skipped_msg
+		)
 	)
 	frappe.enqueue(
 		job,
@@ -246,32 +248,30 @@ def create_log(doc_name, e, from_doctype, to_doctype, status, log_date=None, res
 def show_job_status(failed: list[str], deserialized_data_count: int, to_doctype: str) -> None:
 	if not failed:
 		frappe.msgprint(
-			_("Creation of <b><a href='/app/{0}'>{1}(s)</a></b> successful").format(
-				to_doctype.lower().replace(" ", "-"), to_doctype
+			_("Processing for documents of type <b><a href='/app/{0}'>{1}</a></b> completed.").format(
+				to_doctype.lower().replace(" ", "-"), _(to_doctype)
 			),
-			title="Successful",
+			title=_("Bulk processing completed"),
 			indicator="green",
 			realtime=True,
 		)
 	elif len(failed) < deserialized_data_count:
 		frappe.msgprint(
 			_(
-				"""Creation of {0} partially successful.
-				Check <b><a href="/app/bulk-transaction-log">Bulk Transaction Log</a></b>"""
-			).format(to_doctype)
+				'Processing for documents of type {0} partially completed. Check <b><a href="/app/bulk-transaction-log">Bulk Transaction Log</a></b>.'
+			).format(_(to_doctype))
 			+ get_failed_list(failed),
-			title="Partially successful",
+			title=_("Bulk processing partially completed"),
 			indicator="orange",
 			realtime=True,
 		)
 	else:
 		frappe.msgprint(
 			_(
-				"""Creation of {0} failed.
-				Check <b><a href="/app/bulk-transaction-log">Bulk Transaction Log</a></b>"""
-			).format(to_doctype)
+				'Processing for documents of type {0} failed. Check <b><a href="/app/bulk-transaction-log">Bulk Transaction Log</a></b>.'
+			).format(_(to_doctype))
 			+ get_failed_list(failed),
-			title="Failed",
+			title=_("Bulk processing failed"),
 			indicator="red",
 			realtime=True,
 		)

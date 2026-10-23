@@ -149,4 +149,4 @@ def make_journal_entry(doc, supplier, mode_of_payment=None):
 
 	je.flags.ignore_mandatory = True
 	je.save()
-	frappe.msgprint(_("{0} {1} created").format(je.doctype, je.name))
+	frappe.msgprint(_("{0} {1} created").format(_(je.doctype), je.name))

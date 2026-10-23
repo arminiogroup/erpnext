@@ -3086,18 +3086,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			freeze: true,
 			callback: function (r) {
 				if (r.message.length == 0) {
-					let type = inspection_type === "Incoming" ? "Purchase" : "Delivery";
-					let fieldname =
-						inspection_type === "Incoming"
-							? "Inspection Required before Purchase"
-							: "Inspection Required before Delivery";
-
 					frappe.msgprint({
 						title: __("Quality Inspection Not Configured"),
-						message: __(`Enable <b>{0}</b> on the Item master to proceed with {1} inspection.`, [
-							fieldname,
-							type,
-						]),
+						message: __(
+							"No items are available for this quality inspection. Check the items and their quality inspection settings."
+						),
 					});
 					return;
 				}

@@ -46,7 +46,7 @@ def validate_return_against(doc):
 					doc.meta.get_translated_label(party_type),
 					bold(doc.get(party_type)),
 					bold(ref_doc.get(party_type)),
-					ref_doc.doctype,
+					_(ref_doc.doctype),
 					ref_doc.name,
 				),
 				title=_("Party Mismatch"),
@@ -66,14 +66,14 @@ def validate_return_against(doc):
 
 			if get_datetime(return_posting_datetime) < get_datetime(ref_posting_datetime):
 				frappe.throw(
-					_("Posting timestamp must be after {0}").format(format_datetime(ref_posting_datetime))
+					_("Posting timestamp cannot be before {0}.").format(format_datetime(ref_posting_datetime))
 				)
 
 			# validate same exchange rate
 			if doc.conversion_rate != ref_doc.conversion_rate:
 				frappe.throw(
 					_("Exchange Rate must be same as {0} {1} ({2})").format(
-						doc.doctype, doc.return_against, ref_doc.conversion_rate
+						_(doc.doctype), doc.return_against, ref_doc.conversion_rate
 					)
 				)
 
@@ -139,7 +139,7 @@ def validate_returned_items(doc):
 			if key not in valid_items:
 				frappe.msgprint(
 					_("Row # {0}: Returned Item {1} does not exist in {2} {3}").format(
-						d.idx, d.item_code, doc.doctype, doc.return_against
+						d.idx, d.item_code, _(doc.doctype), doc.return_against
 					),
 					raise_exception=raise_exception,
 				)
@@ -158,7 +158,7 @@ def validate_returned_items(doc):
 				):
 					frappe.throw(
 						_("Row # {0}: Rate cannot be greater than the rate used in {1} {2}").format(
-							d.idx, doc.doctype, doc.return_against
+							d.idx, _(doc.doctype), doc.return_against
 						)
 					)
 
@@ -250,7 +250,7 @@ def validate_returned_bundle_components(doc, valid_items, already_returned_items
 						row.idx,
 						frappe.bold(row.item_code),
 						flt(remaining, row.precision("stock_qty")),
-						frappe.get_cached_value("Item", component.item_code, "stock_uom"),
+						_(frappe.get_cached_value("Item", component.item_code, "stock_uom"), context="UOM"),
 						frappe.bold(component.item_code),
 					),
 					StockOverReturnError,
@@ -277,10 +277,9 @@ def validate_quantity(doc, key, args, ref, valid_items, already_returned_items):
 	returns_nothing = not (flt(args.get("qty")) or flt(args.get("rejected_qty")))
 
 	company_currency = erpnext.get_company_currency(doc.company)
+	item_meta = frappe.get_meta(doc.doctype + " Item")
 	field_precision = get_field_precision(
-		frappe.get_meta(doc.doctype + " Item").get_field(
-			"stock_qty" if doc.get("update_stock", "") else "qty"
-		),
+		item_meta.get_field("stock_qty" if doc.get("update_stock", "") else "qty"),
 		currency=company_currency,
 	)
 
@@ -312,11 +311,14 @@ def validate_quantity(doc, key, args, ref, valid_items, already_returned_items):
 			current_stock_qty = args.get(column) * args.get("conversion_factor", 1.0)
 
 		max_returnable_qty = flt(flt(reference_qty, field_precision) - returned_qty, field_precision)
-		label = column.replace("_", " ").title()
 
 		if reference_qty:
 			if flt(current_stock_qty) > 0:
-				frappe.throw(_("{0} must be negative in return document").format(label))
+				frappe.throw(
+					_("The value of field {0} must be zero or negative in a return document.").format(
+						item_meta.get_translated_label(column)
+					)
+				)
 			elif returned_qty >= reference_qty and returns_nothing:
 				frappe.throw(
 					_("Item {0} has already been returned").format(args.item_code), StockOverReturnError

@@ -105,7 +105,7 @@ class EmailCampaign(Document):
 		if email_campaign_exists:
 			frappe.throw(
 				_("The Campaign '{0}' already exists for the {1} '{2}'").format(
-					self.campaign_name, self.email_campaign_for, self.recipient
+					self.campaign_name, _(self.email_campaign_for), self.recipient
 				)
 			)
 
@@ -205,13 +205,13 @@ def send_mail(entry, email_campaign):
 		if not email_id:
 			frappe.log_error(
 				title=_("Email Campaign Error"),
-				message=_("No email found for {0} {1}").format(campaign_for, recipient),
+				message=_("No email found for {0} {1}").format(_(campaign_for), recipient),
 			)
 			return
 		if unsubscribed:
 			frappe.log_error(
 				title=_("Email Campaign Error"),
-				message=_("{0} {1} has unsubscribed from emails").format(campaign_for, recipient),
+				message=_("{0} {1} has unsubscribed from emails").format(_(campaign_for), recipient),
 			)
 			return
 		recipient_list = [email_id]

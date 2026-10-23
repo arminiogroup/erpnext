@@ -362,7 +362,6 @@ def filter_pricing_rules(args, pricing_rules, doc=None):
 
 def validate_quantity_and_amount_for_suggestion(args, qty, amount, item_code, transaction_type):
 	fieldname, msg = "", ""
-	type_of_transaction = "purchase" if transaction_type == "buying" else "sale"
 
 	for field, value in {"min_qty": qty, "min_amt": amount}.items():
 		if (
@@ -381,13 +380,12 @@ def validate_quantity_and_amount_for_suggestion(args, qty, amount, item_code, tr
 			fieldname = field
 
 	if fieldname:
-		msg = _(
-			"If you {0} {1} quantities of the item {2}, the scheme {3} will be applied on the item."
-		).format(type_of_transaction, args.get(fieldname), bold(item_code), bold(args.title))
+		msg = _("At a quantity of {0} for Item {1}, scheme {2} applies.").format(
+			args.get(fieldname), bold(item_code), bold(args.title)
+		)
 
 		if fieldname in ["min_amt", "max_amt"]:
-			msg = _("If you {0} {1} worth item {2}, the scheme {3} will be applied on the item.").format(
-				type_of_transaction,
+			msg = _("At an amount of {0} for Item {1}, scheme {2} applies.").format(
 				fmt_money(args.get(fieldname), currency=args.get("currency")),
 				bold(item_code),
 				bold(args.title),

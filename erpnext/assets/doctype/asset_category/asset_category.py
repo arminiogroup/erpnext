@@ -5,7 +5,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cint, flt, get_link_to_form
+from frappe.utils import cint, comma_or, flt, get_link_to_form
 
 ACCOUNT_FIELDS = (
 	"fixed_asset_account",
@@ -63,7 +63,10 @@ class AssetCategory(Document):
 			for field in ("Total Number of Depreciations", "Frequency of Depreciation"):
 				if cint(d.get(frappe.scrub(field))) < 1:
 					frappe.throw(
-						_("Row {0}: {1} must be greater than 0").format(d.idx, field), frappe.MandatoryError
+						_("Row {0}: {1} must be greater than 0").format(
+							d.idx, d.meta.get_translated_label(frappe.scrub(field))
+						),
+						frappe.MandatoryError,
 					)
 
 			if not 0 <= flt(d.salvage_value_percentage) <= 100:
@@ -88,7 +91,9 @@ class AssetCategory(Document):
 		for d in invalid_accounts:
 			frappe.throw(
 				_("Row #{0}: Currency of {1} - {2} does not match company currency.").format(
-					d.idx, frappe.bold(frappe.unscrub(d.type)), frappe.bold(d.account)
+					d.idx,
+					frappe.bold(frappe.get_meta("Asset Category Account").get_translated_label(d.type)),
+					frappe.bold(d.account),
 				),
 				title=_("Invalid Account"),
 			)
@@ -114,9 +119,14 @@ class AssetCategory(Document):
 								"Row #{0}: {1} of {2} should be {3}. Please update the {1} or select a different account."
 							).format(
 								d.idx,
-								frappe.unscrub(key_to_match),
+								frappe.get_meta("Account").get_translated_label(key_to_match),
 								frappe.bold(selected_account),
-								frappe.bold(" or ".join(expected_key_types)),
+								frappe.bold(
+									comma_or(
+										[_(key_type, context="Account") for key_type in expected_key_types],
+										add_quotes=False,
+									)
+								),
 							),
 							title=_("Invalid Account"),
 						)
@@ -170,10 +180,10 @@ class AssetCategory(Document):
 				frappe.throw(msg, title=_("Missing Account"))
 
 	def validate_depreciation_accounts(self):
-		depreciation_account_map = {
-			"accumulated_depreciation_account": "Accumulated Depreciation Account",
-			"depreciation_expense_account": "Depreciation Expense Account",
-		}
+		depreciation_account_fields = (
+			"accumulated_depreciation_account",
+			"depreciation_expense_account",
+		)
 
 		error_msg = []
 		companies_with_accounts = set()
@@ -185,14 +195,14 @@ class AssetCategory(Document):
 				["accumulated_depreciation_account", "depreciation_expense_account"],
 				as_dict=True,
 			)
-			for fieldname, label in depreciation_account_map.items():
+			for fieldname in depreciation_account_fields:
 				row_value = acc_row.get(fieldname) if acc_row else None
 				if not row_value and not default_accounts.get(fieldname):
 					if acc_row:
 						error_msg.append(
 							_("Row #{0}: Missing <b>{1}</b> for company <b>{2}</b>.").format(
 								acc_row.idx,
-								label,
+								acc_row.meta.get_translated_label(fieldname),
 								get_link_to_form("Company", company),
 							)
 						)

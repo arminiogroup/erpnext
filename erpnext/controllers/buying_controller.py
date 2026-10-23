@@ -1612,6 +1612,7 @@ def get_asset_item_details(asset_items):
 
 
 def validate_item_type(doc, fieldname, message):
+	"""Validate the checkbox; message is reserved for positional/keyword call compatibility."""
 	# iterate through items and check if they are valid sales or purchase items
 	items = [d.item_code for d in doc.items if d.item_code]
 
@@ -1629,21 +1630,15 @@ def validate_item_type(doc, fieldname, message):
 	if invalid_items:
 		items = ", ".join([d for d in invalid_items])
 
+		field_label = frappe.get_meta("Item").get_translated_label(fieldname)
 		if len(invalid_items) > 1:
 			error_message = _(
-				"The items {items} are not marked as {type_of} item. You can enable them as {type_of} item from their Item masters."
-			).format(
-				items=items,
-				type_of=message,
-			)
+				"Items {0} are not enabled for this transaction. Enable {1} in their Item masters."
+			).format(items, field_label)
 		else:
 			error_message = _(
-				"The item {item} is not marked as {type_of} item. You can enable it as {type_of} item from its Item master."
-			).format(
-				item=items,
-				type_of=message,
-			)
-
+				"Item {0} is not enabled for this transaction. Enable {1} in its Item master."
+			).format(items, field_label)
 		frappe.throw(error_message)
 
 

@@ -268,7 +268,9 @@ class FinancialReportEngine:
 			frappe.msgprint(
 				indicator="orange",
 				title=_("Not Supported"),
-				msg=_("{0} view is currently unsupported in Custom Financial Report").format(view),
+				msg=_("The selected view is currently unsupported in Custom Financial Report: {0}.").format(
+					_("Margin View") if view == "Margin" else view
+				),
 			)
 
 		if filters.get("group_by_dimension"):

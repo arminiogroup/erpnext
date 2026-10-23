@@ -167,7 +167,9 @@ class Lead(SellingController, CRMNote):
 		if not self.lead_name:
 			# Check for leads being created through data import
 			if not self.company_name and not self.email_id and not self.flags.ignore_mandatory:
-				frappe.throw(_("A Lead requires either a person's name or an organization's name"))
+				frappe.throw(
+					_("A Lead requires a person's name, an organization's name, or an email address")
+				)
 			elif self.company_name:
 				self.lead_name = self.company_name
 			elif self.email_id:

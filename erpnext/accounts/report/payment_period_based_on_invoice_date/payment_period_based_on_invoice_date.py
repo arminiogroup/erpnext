@@ -75,7 +75,7 @@ def validate_filters(filters):
 	):
 		frappe.throw(
 			_("{0} payment entries can not be filtered by {1}").format(
-				filters.payment_type, filters.party_type
+				filters.payment_type, _(filters.party_type)
 			)
 		)
 

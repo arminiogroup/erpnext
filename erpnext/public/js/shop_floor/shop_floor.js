@@ -426,7 +426,9 @@ class ShopFloor {
 		)} (Esc)</button>
 				<span class="sf-detail-title">${frappe.utils.escape_html(name)}</span>
 				<a class="btn btn-default btn-sm" href="/app/work-order/${encodeURIComponent(name)}" target="_blank">${__(
-			"Open"
+			"Open",
+			null,
+			"Access"
 		)}</a>
 			</div>
 			<div class="sf-detail-body"></div>

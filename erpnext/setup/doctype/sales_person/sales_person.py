@@ -101,7 +101,7 @@ class SalesPerson(NestedSet):
 			frappe.throw(
 				_("The Sales Person is linked with {0}").format(
 					frappe.bold(
-						f"""<a href="{get_url_to_list("Customer")}?sales_person={self.name}">{"Customers"}</a>"""
+						f"""<a href="{get_url_to_list("Customer")}?sales_person={self.name}">{_("Customers")}</a>"""
 					)
 				)
 			)

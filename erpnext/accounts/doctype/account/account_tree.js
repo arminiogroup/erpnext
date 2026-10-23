@@ -181,6 +181,7 @@ frappe.treeview_settings["Account"] = {
 			fieldtype: "Select",
 			fieldname: "root_type",
 			label: __("Root Type"),
+			context: "Account",
 			options: ["Asset", "Liability", "Equity", "Income", "Expense"].join("\n"),
 			depends_on: "eval:doc.is_group && !doc.parent_account",
 		},

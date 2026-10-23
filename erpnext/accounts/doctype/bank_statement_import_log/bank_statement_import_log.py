@@ -1222,6 +1222,8 @@ def get_statement_details(statement_import_id: str):
 	for char, replacement in char_map.items():
 		formatted_date_format = formatted_date_format.replace(char, replacement)
 
+	date_format_example = getdate(doc.start_date).strftime(doc.detected_date_format)
+
 	conflicting_transactions = check_for_conflicts(doc.bank_account, doc.start_date, doc.end_date)
 
 	if doc.is_pdf():
@@ -1232,6 +1234,7 @@ def get_statement_details(statement_import_id: str):
 		return {
 			"doc": doc,
 			"date_format": formatted_date_format,
+			"date_format_example": date_format_example,
 			"conflicting_transactions": conflicting_transactions,
 			"final_transactions": final_transactions,
 			"raw_data": [],
@@ -1247,6 +1250,7 @@ def get_statement_details(statement_import_id: str):
 	return {
 		"doc": doc,
 		"date_format": formatted_date_format,
+		"date_format_example": date_format_example,
 		"conflicting_transactions": conflicting_transactions,
 		"final_transactions": final_transactions,
 		"raw_data": raw_data,

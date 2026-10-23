@@ -145,11 +145,11 @@ def get_chart_based_on_status(data):
 	for d in data:
 		status_wise_data[d.status] += 1
 
-	labels = [_(label) for label in labels]
 	values = [status_wise_data[label] for label in labels]
+	labels = [_(label) for label in labels]
 
 	chart = {
-		"data": {"labels": labels, "datasets": [{"name": "Qty Wise Chart", "values": values}]},
+		"data": {"labels": labels, "datasets": [{"name": _("Work Orders"), "values": values}]},
 		"type": "donut",
 		"height": 300,
 	}
@@ -183,7 +183,7 @@ def get_chart_based_on_age(data):
 	]
 
 	chart = {
-		"data": {"labels": labels, "datasets": [{"name": "Qty Wise Chart", "values": values}]},
+		"data": {"labels": labels, "datasets": [{"name": _("Work Orders"), "values": values}]},
 		"type": "donut",
 		"height": 300,
 	}

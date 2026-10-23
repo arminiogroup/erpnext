@@ -35,7 +35,7 @@ frappe.ui.form.on("POS Closing Entry", {
 
 	refresh: function (frm) {
 		if (frm.doc.docstatus == 1 && frm.doc.status == "Failed") {
-			const issue = '<a id="jump_to_error" style="text-decoration: underline;">issue</a>';
+			const issue = `<a id="jump_to_error" style="text-decoration: underline;">${__("issue")}</a>`;
 			frm.dashboard.set_headline(
 				__(
 					"POS Closing failed while running in a background process. You can resolve the {0} and retry the process again.",

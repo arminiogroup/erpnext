@@ -109,7 +109,7 @@ class TransactionBase(StatusUpdater):
 						if ref_dn not in item_ref_dn:
 							item_ref_dn.append(ref_dn)
 						elif not val.get("allow_duplicate_prev_row_id"):
-							frappe.throw(_("Duplicate row {0} with same {1}").format(d.idx, key))
+							frappe.throw(_("Duplicate row {0} with same {1}").format(d.idx, _(key)))
 					elif ref_dn:
 						ref_doc.setdefault(key, [])
 						if ref_dn not in ref_doc[key]:
@@ -123,7 +123,7 @@ class TransactionBase(StatusUpdater):
 			for reference_name in ref_dn_list:
 				prevdoc_values = prev_doc_detail_map.get(reference_name)
 				if not prevdoc_values:
-					frappe.throw(_("Invalid reference {0} {1}").format(reference_doctype, reference_name))
+					frappe.throw(_("Invalid reference {0} {1}").format(_(reference_doctype), reference_name))
 
 				for field, condition in fields:
 					if prevdoc_values[field] not in [None, ""] and field not in self.exclude_fields:
@@ -170,13 +170,13 @@ class TransactionBase(StatusUpdater):
 							if role_allowed_to_override not in frappe.get_roles():
 								stop_actions.append(
 									_("Row #{0}: Rate must be same as {1}: {2} ({3} / {4})").format(
-										d.idx, ref_dt, d.get(ref_dn_field), d.rate, ref_rate
+										d.idx, _(ref_dt), d.get(ref_dn_field), d.rate, ref_rate
 									)
 								)
 						else:
 							frappe.msgprint(
 								_("Row #{0}: Rate must be same as {1}: {2} ({3} / {4})").format(
-									d.idx, ref_dt, d.get(ref_dn_field), d.rate, ref_rate
+									d.idx, _(ref_dt), d.get(ref_dn_field), d.rate, ref_rate
 								),
 								title=_("Warning"),
 								indicator="orange",
@@ -253,31 +253,44 @@ class TransactionBase(StatusUpdater):
 					receivable_payable_account_currency != self.default_currency
 					and receivable_payable_account_currency != company_default_currency
 				):
-					frappe.throw(
-						_(
-							"{0} Account: {1} ({2}) must be in either customer billing currency: {3} or Company default currency: {4}"
+					if self.default_currency:
+						message = _(
+							"Account type {0}: account {1} ({2}) must use either party currency {3} or company default currency {4}."
 						).format(
-							account_type,
+							_(account_type, context="Account"),
 							frappe.bold(x.account),
 							frappe.bold(receivable_payable_account_currency),
 							frappe.bold(self.default_currency),
 							frappe.bold(company_default_currency),
 						)
-					)
+					else:
+						message = _(
+							"Account type {0}: account {1} ({2}) must use company default currency {3}."
+						).format(
+							_(account_type, context="Account"),
+							frappe.bold(x.account),
+							frappe.bold(receivable_payable_account_currency),
+							frappe.bold(company_default_currency),
+						)
+					frappe.throw(message)
 
 				if advance_account_currency and (
 					advance_account_currency != self.default_currency
 					and advance_account_currency != company_default_currency
 				):
-					frappe.throw(
-						_(
-							"Advance Account: {0} must be in either customer billing currency: {1} or Company default currency: {2}"
+					if self.default_currency:
+						message = _(
+							"Advance account {0} must use either party currency {1} or company default currency {2}."
 						).format(
 							frappe.bold(x.advance_account),
 							frappe.bold(self.default_currency),
 							frappe.bold(company_default_currency),
 						)
-					)
+					else:
+						message = _("Advance account {0} must use company default currency {1}.").format(
+							frappe.bold(x.advance_account), frappe.bold(company_default_currency)
+						)
+					frappe.throw(message)
 
 				if (
 					receivable_payable_account_currency
@@ -286,9 +299,9 @@ class TransactionBase(StatusUpdater):
 				):
 					frappe.throw(
 						_(
-							"Both {0} Account: {1} and Advance Account: {2} must be of same currency for company: {3}"
+							"Account type {0}: account {1} and advance account {2} must have the same currency for company {3}."
 						).format(
-							account_type,
+							_(account_type, context="Account"),
 							frappe.bold(x.account),
 							frappe.bold(x.advance_account),
 							frappe.bold(x.company),

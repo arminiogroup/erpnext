@@ -197,6 +197,7 @@ class MaterialRequest(BuyingController):
 				"Transferred",
 				"Received",
 			],
+			self,
 		)
 
 		validate_for_items(self)

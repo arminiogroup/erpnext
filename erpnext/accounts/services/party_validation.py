@@ -127,9 +127,9 @@ class PartyValidator:
 				frappe.throw(
 					_("Row {0}: {1} {2} cannot be same as {3} (Party Account) {4}").format(
 						item.idx,
-						frappe.bold(frappe.unscrub(item_field)),
+						frappe.bold(item.meta.get_translated_label(item_field)),
 						item.get(item_field),
-						frappe.bold(frappe.unscrub(party_account_field)),
+						frappe.bold(self.doc.meta.get_translated_label(party_account_field)),
 						self.doc.get(party_account_field),
 					)
 				)
@@ -151,7 +151,7 @@ class PartyValidator:
 		):
 			frappe.throw(
 				_("Accounting Entry for {0}: {1} can only be made in currency: {2}").format(
-					party_type, party, party_account_currency
+					_(party_type), party, party_account_currency
 				),
 				InvalidCurrency,
 			)

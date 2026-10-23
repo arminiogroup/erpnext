@@ -1,7 +1,8 @@
 const CLOSED_ORDER_STATUS = ["Closed", "Completed", "On Hold"];
 const COUNT = {
 	invoices: (n) => (n === 1 ? __("1 invoice") : __("{0} invoices", [n])),
-	quotations: (n) => (n === 1 ? __("1 quotation") : __("{0} quotations", [n])),
+	quotations: (n) =>
+		n === 1 ? __("1 quotation", null, "Quotation") : __("{0} quotations", [n], "Quotation"),
 	orders: (n) => (n === 1 ? __("1 order") : __("{0} orders", [n])),
 	reconcile: (n) =>
 		n === 1 ? __("Reconcile with 1 unpaid invoice") : __("Reconcile with {0} unpaid invoices", [n]),

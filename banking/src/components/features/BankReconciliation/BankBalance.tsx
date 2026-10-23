@@ -25,6 +25,7 @@ import { BankAccountBalance } from "@/types/Accounts/BankAccountBalance"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { toast } from "sonner"
 import ErrorBanner from "@/components/ui/error-banner"
+import ReactMarkdown from "react-markdown"
 
 const useBankCurrency = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
@@ -137,9 +138,11 @@ const SystemClosingBalanceRow = () => {
                             <br />
                             {_("It takes into account all the transactions that have been posted and subtracts the transactions that have not cleared yet.")}
                             <br />
-                            {_("If your bank statement shows a different closing balance, it is because all transactions have not reconciled yet.")}
+                            {_("A difference from your bank statement may indicate transactions that still need reconciliation.")}
                             <br /><br />
-                            For more information, click on the <strong>Bank Reconciliation Statement</strong> tab below.
+                            <ReactMarkdown allowedElements={["strong"]} unwrapDisallowed skipHtml>
+                                {_("For more information, open the **Reconciliation Statement** tab.")}
+                            </ReactMarkdown>
                         </Paragraph>
                     </HoverCardContent>
                 </HoverCard>
@@ -395,7 +398,7 @@ const ClosingBalancesList = ({ bankAccount, date }: { bankAccount: SelectedBank 
 
     return <div>
         <Separator className="my-8" />
-        <p className="text-p-sm text-center pb-2">{_("Balances as per bank statement before {0}", [formatDate(date, 'Do MMM YYYY')])}</p>
+        <p className="text-p-sm text-center pb-2">{_("Balances as per bank statement on or before {0}", [formatDate(date, 'Do MMM YYYY')])}</p>
         <Table>
             <TableHeader>
                 <TableRow>

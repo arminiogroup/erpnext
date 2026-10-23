@@ -621,10 +621,14 @@ frappe.ui.form.on("Work Order", {
 				let progress_class = "progress-bar-warning";
 				if (frm.doc.status == "Closed") {
 					if (frm.doc.required_items.find((d) => d.returned_qty > 0)) {
-						title = __("{0} items returned", [pending_complete]);
+						title = __("Remaining quantity: {0} (component returns recorded)", [
+							pending_complete,
+						]);
 						progress_class = "progress-bar-warning";
 					} else {
-						title = __("{0} items to return", [pending_complete]);
+						title = __("Remaining quantity: {0} (no component returns recorded)", [
+							pending_complete,
+						]);
 						progress_class = "progress-bar-info";
 					}
 				}

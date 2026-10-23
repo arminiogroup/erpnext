@@ -131,12 +131,12 @@ class PeriodClosingVoucher(AccountsController):
 	def block_if_future_closing_voucher_exists(self):
 		future_closing_voucher = self.get_future_closing_voucher()
 		if future_closing_voucher and future_closing_voucher[0][0]:
-			action = "cancel" if self.docstatus == 2 else "create"
-			frappe.throw(
-				_(
-					"You cannot {0} this document because another Period Closing Entry {1} exists after {2}"
-				).format(action, future_closing_voucher[0][0], self.period_end_date)
+			message = (
+				_("This document cannot be cancelled because Period Closing Voucher {0} exists after {1}.")
+				if self.docstatus == 2
+				else _("This document cannot be saved because Period Closing Voucher {0} exists after {1}.")
 			)
+			frappe.throw(message.format(future_closing_voucher, self.period_end_date))
 
 	def get_future_closing_voucher(self):
 		return frappe.db.get_value(

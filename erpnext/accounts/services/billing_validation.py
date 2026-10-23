@@ -110,8 +110,8 @@ class BillingValidationService:
 				if current_amount:
 					frappe.msgprint(
 						_(
-							"System will not check over billing since amount for Item {0} in {1} is zero"
-						).format(item.item_code, ref_dt),
+							"The overbilling check is skipped for Item {0} because the reference value in {1} is zero."
+						).format(item.item_code, _(ref_dt)),
 						title=_("Warning"),
 						indicator="orange",
 					)

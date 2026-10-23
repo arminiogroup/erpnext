@@ -210,7 +210,9 @@ class TaxWithholdingEntry(Document):
 		else:
 			frappe.throw(
 				_("Row #{0}: Could not find enough {1} entries to match. Remaining amount: {2}").format(
-					self.idx, status_to_find, remaining_amount
+					self.idx,
+					frappe.format_value(status_to_find, self.meta.get_field("status"), translated=True),
+					remaining_amount,
 				)
 			)
 		_reset_idx(docs_needing_reindex)

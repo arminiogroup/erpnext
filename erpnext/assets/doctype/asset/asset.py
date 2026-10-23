@@ -1269,12 +1269,26 @@ def get_asset_account(account_name, asset=None, asset_category=None, company=Non
 		account = frappe.get_cached_value("Company", company, account_name)
 
 	if not account:
-		if not asset_category:
-			frappe.throw(_("Set {0} in company {1}").format(account_name.replace("_", " ").title(), company))
+		if account_name == "fixed_asset_account":
+			label = frappe.get_meta("Asset Category Account").get_translated_label(account_name)
+			if asset_category:
+				frappe.throw(
+					_("Set {0} in asset category {1} for company {2}").format(label, asset_category, company)
+				)
+			else:
+				frappe.throw(_("Set {0} in the asset category for company {1}.").format(label, company))
+		elif not asset_category:
+			frappe.throw(
+				_("Set {0} in company {1}").format(
+					frappe.get_meta("Company").get_translated_label(account_name), company
+				)
+			)
 		else:
 			frappe.throw(
 				_("Set {0} in asset category {1} or company {2}").format(
-					account_name.replace("_", " ").title(), asset_category, company
+					frappe.get_meta("Asset Category Account").get_translated_label(account_name),
+					asset_category,
+					company,
 				)
 			)
 
@@ -1349,7 +1363,7 @@ def get_values_from_purchase_doc(
 	matching_items = [item for item in purchase_doc.items if item.item_code == item_code]
 
 	if not matching_items:
-		frappe.throw(_("Selected {0} does not contain the Item Code {1}").format(doctype, item_code))
+		frappe.throw(_("Selected {0} does not contain the Item Code {1}").format(_(doctype), item_code))
 
 	first_item = matching_items[0]
 

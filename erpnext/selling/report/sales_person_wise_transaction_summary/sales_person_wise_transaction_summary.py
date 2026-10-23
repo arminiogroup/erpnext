@@ -59,7 +59,11 @@ def validate_filters(filters):
 		msgprint(_("Please select the document type first"), raise_exception=1)
 
 	if filters.get("doc_type") not in ALLOWED_DOCTYPES:
-		frappe.throw(_("{0}, {1} or {2} are the only allowed options.").format(*ALLOWED_DOCTYPES))
+		frappe.throw(
+			_("{0}, {1} or {2} are the only allowed options.").format(
+				*[_(doctype) for doctype in ALLOWED_DOCTYPES]
+			)
+		)
 
 
 def get_columns(filters):

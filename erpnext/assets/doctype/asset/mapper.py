@@ -209,7 +209,9 @@ def split_asset(asset_name: str, split_qty: int):
 def validate_asset_split(existing_asset, split_qty):
 	if existing_asset.docstatus != 1 or existing_asset.status in ("Sold", "Scrapped", "Capitalized"):
 		frappe.throw(
-			_("Asset {0} cannot be split, as it is {1}").format(existing_asset.name, existing_asset.status)
+			_("Asset {0} cannot be split, as it is {1}").format(
+				existing_asset.name, _(existing_asset.status, context="Asset")
+			)
 		)
 
 	if split_qty <= 0:
@@ -350,9 +352,14 @@ def update_depreciation_terms(new_depr_schedule_doc, scaling_factor):
 
 
 def add_depr_schedule_notes(new_depr_schedule_doc, existing_asset, new_asset, is_new_asset):
-	notes = _("This schedule was created when Asset {0} was {1} into new Asset {2}.").format(
+	if is_new_asset:
+		notes = _("This schedule was created when Asset {0} was split to create Asset {1}.")
+	else:
+		notes = _(
+			"This schedule was created when Asset {0} was updated after being split to create Asset {1}."
+		)
+	notes = notes.format(
 		get_link_to_form(existing_asset.doctype, existing_asset.name),
-		"split" if is_new_asset else "updated after being split",
 		get_link_to_form(new_asset.doctype, new_asset.name),
 	)
 	new_depr_schedule_doc.notes = notes

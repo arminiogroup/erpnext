@@ -340,7 +340,7 @@ class SalesOrder(SellingController):
 							frappe.bold(
 								_("'Allow Multiple Sales Orders Against a Customer's Purchase Order'")
 							),
-							get_link_to_form("Selling Settings", "Selling Settings"),
+							get_link_to_form("Selling Settings", "Selling Settings", _("Selling Settings")),
 						)
 					)
 
@@ -431,7 +431,14 @@ class SalesOrder(SellingController):
 
 		for d in self.get("items"):
 			if d.prevdoc_docname and d.prevdoc_docname not in valid_quotations:
-				frappe.msgprint(_("Quotation {0} not of type {1}").format(d.prevdoc_docname, self.order_type))
+				frappe.msgprint(
+					_("Quotation {0} not of type {1}").format(
+						d.prevdoc_docname,
+						frappe.format_value(
+							self.order_type, self.meta.get_field("order_type"), translated=True
+						),
+					)
+				)
 
 	def validate_delivery_date(self):
 		if self.order_type == "Sales" and not self.delivery_not_required():
@@ -447,7 +454,7 @@ class SalesOrder(SellingController):
 						d.delivery_date = self.delivery_date
 					if getdate(self.transaction_date) > getdate(d.delivery_date):
 						frappe.msgprint(
-							_("Expected Delivery Date should be after Sales Order Date"),
+							_("Expected Delivery Date cannot be before Sales Order Date."),
 							indicator="orange",
 							title=_("Invalid Delivery Date"),
 							raise_exception=True,

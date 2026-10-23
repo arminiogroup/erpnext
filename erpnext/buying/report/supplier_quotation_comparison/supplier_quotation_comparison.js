@@ -83,7 +83,7 @@ frappe.query_reports["Supplier Quotation Comparison"] = {
 				{ label: __("Categorize by Supplier"), value: "Categorize by Supplier" },
 				{ label: __("Categorize by Item"), value: "Categorize by Item" },
 			],
-			default: __("Categorize by Supplier"),
+			default: "Categorize by Supplier",
 		},
 		{
 			fieldname: "status",

@@ -561,9 +561,9 @@ class PurchaseInvoice(BuyingController):
 					msg += _(
 						"To submit the invoice without purchase order please set {0} as {1} in {2}"
 					).format(
-						frappe.bold(_("Purchase Order Required")),
+						frappe.bold(frappe.get_meta("Buying Settings").get_translated_label("po_required")),
 						frappe.bold(_("No")),
-						get_link_to_form("Buying Settings", "Buying Settings", "Buying Settings"),
+						get_link_to_form("Buying Settings", "Buying Settings", _("Buying Settings")),
 					)
 					throw(msg, title=_("Mandatory Purchase Order"))
 
@@ -583,9 +583,9 @@ class PurchaseInvoice(BuyingController):
 					msg += _(
 						"To submit the invoice without purchase receipt please set {0} as {1} in {2}"
 					).format(
-						frappe.bold(_("Purchase Receipt Required")),
+						frappe.bold(frappe.get_meta("Buying Settings").get_translated_label("pr_required")),
 						frappe.bold(_("No")),
-						get_link_to_form("Buying Settings", "Buying Settings", "Buying Settings"),
+						get_link_to_form("Buying Settings", "Buying Settings", _("Buying Settings")),
 					)
 					throw(msg, title=_("Mandatory Purchase Receipt"))
 

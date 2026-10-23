@@ -53,7 +53,7 @@ class FixedAssetService:
 		if asset_status in ("Scrapped", "Cancelled", "Capitalized"):
 			frappe.throw(
 				_("Row #{0}: Asset {1} cannot be sold, it is already {2}").format(
-					item.idx, item.asset, asset_status
+					item.idx, item.asset, _(asset_status, context="Asset")
 				)
 			)
 		if asset_status == "Sold":

@@ -119,6 +119,7 @@ export interface GetStatementDetailsResponse {
         party_iban?: string,
     }>,
     date_format: string,
+    date_format_example?: string,
     raw_data: Array<Array<string>>,
     currency: string,
     pdf_tables?: PDFTable[],

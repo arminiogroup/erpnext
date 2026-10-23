@@ -177,7 +177,7 @@ class PricingRule(Document):
 			apply_on_field = frappe.scrub(self.apply_on)
 			values = [d.get(apply_on_field) for d in self.get(apply_on_table) if d.get(apply_on_field)]
 			if len(values) != len(set(values)):
-				frappe.throw(_("Duplicate {0} found in the table").format(self.apply_on))
+				frappe.throw(_("Duplicate {0} found in the table").format(_(self.apply_on)))
 
 			if self.apply_on == "Item Code":
 				self.validate_template_with_variant(values)
@@ -206,7 +206,7 @@ class PricingRule(Document):
 
 		for apply_on, field in apply_on_dict.items():
 			if self.apply_on == apply_on and len(self.get(field) or []) < 1:
-				throw(_("{0} is not added in the table").format(apply_on), frappe.MandatoryError)
+				throw(_("{0} is not added in the table").format(_(apply_on)), frappe.MandatoryError)
 
 		tocheck = frappe.scrub(self.get("applicable_for", ""))
 		if tocheck and not self.get(tocheck):
@@ -220,7 +220,7 @@ class PricingRule(Document):
 			if not self.get(o_field) and o_field in other_fields:
 				frappe.throw(
 					_("For the 'Apply Rule On Other' condition the field {0} is mandatory").format(
-						frappe.bold(self.apply_rule_on_other)
+						frappe.bold(_(self.apply_rule_on_other))
 					)
 				)
 
@@ -255,12 +255,16 @@ class PricingRule(Document):
 			"Campaign",
 		]:
 			throw(
-				_("Selling must be checked, if Applicable For is selected as {0}").format(self.applicable_for)
+				_("Selling must be checked, if Applicable For is selected as {0}").format(
+					_(self.applicable_for)
+				)
 			)
 
 		if not self.buying and self.applicable_for in ["Supplier", "Supplier Group"]:
 			throw(
-				_("Buying must be checked, if Applicable For is selected as {0}").format(self.applicable_for)
+				_("Buying must be checked, if Applicable For is selected as {0}").format(
+					_(self.applicable_for)
+				)
 			)
 
 	def validate_min_max_qty(self):
@@ -279,7 +283,7 @@ class PricingRule(Document):
 				self.recurse_for = 1
 		if self.is_recursive:
 			if flt(self.apply_recursion_over) > flt(self.min_qty):
-				throw(_("Min Qty should be greater than Recurse Over Qty"))
+				throw(_("Recurse Over Qty cannot exceed Min Qty."))
 			if flt(self.apply_recursion_over) < 0:
 				throw(_("Recurse Over Qty cannot be less than 0"))
 
@@ -320,7 +324,9 @@ class PricingRule(Document):
 	def validate_rate_or_discount(self):
 		for field in ["Rate"]:
 			if flt(self.get(frappe.scrub(field))) < 0:
-				throw(_("{0} can not be negative").format(field))
+				throw(
+					_("{0} can not be negative").format(self.meta.get_translated_label(frappe.scrub(field)))
+				)
 
 		if self.price_or_product_discount == "Product" and not self.free_item:
 			if self.mixed_conditions:

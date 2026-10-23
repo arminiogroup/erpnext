@@ -443,7 +443,9 @@ def validate_address(address_name):
 	for field in fields:
 		if not data.get(field):
 			frappe.throw(
-				_("Please set {0} for address {1}").format(field.replace("-", ""), address_name),
+				_("Please set {0} for address {1}").format(
+					frappe.get_meta("Address").get_translated_label(field), address_name
+				),
 				title=_("E-Invoicing Information Missing"),
 			)
 

@@ -30,7 +30,7 @@ def get_payment_entry_against_order(
 	ref_doc.check_permission()
 
 	if flt(ref_doc.per_billed, 2) > 0:
-		frappe.throw(_("Can only make payment against unbilled {0}").format(dt))
+		frappe.throw(_("Can only make payment against unbilled {0}").format(_(dt)))
 
 	if dt == "Sales Order":
 		party_type = "Customer"

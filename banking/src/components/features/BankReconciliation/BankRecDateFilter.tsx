@@ -225,7 +225,7 @@ const BankRecDateFilter = () => {
             <PopoverContent className="w-84 p-1" align='start'>
                 <Command shouldFilter={false}>
 
-                    <CommandInput placeholder={_("e.g. Last 3 weeks, Q1, May 2025")} onValueChange={setValue} value={value} />
+                    <CommandInput placeholder={_("e.g. 2025-05-01")} onValueChange={setValue} value={value} />
                     <CommandList ref={listRef} className='max-h-80'>
                         {showParsedOption && parsedOption && (
                             <CommandGroup heading={_("Matched date")}>

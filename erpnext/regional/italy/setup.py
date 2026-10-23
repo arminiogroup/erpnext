@@ -4,7 +4,7 @@
 
 
 import frappe
-from frappe import _
+from frappe import N_, _
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.permissions import add_permission, update_permission_property
 
@@ -30,7 +30,7 @@ def get_custom_fields():
 	invoice_item_fields = [
 		dict(
 			fieldname="tax_rate",
-			label="Tax Rate",
+			label=N_("Tax Rate"),
 			fieldtype="Float",
 			insert_after="description",
 			print_hide=1,
@@ -39,7 +39,7 @@ def get_custom_fields():
 		),
 		dict(
 			fieldname="tax_amount",
-			label="Tax Amount",
+			label=N_("Tax Amount"),
 			fieldtype="Currency",
 			insert_after="tax_rate",
 			print_hide=1,
@@ -49,7 +49,7 @@ def get_custom_fields():
 		),
 		dict(
 			fieldname="total_amount",
-			label="Total Amount",
+			label=N_("Total Amount"),
 			fieldtype="Currency",
 			insert_after="tax_amount",
 			print_hide=1,
@@ -62,13 +62,13 @@ def get_custom_fields():
 	customer_po_fields = [
 		dict(
 			fieldname="customer_po_details",
-			label="Customer PO",
+			label=N_("Customer PO"),
 			fieldtype="Section Break",
 			insert_after="image",
 		),
 		dict(
 			fieldname="customer_po_no",
-			label="Customer PO No",
+			label=N_("Customer PO No"),
 			fieldtype="Data",
 			insert_after="customer_po_details",
 			fetch_from="sales_order.po_no",
@@ -88,7 +88,7 @@ def get_custom_fields():
 		),
 		dict(
 			fieldname="customer_po_date",
-			label="Customer PO Date",
+			label=N_("Customer PO Date"),
 			fieldtype="Date",
 			insert_after="customer_po_clm_brk",
 			fetch_from="sales_order.po_date",
@@ -104,14 +104,14 @@ def get_custom_fields():
 		"Company": [
 			dict(
 				fieldname="sb_e_invoicing",
-				label="E-Invoicing",
+				label=N_("E-Invoicing"),
 				fieldtype="Section Break",
 				insert_after="date_of_establishment",
 				print_hide=1,
 			),
 			dict(
 				fieldname="fiscal_regime",
-				label="Fiscal Regime",
+				label=N_("Fiscal Regime"),
 				fieldtype="Select",
 				insert_after="sb_e_invoicing",
 				print_hide=1,
@@ -119,7 +119,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="fiscal_code",
-				label="Fiscal Code",
+				label=N_("Fiscal Code"),
 				fieldtype="Data",
 				insert_after="fiscal_regime",
 				print_hide=1,
@@ -127,7 +127,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="vat_collectability",
-				label="VAT Collectability",
+				label=N_("VAT Collectability"),
 				fieldtype="Select",
 				insert_after="fiscal_code",
 				print_hide=1,
@@ -143,7 +143,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="registrar_office_province",
-				label="Province of the Registrar Office",
+				label=N_("Province of the Registrar Office"),
 				fieldtype="Data",
 				insert_after="cb_e_invoicing1",
 				print_hide=1,
@@ -151,7 +151,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="registration_number",
-				label="Registration Number",
+				label=N_("Registration Number"),
 				fieldtype="Data",
 				insert_after="registrar_office_province",
 				print_hide=1,
@@ -159,7 +159,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="share_capital_amount",
-				label="Share Capital",
+				label=N_("Share Capital"),
 				fieldtype="Currency",
 				insert_after="registration_number",
 				print_hide=1,
@@ -167,7 +167,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="no_of_members",
-				label="No of Members",
+				label=N_("No of Members"),
 				fieldtype="Select",
 				insert_after="share_capital_amount",
 				print_hide=1,
@@ -176,7 +176,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="liquidation_state",
-				label="Liquidation State",
+				label=N_("Liquidation State"),
 				fieldtype="Select",
 				insert_after="no_of_members",
 				print_hide=1,
@@ -186,7 +186,7 @@ def get_custom_fields():
 		"Sales Taxes and Charges": [
 			dict(
 				fieldname="tax_exemption_reason",
-				label="Tax Exemption Reason",
+				label=N_("Tax Exemption Reason"),
 				fieldtype="Select",
 				insert_after="included_in_print_rate",
 				print_hide=1,
@@ -196,7 +196,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="tax_exemption_law",
-				label="Tax Exempt Under",
+				label=N_("Tax Exempt Under"),
 				fieldtype="Text",
 				insert_after="tax_exemption_reason",
 				print_hide=1,
@@ -206,14 +206,14 @@ def get_custom_fields():
 		"Customer": [
 			dict(
 				fieldname="fiscal_code",
-				label="Fiscal Code",
+				label=N_("Fiscal Code"),
 				fieldtype="Data",
 				insert_after="tax_id",
 				print_hide=1,
 			),
 			dict(
 				fieldname="recipient_code",
-				label="Recipient Code",
+				label=N_("Recipient Code"),
 				fieldtype="Data",
 				insert_after="fiscal_code",
 				print_hide=1,
@@ -221,14 +221,14 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="pec",
-				label="Recipient PEC",
+				label=N_("Recipient PEC"),
 				fieldtype="Data",
 				insert_after="fiscal_code",
 				print_hide=1,
 			),
 			dict(
 				fieldname="is_public_administration",
-				label="Is Public Administration",
+				label=N_("Is Public Administration"),
 				fieldtype="Check",
 				insert_after="is_internal_customer",
 				print_hide=1,
@@ -237,7 +237,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="italy_customer_first_name",
-				label="First Name",
+				label=N_("First Name"),
 				fieldtype="Data",
 				insert_after="customer_type",
 				print_hide=1,
@@ -245,7 +245,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="italy_customer_last_name",
-				label="Last Name",
+				label=N_("Last Name"),
 				fieldtype="Data",
 				insert_after="italy_customer_first_name",
 				print_hide=1,
@@ -255,7 +255,7 @@ def get_custom_fields():
 		"Mode of Payment": [
 			dict(
 				fieldname="mode_of_payment_code",
-				label="Code",
+				label=N_("Code"),
 				fieldtype="Select",
 				insert_after="included_in_print_rate",
 				print_hide=1,
@@ -267,7 +267,7 @@ def get_custom_fields():
 		"Payment Schedule": [
 			dict(
 				fieldname="mode_of_payment_code",
-				label="Code",
+				label=N_("Code"),
 				fieldtype="Select",
 				insert_after="mode_of_payment",
 				print_hide=1,
@@ -279,7 +279,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="bank_account",
-				label="Bank Account",
+				label=N_("Bank Account"),
 				fieldtype="Link",
 				insert_after="mode_of_payment_code",
 				print_hide=1,
@@ -287,7 +287,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="bank_account_name",
-				label="Bank Name",
+				label=N_("Bank Name"),
 				fieldtype="Data",
 				insert_after="bank_account",
 				print_hide=1,
@@ -296,7 +296,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="bank_account_no",
-				label="Bank Account No",
+				label=N_("Bank Account No"),
 				fieldtype="Data",
 				insert_after="bank_account_name",
 				print_hide=1,
@@ -305,7 +305,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="bank_account_iban",
-				label="IBAN",
+				label=N_("IBAN"),
 				fieldtype="Data",
 				insert_after="bank_account_name",
 				print_hide=1,
@@ -314,7 +314,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="bank_account_swift_number",
-				label="Swift Code (BIC)",
+				label=N_("Swift Code (BIC)"),
 				fieldtype="Data",
 				insert_after="bank_account_iban",
 				print_hide=1,
@@ -324,7 +324,7 @@ def get_custom_fields():
 		"Sales Invoice": [
 			dict(
 				fieldname="vat_collectability",
-				label="VAT Collectability",
+				label=N_("VAT Collectability"),
 				fieldtype="Select",
 				insert_after="taxes_and_charges",
 				print_hide=1,
@@ -335,14 +335,14 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="sb_e_invoicing_reference",
-				label="E-Invoicing",
+				label=N_("E-Invoicing"),
 				fieldtype="Section Break",
 				insert_after="against_income_account",
 				print_hide=1,
 			),
 			dict(
 				fieldname="company_fiscal_code",
-				label="Company Fiscal Code",
+				label=N_("Company Fiscal Code"),
 				fieldtype="Data",
 				insert_after="sb_e_invoicing_reference",
 				print_hide=1,
@@ -351,7 +351,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="company_fiscal_regime",
-				label="Company Fiscal Regime",
+				label=N_("Company Fiscal Regime"),
 				fieldtype="Data",
 				insert_after="company_fiscal_code",
 				print_hide=1,
@@ -366,7 +366,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="customer_fiscal_code",
-				label="Customer Fiscal Code",
+				label=N_("Customer Fiscal Code"),
 				fieldtype="Data",
 				insert_after="cb_e_invoicing_reference",
 				read_only=1,
@@ -374,7 +374,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="type_of_document",
-				label="Type of Document",
+				label=N_("Type of Document"),
 				fieldtype="Select",
 				insert_after="customer_fiscal_code",
 				options="\nTD01\nTD02\nTD03\nTD04\nTD05\nTD06\nTD16\nTD17\nTD18\nTD19\nTD20\nTD21\nTD22\nTD23\nTD24\nTD25\nTD26\nTD27",
@@ -392,7 +392,7 @@ def get_custom_fields():
 		"Address": [
 			dict(
 				fieldname="country_code",
-				label="Country Code",
+				label=N_("Country Code"),
 				fieldtype="Data",
 				insert_after="country",
 				print_hide=1,
@@ -401,7 +401,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="state_code",
-				label="State Code",
+				label=N_("State Code"),
 				fieldtype="Data",
 				insert_after="state",
 				print_hide=1,
@@ -410,7 +410,7 @@ def get_custom_fields():
 		"Purchase Invoice": [
 			dict(
 				fieldname="document_type",
-				label="Document Type",
+				label=N_("Document Type"),
 				fieldtype="Data",
 				insert_after="company",
 				print_hide=1,
@@ -418,7 +418,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="destination_code",
-				label="Destination Code",
+				label=N_("Destination Code"),
 				fieldtype="Data",
 				insert_after="company",
 				print_hide=1,
@@ -426,7 +426,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="imported_grand_total",
-				label="Imported Grand Total",
+				label=N_("Imported Grand Total"),
 				fieldtype="Data",
 				insert_after="update_auto_repeat_reference",
 				print_hide=1,
@@ -436,7 +436,7 @@ def get_custom_fields():
 		"Purchase Taxes and Charges": [
 			dict(
 				fieldname="tax_rate",
-				label="Tax Rate",
+				label=N_("Tax Rate"),
 				fieldtype="Data",
 				insert_after="parenttype",
 				print_hide=1,
@@ -446,7 +446,7 @@ def get_custom_fields():
 		"Supplier": [
 			dict(
 				fieldname="fiscal_code",
-				label="Fiscal Code",
+				label=N_("Fiscal Code"),
 				fieldtype="Data",
 				insert_after="tax_id",
 				print_hide=1,
@@ -454,7 +454,7 @@ def get_custom_fields():
 			),
 			dict(
 				fieldname="fiscal_regime",
-				label="Fiscal Regime",
+				label=N_("Fiscal Regime"),
 				fieldtype="Select",
 				insert_after="fiscal_code",
 				print_hide=1,

@@ -423,7 +423,7 @@ frappe.ui.form.on("Production Plan", {
 					<thead><tr>
 						<th>${__("Item")}</th>
 						<th>${__("Workstations")}</th>
-						<th>${__("Start")}</th>
+						<th>${__("Start", null, "Time")}</th>
 						<th>${__("End")}</th>
 						<th>${__("Starts In")}</th>
 					</tr></thead>

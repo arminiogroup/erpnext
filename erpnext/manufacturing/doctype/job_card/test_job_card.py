@@ -3610,7 +3610,9 @@ class TestJobCard(ERPNextTestSuite):
 			)
 			complete(extra_job_card_a, 1, 5)
 			self.assertRaisesRegex(
-				frappe.ValidationError, "Completed Qty cannot be greater", extra_job_card_a.submit
+				frappe.ValidationError,
+				"The sum of Completed Qty and Process Loss Qty cannot exceed",
+				extra_job_card_a.submit,
 			)
 
 		work_order.reload()

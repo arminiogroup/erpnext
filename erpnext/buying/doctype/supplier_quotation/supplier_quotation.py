@@ -127,6 +127,7 @@ class SupplierQuotation(BuyingController):
 		validate_status(
 			self.status,
 			["Draft", "Submitted", "Partially Ordered", "Ordered", "Stopped", "Cancelled", "Expired"],
+			self,
 		)
 
 		validate_for_items(self)
@@ -213,13 +214,13 @@ class SupplierQuotation(BuyingController):
 				frappe.throw(
 					_("Supplier {0} not found in {1}").format(
 						self.supplier,
-						"<a href='desk/app/Form/Request for Quotation/{0}'> Request for Quotation {0} </a>".format(
-							doc.name
+						"<a href='desk/app/Form/Request for Quotation/{0}'> {1} {0} </a>".format(
+							doc.name, _("Request for Quotation")
 						),
 					)
 				)
 
-			quote_status = _("Received")
+			quote_status = "Received"
 
 			SQ = frappe.qb.DocType("Supplier Quotation")
 			SQ_Item = frappe.qb.DocType("Supplier Quotation Item")
@@ -245,7 +246,7 @@ class SupplierQuotation(BuyingController):
 					else 0
 				)
 				if (sqi_count.count + self_count) == 0:
-					quote_status = _("Pending")
+					quote_status = "Pending"
 
 				frappe.db.set_value(
 					"Request for Quotation Supplier", doc_sup.name, "quote_status", quote_status

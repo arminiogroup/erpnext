@@ -98,7 +98,7 @@ def validate_party(filters):
 	if party and party_type:
 		for d in party:
 			if not frappe.db.exists(party_type, d):
-				frappe.throw(_("Invalid {0}: {1}").format(party_type, d))
+				frappe.throw(_("Invalid {0}: {1}").format(_(party_type), d))
 
 
 def set_account_currency(filters):

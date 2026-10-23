@@ -155,7 +155,14 @@ def validate_allowed_dimensions(gl_entry, dimension_filter_map):
 			if value["is_mandatory"] and not gl_entry.get(dimension):
 				frappe.throw(
 					_("{0} is mandatory for account {1}").format(
-						frappe.bold(frappe.unscrub(dimension)), frappe.bold(gl_entry.account)
+						frappe.bold(
+							_(
+								(frappe.get_meta("GL Entry").get_field(dimension) or {}).get("label")
+								or frappe.unscrub(dimension),
+								context="GL Entry",
+							)
+						),
+						frappe.bold(gl_entry.account),
 					),
 					MandatoryAccountDimensionError,
 				)
@@ -165,7 +172,13 @@ def validate_allowed_dimensions(gl_entry, dimension_filter_map):
 					frappe.throw(
 						_("Invalid value {0} for {1} against account {2}").format(
 							frappe.bold(gl_entry.get(dimension)),
-							frappe.bold(frappe.unscrub(dimension)),
+							frappe.bold(
+								_(
+									(frappe.get_meta("GL Entry").get_field(dimension) or {}).get("label")
+									or frappe.unscrub(dimension),
+									context="GL Entry",
+								)
+							),
 							frappe.bold(gl_entry.account),
 						),
 						InvalidAccountDimensionError,
@@ -175,7 +188,13 @@ def validate_allowed_dimensions(gl_entry, dimension_filter_map):
 					frappe.throw(
 						_("Invalid value {0} for {1} against account {2}").format(
 							frappe.bold(gl_entry.get(dimension)),
-							frappe.bold(frappe.unscrub(dimension)),
+							frappe.bold(
+								_(
+									(frappe.get_meta("GL Entry").get_field(dimension) or {}).get("label")
+									or frappe.unscrub(dimension),
+									context="GL Entry",
+								)
+							),
 							frappe.bold(gl_entry.account),
 						),
 						InvalidAccountDimensionError,

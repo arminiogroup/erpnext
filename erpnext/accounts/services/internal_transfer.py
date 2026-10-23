@@ -96,7 +96,7 @@ class InternalTransferService:
 			or self.doc.get("inter_company_order_reference")
 		):
 			msg = _("Internal Sale or Delivery Reference missing.")
-			msg += _("Please create purchase from internal sale or delivery document itself")
+			msg += " " + _("Please create purchase from internal sale or delivery document itself")
 			frappe.throw(msg, title=_("Internal Sales Reference Missing"))
 
 		label = "Delivery Note Item" if self.doc.doctype == "Purchase Receipt" else "Sales Invoice Item"
@@ -144,7 +144,9 @@ class InternalTransferService:
 		if not self.doc.get("ignore_pricing_rule") and self.is_internal_transfer():
 			self.doc.ignore_pricing_rule = 1
 			frappe.msgprint(
-				_("Disabled pricing rules since this {0} is an internal transfer").format(self.doc.doctype),
+				_("Disabled pricing rules since this {0} is an internal transfer").format(
+					_(self.doc.doctype)
+				),
 				alert=1,
 			)
 
@@ -161,7 +163,7 @@ class InternalTransferService:
 		if tax_updated:
 			frappe.msgprint(
 				_("Disabled tax included prices since this {0} is an internal transfer").format(
-					self.doc.doctype
+					_(self.doc.doctype)
 				),
 				alert=1,
 			)
@@ -209,7 +211,7 @@ class InternalTransferService:
 				else d.get(ref_dn_field)
 			)
 			msg = _("Row #{0}: Rate must be same as {1}: {2} ({3} / {4})").format(
-				d.idx, ref_dt, ref_name, d.rate, ref_rate
+				d.idx, _(ref_dt), ref_name, d.rate, ref_rate
 			)
 
 			if action == "Stop":

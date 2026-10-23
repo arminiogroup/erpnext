@@ -61,8 +61,8 @@ def _validate_internal_party_company(partytype: str, party: str, company: str) -
 	if company not in companies:
 		frappe.throw(
 			_(
-				"{0} not allowed to transact with {1}. Please change the Company or add the Company in the 'Allowed To Transact With'-Section in the Customer record."
-			).format(_(partytype), company)
+				"{0}: transactions with company {1} are not allowed. Change the company or add it to {2} in the {0} record."
+			).format(_(partytype), company, frappe.get_meta(partytype).get_translated_label("companies"))
 		)
 
 

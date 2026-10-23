@@ -156,8 +156,8 @@ class ProcessStatementOfAccounts(Document):
 		)
 
 		if invalid_values:
-			msg = _("<p>Following {0}s do not belong to Company {1}:</p>").format(
-				doctype, frappe.bold(self.company)
+			msg = _("<p>The following records of type {0} do not belong to Company {1}:</p>").format(
+				_(doctype), frappe.bold(self.company)
 			)
 
 			msg += (

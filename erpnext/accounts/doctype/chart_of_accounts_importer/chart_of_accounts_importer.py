@@ -440,7 +440,14 @@ def validate_missing_roots(roots):
 	missing = list(set(get_root_types()) - root_types_added)
 
 	if missing:
-		frappe.throw(_("Please add Root Account for - {0}").format(" , ".join(missing)))
+		root_type_df = frappe.get_meta("Account").get_field("root_type")
+		frappe.throw(
+			_("Please add Root Account for - {0}").format(
+				" , ".join(
+					frappe.format_value(root_type, root_type_df, translated=True) for root_type in missing
+				)
+			)
+		)
 
 
 def get_root_types():

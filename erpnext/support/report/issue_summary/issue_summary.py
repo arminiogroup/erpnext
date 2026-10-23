@@ -76,7 +76,12 @@ class IssueSummary:
 		self.statuses = ["Open", "Replied", "On Hold", "Resolved", "Closed"]
 		for status in self.statuses:
 			self.columns.append(
-				{"label": _(status), "fieldname": scrub(status), "fieldtype": "Int", "width": 80}
+				{
+					"label": _(status, context="Issue Summary"),
+					"fieldname": scrub(status),
+					"fieldtype": "Int",
+					"width": 80,
+				}
 			)
 
 		self.columns.append(
@@ -319,11 +324,11 @@ class IssueSummary:
 			"data": {
 				"labels": labels[:30],
 				"datasets": [
-					{"name": "Open", "values": open_issues[:30]},
-					{"name": "Replied", "values": replied_issues[:30]},
-					{"name": "On Hold", "values": on_hold_issues[:30]},
-					{"name": "Resolved", "values": resolved_issues[:30]},
-					{"name": "Closed", "values": closed_issues[:30]},
+					{"name": _("Open", context="Issue Summary"), "values": open_issues[:30]},
+					{"name": _("Replied", context="Issue Summary"), "values": replied_issues[:30]},
+					{"name": _("On Hold", context="Issue Summary"), "values": on_hold_issues[:30]},
+					{"name": _("Resolved", context="Issue Summary"), "values": resolved_issues[:30]},
+					{"name": _("Closed", context="Issue Summary"), "values": closed_issues[:30]},
 				],
 			},
 			"type": "bar",
@@ -350,31 +355,31 @@ class IssueSummary:
 			{
 				"value": open_issues,
 				"indicator": "Red",
-				"label": _("Open"),
+				"label": _("Open", context="Issue Summary"),
 				"datatype": "Int",
 			},
 			{
 				"value": replied,
 				"indicator": "Grey",
-				"label": _("Replied"),
+				"label": _("Replied", context="Issue Summary"),
 				"datatype": "Int",
 			},
 			{
 				"value": on_hold,
 				"indicator": "Grey",
-				"label": _("On Hold"),
+				"label": _("On Hold", context="Issue Summary"),
 				"datatype": "Int",
 			},
 			{
 				"value": resolved,
 				"indicator": "Green",
-				"label": _("Resolved"),
+				"label": _("Resolved", context="Issue Summary"),
 				"datatype": "Int",
 			},
 			{
 				"value": closed,
 				"indicator": "Green",
-				"label": _("Closed"),
+				"label": _("Closed", context="Issue Summary"),
 				"datatype": "Int",
 			},
 		]

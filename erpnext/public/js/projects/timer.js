@@ -148,7 +148,7 @@ erpnext.timesheet.control_timer = function (frm, dialog, row, timestamp = 0) {
 		if (cur_dialog && cur_dialog.get_value("expected_hours") > 0) {
 			if (flag && currentIncrement >= cur_dialog.get_value("expected_hours") * 3600) {
 				frappe.utils.play_sound("alert");
-				frappe.msgprint(__("Timer exceeded the given hours."));
+				frappe.msgprint(__("Timer has reached the expected duration."));
 				flag = false;
 			}
 		}

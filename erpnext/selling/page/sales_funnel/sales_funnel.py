@@ -11,7 +11,7 @@ from frappe.utils import flt
 
 def validate_filters(from_date, to_date, company):
 	if from_date and to_date and (from_date > to_date):
-		frappe.throw(_("To Date must be greater than From Date"))
+		frappe.throw(_("To Date cannot be before From Date"))
 
 	if not company:
 		frappe.throw(_("Please select a Company"))

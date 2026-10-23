@@ -452,7 +452,7 @@ class JournalEntry(AccountsController):
 		if inv_disc.status != expected_status:
 			frappe.throw(
 				_("Row #{0}: Status must be {1} for Invoice Discounting {2}").format(
-					row_idx, expected_status, get_link_to_form("Invoice Discounting", inv_disc.name)
+					row_idx, _(expected_status), get_link_to_form("Invoice Discounting", inv_disc.name)
 				)
 			)
 
@@ -496,7 +496,7 @@ class JournalEntry(AccountsController):
 				):
 					frappe.throw(
 						_("Row {0}: Account {1} and Party Type {2} have different account types").format(
-							d.idx, d.account, d.party_type
+							d.idx, d.account, _(d.party_type)
 						)
 					)
 
@@ -532,7 +532,7 @@ class JournalEntry(AccountsController):
 		if self.voucher_type in ["Bank Entry"]:
 			if not self.cheque_no or not self.cheque_date:
 				msgprint(
-					_("Reference No & Reference Date is required for {0}").format(self.voucher_type),
+					_("Reference No & Reference Date is required for {0}").format(_(self.voucher_type)),
 					raise_exception=1,
 				)
 
@@ -599,7 +599,7 @@ class JournalEntry(AccountsController):
 		if not has_unmatched_entry and not self.system_generated_gain_loss():
 			frappe.throw(
 				_("Against Journal Entry {0} does not have any unmatched {1} entry").format(
-					row.reference_name, dr_or_cr
+					row.reference_name, _("Debit") if dr_or_cr == "debit" else _("Credit")
 				)
 			)
 
@@ -1013,8 +1013,8 @@ class JournalEntry(AccountsController):
 				{"doctype": "Journal Entry", "stock_entry": self.stock_entry, "docstatus": 1}
 			):
 				frappe.msgprint(
-					_("Warning: Another {0} # {1} exists against stock entry {2}").format(
-						self.voucher_type, self.name, self.stock_entry
+					_("Warning: A submitted Journal Entry exists against Stock Entry {0}.").format(
+						self.stock_entry
 					)
 				)
 

@@ -942,7 +942,7 @@ class SalesInvoice(SellingController):
 				for d in self.get("items"):
 					if d.item_code and not d.get(key.lower().replace(" ", "_")) and not self.get(value[1]):
 						msgprint(
-							_("{0} is mandatory for Item {1}").format(key, d.item_code), raise_exception=1
+							_("{0} is mandatory for Item {1}").format(_(key), d.item_code), raise_exception=1
 						)
 
 	def validate_proj_cust(self):

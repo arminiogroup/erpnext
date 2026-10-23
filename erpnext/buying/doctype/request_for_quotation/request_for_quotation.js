@@ -316,7 +316,7 @@ frappe.ui.form.on("Request for Quotation", {
 		};
 
 		const msg = __(
-			"This is a preview of the email to be sent. A PDF of the document will automatically be attached with the email."
+			"This preview shows the email subject and message. When sending, a print of this document is attached only if Send Document Print is enabled."
 		);
 		dialog.fields_dict.note.$wrapper.append(`<p class="small text-muted">${msg}</p>`);
 

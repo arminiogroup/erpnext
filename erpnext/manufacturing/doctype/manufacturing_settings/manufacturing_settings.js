@@ -6,9 +6,9 @@ frappe.ui.form.on("Manufacturing Settings", {});
 frappe.tour["Manufacturing Settings"] = [
 	{
 		fieldname: "material_consumption",
-		title: __("Allow Multiple Material Consumption"),
+		title: __("Allow Continuous Material Consumption"),
 		description: __(
-			"If ticked, multiple materials can be used for a single Work Order. This is useful if one or more time consuming products are being manufactured."
+			"When enabled, material consumption can be recorded in separate Stock Entries against a Work Order without immediately manufacturing finished goods."
 		),
 	},
 	{

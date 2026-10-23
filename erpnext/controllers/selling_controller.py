@@ -339,7 +339,7 @@ class SellingController(StockController):
 					idx,
 					bold(item_name),
 					bold(ref_rate_field),
-					bold("net rate"),
+					bold(_("Net Rate")),
 					bold(rate),
 					bold(frappe.get_meta("Selling Settings").get_translated_label("validate_selling_price")),
 					get_link_to_form("Selling Settings"),
@@ -365,7 +365,9 @@ class SellingController(StockController):
 			)
 
 			if flt(item.base_net_rate) < flt(last_purchase_rate_in_sales_uom):
-				throw_message(item.idx, item.item_name, last_purchase_rate_in_sales_uom, "last purchase rate")
+				throw_message(
+					item.idx, item.item_name, last_purchase_rate_in_sales_uom, _("Last Purchase Rate")
+				)
 
 			if is_internal_customer or not is_stock_item:
 				continue
@@ -380,7 +382,7 @@ class SellingController(StockController):
 					item.idx,
 					item.item_name,
 					valuation_rate,
-					"valuation rate",
+					_("Valuation Rate"),
 				)
 
 	def get_item_list(self):

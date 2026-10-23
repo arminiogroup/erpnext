@@ -345,7 +345,7 @@ class PaymentEntry(AccountsController):
 			if key in reference_names:
 				frappe.throw(
 					_("Row #{0}: Duplicate entry in References {1} {2}").format(
-						d.idx, d.reference_doctype, d.reference_name
+						d.idx, _(d.reference_doctype), d.reference_name
 					)
 				)
 
@@ -539,7 +539,9 @@ class PaymentEntry(AccountsController):
 				doc.refresh_subscription_status()
 			except Exception:
 				frappe.db.rollback(save_point="subscription_update")
-				frappe.log_error(_("Failed to update subscription status for {0} {1}").format(doctype, name))
+				frappe.log_error(
+					_("Failed to update subscription status for {0} {1}").format(_(doctype), name)
+				)
 
 	def set_missing_values(self):
 		if self.payment_type == "Internal Transfer":
@@ -824,7 +826,7 @@ class PaymentEntry(AccountsController):
 					if not valid:
 						frappe.throw(
 							_("Against Journal Entry {0} does not have any unmatched {1} entry").format(
-								d.reference_name, _(dr_or_cr)
+								d.reference_name, _("Debit") if dr_or_cr == "debit" else _("Credit")
 							)
 						)
 
@@ -1297,7 +1299,7 @@ class PaymentEntry(AccountsController):
 						_("Amount {0} {1} adjusted against {2} {3}").format(
 							_(self.party_account_currency),
 							d.allocated_amount,
-							d.reference_doctype,
+							_(d.reference_doctype),
 							d.reference_name,
 						)
 					)
@@ -1714,10 +1716,7 @@ class PaymentEntry(AccountsController):
 			if paid_amount > total_negative_outstanding:
 				if total_negative_outstanding == 0:
 					frappe.msgprint(
-						_("Cannot {0} from {1} without any negative outstanding invoice").format(
-							self.payment_type,
-							self.party_type,
-						)
+						_("An invoice with a negative outstanding amount is required for this payment.")
 					)
 				else:
 					frappe.msgprint(

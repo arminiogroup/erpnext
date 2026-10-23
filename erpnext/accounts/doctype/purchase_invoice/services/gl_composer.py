@@ -965,9 +965,11 @@ class PurchaseInvoiceGLComposer(BaseGLComposer):
 							"Opening Invoice has rounding adjustment of {0}.<br><br> '{1}' account is required to post these values. Please set it in Company: {2}.<br><br> Or, '{3}' can be enabled to not post any rounding adjustment."
 						).format(
 							frappe.bold(doc.rounding_adjustment),
-							frappe.bold("Round Off for Opening"),
+							frappe.bold(
+								frappe.get_meta("Company").get_translated_label("round_off_for_opening")
+							),
 							get_link_to_form("Company", doc.company),
-							frappe.bold("Disable Rounded Total"),
+							frappe.bold(doc.meta.get_translated_label("disable_rounded_total")),
 						)
 					)
 				else:

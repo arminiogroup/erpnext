@@ -47,7 +47,7 @@ class TaxWithholdingCategory(Document):
 		group_rates = defaultdict(list)
 		for d in self.get("rates"):
 			if getdate(d.from_date) >= getdate(d.to_date):
-				frappe.throw(_("Row #{0}: From Date cannot be before To Date").format(d.idx))
+				frappe.throw(_("Row #{0}: From Date must be before To Date.").format(d.idx))
 			group_rates[cstr(d.tax_withholding_group)].append(d)
 
 		# Validate overlapping dates within each group

@@ -199,7 +199,7 @@ erpnext.accounts.taxes = {
 			var msg = __("For row {0} in {1}. To include {2} in Item rate, rows {3} must also be included", [
 				tax.idx,
 				__(tax.doctype),
-				tax.charge_type,
+				__(tax.charge_type, null, tax.doctype),
 				row_range,
 			]);
 			frappe.throw(msg);

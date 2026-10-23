@@ -60,7 +60,7 @@ class PaymentLedgerEntry(Document):
 			frappe.throw(_("{0} account is not of company {1}").format(self.account, self.company))
 
 		if account.account_type != self.account_type:
-			frappe.throw(_("{0} account is not of type {1}").format(self.account, self.account_type))
+			frappe.throw(_("{0} account is not of type {1}").format(self.account, _(self.account_type)))
 
 	def validate_account_details(self):
 		"""Account must be ledger, active and not freezed"""
@@ -73,18 +73,20 @@ class PaymentLedgerEntry(Document):
 			frappe.throw(
 				_(
 					"""{0} {1}: Account {2} is a Group Account and group accounts cannot be used in transactions"""
-				).format(self.voucher_type, self.voucher_no, self.account)
+				).format(_(self.voucher_type), self.voucher_no, self.account)
 			)
 
 		if account.docstatus == 2:
 			frappe.throw(
-				_("{0} {1}: Account {2} is inactive").format(self.voucher_type, self.voucher_no, self.account)
+				_("{0} {1}: Account {2} is inactive").format(
+					_(self.voucher_type), self.voucher_no, self.account
+				)
 			)
 
 		if account.company != self.company:
 			frappe.throw(
 				_("{0} {1}: Account {2} does not belong to Company {3}").format(
-					self.voucher_type, self.voucher_no, self.account, self.company
+					_(self.voucher_type), self.voucher_no, self.account, self.company
 				)
 			)
 
@@ -98,7 +100,14 @@ class PaymentLedgerEntry(Document):
 				if value["is_mandatory"] and not self.get(dimension):
 					frappe.throw(
 						_("{0} is mandatory for account {1}").format(
-							frappe.bold(frappe.unscrub(dimension)), frappe.bold(self.account)
+							frappe.bold(
+								_(
+									(self.meta.get_field(dimension) or {}).get("label")
+									or frappe.unscrub(dimension),
+									context=self.doctype,
+								)
+							),
+							frappe.bold(self.account),
 						),
 						MandatoryAccountDimensionError,
 					)
@@ -108,7 +117,13 @@ class PaymentLedgerEntry(Document):
 						frappe.throw(
 							_("Invalid value {0} for {1} against account {2}").format(
 								frappe.bold(self.get(dimension)),
-								frappe.bold(frappe.unscrub(dimension)),
+								frappe.bold(
+									_(
+										(self.meta.get_field(dimension) or {}).get("label")
+										or frappe.unscrub(dimension),
+										context=self.doctype,
+									)
+								),
 								frappe.bold(self.account),
 							),
 							InvalidAccountDimensionError,
@@ -118,7 +133,13 @@ class PaymentLedgerEntry(Document):
 						frappe.throw(
 							_("Invalid value {0} for {1} against account {2}").format(
 								frappe.bold(self.get(dimension)),
-								frappe.bold(frappe.unscrub(dimension)),
+								frappe.bold(
+									_(
+										(self.meta.get_field(dimension) or {}).get("label")
+										or frappe.unscrub(dimension),
+										context=self.doctype,
+									)
+								),
 								frappe.bold(self.account),
 							),
 							InvalidAccountDimensionError,

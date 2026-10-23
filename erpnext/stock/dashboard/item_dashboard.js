@@ -239,7 +239,7 @@ erpnext.stock.move_item = function (item, source, target, actual_qty, rate, stoc
 			},
 			{
 				fieldname: "rate",
-				label: __("Rate"),
+				label: __("Rate", null, "Stock Entry"),
 				fieldtype: "Currency",
 				hidden: 1,
 			},

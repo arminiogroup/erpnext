@@ -678,7 +678,7 @@
    "reqd": 1
   },
   {
-   "description": "Rate at which Customer Currency is converted to customer's base currency",
+   "description": "Rate at which the transaction currency is converted to the company currency.",
    "fieldname": "conversion_rate",
    "fieldtype": "Float",
    "hide_days": 1,
@@ -721,7 +721,7 @@
    "reqd": 1
   },
   {
-   "description": "Rate at which Price list currency is converted to customer's base currency",
+   "description": "Rate at which the price list currency is converted to the company currency.",
    "fieldname": "plc_conversion_rate",
    "fieldtype": "Float",
    "hide_days": 1,
@@ -2409,7 +2409,7 @@
    "link_fieldname": "consolidated_invoice"
   }
  ],
- "modified": "2026-10-12 18:16:58.531757",
+ "modified": "2026-10-21 02:29:07.330973",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice",

@@ -52,7 +52,7 @@ class CommonCode(Document):
 				existing_link = existing_links[0]
 				frappe.throw(
 					_("{0} {1} is already linked to Common Code {2}.").format(
-						link.link_doctype,
+						_(link.link_doctype),
 						link.link_name,
 						get_link_to_form("Common Code", existing_link["name"], existing_link["common_code"]),
 					)

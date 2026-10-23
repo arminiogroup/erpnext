@@ -14,6 +14,33 @@ dayjs.extend(relativeTime);
 dayjs.extend(quarterOfYear);
 dayjs.extend(customParseFormat);
 
+const dateLocaleLoaders = import.meta.glob<{ name: string }>(
+    '/node_modules/dayjs/locale/*.js', { import: 'default', exhaustive: true }
+);
+const dateLocaleAliases: Record<string, string> = {
+    fil: 'tl-ph', no: 'nb', sr: 'sr-cyrl', 'sr-cs': 'sr', uz: 'uz-latn'
+};
+let displayLocale = dayjs.locale();
+
+export const initializeDateLocale = async () => {
+    const language = (window.frappe?.boot?.lang || '').toLowerCase().replace(/_/g, '-');
+    let candidate = dateLocaleAliases[language] || language;
+    while (candidate) {
+        const load = dateLocaleLoaders[`/node_modules/dayjs/locale/${candidate}.js`];
+        if (load) {
+            let locale;
+            try {
+                locale = await load();
+            } catch {
+                return;
+            }
+            displayLocale = locale.name;
+            return;
+        }
+        candidate = candidate.includes('-') ? candidate.slice(0, candidate.lastIndexOf('-')) : '';
+    }
+};
+
 const FRAPPE_DATE_FORMAT = "YYYY-MM-DD"
 
 export const getUserDateFormat = () => {
@@ -153,7 +180,7 @@ const toUserTimezone = (timestamp: string) => {
 export const getTimeago = (date?: string) => {
     if (date) {
         const userDate = toUserTimezone(date)
-        return userDate.fromNow()
+        return userDate.locale(displayLocale).fromNow()
     }
     return ''
 }
@@ -165,7 +192,7 @@ export const formatDate = (date?: string | Date, format?: string) => {
     }
 
     if (date) {
-        return dayjs(date).format(format)
+        return dayjs(date).locale(displayLocale).format(format)
     }
     return ''
 }

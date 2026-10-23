@@ -148,7 +148,10 @@ class PartyLedgerSummaryReport:
 		if self.party_naming_by == "Naming Series":
 			columns.append(
 				{
-					"label": _(self.filters.party_type + " Name"),
+					"label": {
+						"Customer": _("Customer Name"),
+						"Supplier": _("Supplier Name"),
+					}.get(self.filters.party_type, _("{0} Name").format(_(self.filters.party_type))),
 					"fieldtype": "Data",
 					"fieldname": "party_name",
 					"width": 150,

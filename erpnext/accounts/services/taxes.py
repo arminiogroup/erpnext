@@ -118,7 +118,9 @@ class TaxService:
 		if doc.taxes_and_charges and frappe.get_cached_value(
 			taxes_and_charges_doctype, doc.taxes_and_charges, "disabled"
 		):
-			frappe.throw(_("{0} '{1}' is disabled").format(taxes_and_charges_doctype, doc.taxes_and_charges))
+			frappe.throw(
+				_("{0} '{1}' is disabled").format(_(taxes_and_charges_doctype), doc.taxes_and_charges)
+			)
 
 	def validate_tax_account_company(self) -> None:
 		doc = self.doc

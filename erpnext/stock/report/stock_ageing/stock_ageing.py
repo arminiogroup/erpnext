@@ -226,7 +226,12 @@ def get_columns(filters: Filters) -> list[dict]:
 	columns.extend(
 		[
 			{"label": _("Earliest"), "fieldname": "earliest", "fieldtype": "Int", "width": 80},
-			{"label": _("Latest"), "fieldname": "latest", "fieldtype": "Int", "width": 80},
+			{
+				"label": _("Latest", context="Stock Ageing"),
+				"fieldname": "latest",
+				"fieldtype": "Int",
+				"width": 80,
+			},
 			{"label": _("UOM"), "fieldname": "uom", "fieldtype": "Link", "options": "UOM", "width": 100},
 		]
 	)

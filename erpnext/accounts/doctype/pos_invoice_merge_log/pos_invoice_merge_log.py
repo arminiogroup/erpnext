@@ -82,14 +82,13 @@ class POSInvoiceMergeLog(Document):
 			)
 
 			bold_pos_invoice = frappe.bold(d.pos_invoice)
-			bold_status = frappe.bold(status)
 			if docstatus != 1:
 				frappe.throw(
 					_("Row #{0}: POS Invoice {1} is not submitted yet").format(d.idx, bold_pos_invoice)
 				)
 			if status == "Consolidated":
 				frappe.throw(
-					_("Row #{0}: POS Invoice {1} has been {2}").format(d.idx, bold_pos_invoice, bold_status)
+					_("Row #{0}: POS Invoice {1} is already consolidated.").format(d.idx, bold_pos_invoice)
 				)
 			if (
 				is_return

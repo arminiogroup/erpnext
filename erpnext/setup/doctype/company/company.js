@@ -116,7 +116,7 @@ frappe.ui.form.on("Company", {
 
 	date_of_commencement: function (frm) {
 		if (frm.doc.date_of_commencement < frm.doc.date_of_incorporation) {
-			frappe.throw(__("Date of Commencement should be greater than Date of Incorporation"));
+			frappe.throw(__("Date of Commencement cannot be before Date of Incorporation."));
 		}
 		if (!frm.doc.date_of_commencement) {
 			frm.doc.date_of_incorporation = "";
@@ -238,7 +238,7 @@ frappe.ui.form.on("Company", {
 							label: __("Please enter the company name to confirm"),
 							reqd: 1,
 							description: __(
-								"Please make sure you really want to delete all the transactions for {0}. Your master data will remain as it is. This action cannot be undone.",
+								"This will start deleting records associated with {0}, including transactions and other records selected by the deletion workflow. Master records such as Leads and related addresses may also be affected. This action cannot be undone.",
 								[frappe.utils.bold(frm.doc.name)]
 							),
 						},

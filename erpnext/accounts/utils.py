@@ -1610,8 +1610,8 @@ def validate_field_number(doctype_name, docname, number_value, company, field_na
 
 		if doctype_with_same_number:
 			frappe.throw(
-				_("{0} Number {1} is already used in {2} {3}").format(
-					doctype_name, number_value, doctype_name.lower(), doctype_with_same_number
+				_("Number {0} is already used in {1} {2}.").format(
+					number_value, _(doctype_name), doctype_with_same_number
 				)
 			)
 

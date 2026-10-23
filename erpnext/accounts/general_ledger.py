@@ -460,7 +460,7 @@ def get_debit_credit_allowance(voucher_type, precision):
 def raise_debit_credit_not_equal_error(debit_credit_diff, voucher_type, voucher_no):
 	frappe.throw(
 		_("Debit and Credit not equal for {0} #{1}. Difference is {2}.").format(
-			voucher_type, voucher_no, debit_credit_diff
+			_(voucher_type), voucher_no, debit_credit_diff
 		)
 	)
 
@@ -484,7 +484,8 @@ def make_round_off_gle(gl_map, debit_credit_diff, trx_cur_debit_credit_diff, pre
 		if not round_off_for_opening:
 			frappe.throw(
 				_("Please set '{0}' in Company: {1}").format(
-					frappe.bold("Round Off for Opening"), get_link_to_form("Company", gl_map[0].company)
+					frappe.bold(frappe.get_meta("Company").get_translated_label("round_off_for_opening")),
+					get_link_to_form("Company", gl_map[0].company),
 				)
 			)
 
@@ -590,14 +591,16 @@ def get_round_off_account_and_cost_center(company, voucher_type, voucher_no, use
 	if not round_off_account:
 		frappe.throw(
 			_("Please mention '{0}' in Company: {1}").format(
-				frappe.bold("Round Off Account"), get_link_to_form("Company", company)
+				frappe.bold(frappe.get_meta("Company").get_translated_label("round_off_account")),
+				get_link_to_form("Company", company),
 			)
 		)
 
 	if not round_off_cost_center:
 		frappe.throw(
 			_("Please mention '{0}' in Company: {1}").format(
-				frappe.bold("Round Off Cost Center"), get_link_to_form("Company", company)
+				frappe.bold(frappe.get_meta("Company").get_translated_label("round_off_cost_center")),
+				get_link_to_form("Company", company),
 			)
 		)
 

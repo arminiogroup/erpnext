@@ -93,6 +93,7 @@ frappe.query_reports["Material Requirements Planning Report"] = {
 			label: __("View Data Based on"),
 			fieldtype: "Select",
 			options: "Delivery Date\nRelease Date",
+			context: "Material Requirements Planning Report",
 			default: "Delivery Date",
 			depends_on: "eval:doc.show_in_bucket_view == 1",
 		},
@@ -134,7 +135,9 @@ frappe.query_reports["Material Requirements Planning Report"] = {
 				.filter((row) => row && row.item_code);
 
 			if (!selected_rows.length) {
-				frappe.throw(__("Please select a row to create a Reposting Entry"));
+				frappe.throw(
+					__("Please select at least one item row to create a Purchase Order or Work Order.")
+				);
 			}
 
 			if (frappe.query_report.get_filter_value("show_in_bucket_view")) {

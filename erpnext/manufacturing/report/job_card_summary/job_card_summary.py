@@ -86,8 +86,8 @@ def get_chart_data(job_card_details, filters):
 		open_job_cards.append(periodic_data.get("Open").get(d))
 		completed.append(periodic_data.get("Completed").get(d))
 
-	datasets.append({"name": _("Open"), "values": open_job_cards})
-	datasets.append({"name": _("Completed"), "values": completed})
+	datasets.append({"name": _("Open", context="Job Card Summary"), "values": open_job_cards})
+	datasets.append({"name": _("Completed", context="Job Card Summary"), "values": completed})
 
 	chart = {"data": {"labels": labels, "datasets": datasets}, "type": "bar"}
 

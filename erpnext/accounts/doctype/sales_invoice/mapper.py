@@ -161,7 +161,7 @@ def validate_inter_company_transaction(doc, doctype):
 	party = details.get("party")
 	if not party:
 		partytype = "Supplier" if doctype in ["Sales Invoice", "Sales Order"] else "Customer"
-		frappe.throw(_("No {0} found for Inter Company Transactions.").format(partytype))
+		frappe.throw(_("No {0} found for Inter Company Transactions.").format(_(partytype)))
 
 
 @frappe.whitelist()
@@ -283,14 +283,14 @@ def make_inter_company_transaction(doctype, source_name, target_doc=None):
 		if target_doctype in ("Sales Invoice", "Purchase Invoice"):
 			message = _(
 				"Cannot create Intercompany {0}. All items in the source {1} have already been fully invoiced. "
-				"Please check the existing linked {2}s."
+				"Please check the existing linked documents of type {2}."
 			)
 		else:
 			message = _(
 				"Cannot create Intercompany {0}. All items in the source {1} have already been fully ordered. "
-				"Please check the existing linked {2}s."
+				"Please check the existing linked documents of type {2}."
 			)
-		frappe.throw(message.format(target_doctype, doctype, target_doctype))
+		frappe.throw(message.format(_(target_doctype), _(doctype), _(target_doctype)))
 
 	return doclist
 

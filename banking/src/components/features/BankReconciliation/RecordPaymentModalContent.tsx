@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import SelectedTransactionDetails from "./SelectedTransactionDetails"
 import { AccountFormField, CurrencyFormField, DataField, DateField, LinkFormField, PartyTypeFormField, SmallTextField } from "@/components/ui/form-elements"
 import { Form } from "@/components/ui/form"
-import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { ChangeEvent, Fragment, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertCircleIcon, Plus, Trash2 } from "lucide-react"
@@ -667,7 +667,7 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
 
     return <div className="flex flex-col gap-2">
         <div className="flex gap-4 items-center">
-            <H4 className="text-base">{_("Invoices")}</H4>
+            <H4 className="text-base">{_("Reference Documents")}</H4>
             <GetUnpaidInvoicesButton currency={currency} />
         </div>
         <Table>
@@ -682,7 +682,7 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
                     <TableHead>{_("Reference Document")}</TableHead>
                     <TableHead>{_("Invoice No")}</TableHead>
                     <TableHead>{_("Due Date")}</TableHead>
-                    <TableHead className="text-end">{_("Grand Total")}</TableHead>
+                    <TableHead className="text-end">{_("Document Amount")}</TableHead>
                     <TableHead className="text-end">{_("Outstanding")}</TableHead>
                     <TableHead className="text-end">{_("Allocated")}</TableHead>
                     <TableHead className='w-14'></TableHead>
@@ -704,7 +704,7 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
                             <a
                                 target="_blank"
                                 className="underline underline-offset-2"
-                                href={`/desk/${slug(field.reference_doctype)}/${field.reference_name}`}>{field.reference_doctype}: {field.reference_name}</a>
+                                href={`/desk/${slug(field.reference_doctype)}/${field.reference_name}`}>{_(field.reference_doctype ?? "")}: {field.reference_name}</a>
                         </TableCell>
                         <TableCell>
                             {field.bill_no ?? "-"}
@@ -900,12 +900,12 @@ const GetUnpaidInvoicesButton = ({ currency }: { currency: string }) => {
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             {partyType && party && <DialogTrigger asChild>
-                <Button variant='outline' size='sm' type='button'>Get Unpaid Invoices</Button>
+                <Button variant='outline' size='sm' type='button'>{_("Get Outstanding Documents")}</Button>
             </DialogTrigger>}
             <DialogContent className="min-w-[75vw]">
                 <DialogHeader>
-                    <DialogTitle>Select Invoices</DialogTitle>
-                    <DialogDescription>Unpaid invoices from {partyName} for {formatCurrency(amount, currency)}.</DialogDescription>
+                    <DialogTitle>{_("Select Outstanding Documents")}</DialogTitle>
+                    <DialogDescription>{_("Outstanding documents for {0}. Payment amount: {1}.", [partyName ?? "", formatCurrency(amount, currency)])}</DialogDescription>
                 </DialogHeader>
                 <FetchInvoicesModal currency={currency} onClose={() => setIsOpen(false)} />
             </DialogContent>
@@ -1028,22 +1028,22 @@ const FetchInvoicesModal = ({ currency, onClose }: { currency: string, onClose: 
                         }} />
                     </TableHead>
                     <TableHead>
-                        Type
+                        {_("Document Type")}
                     </TableHead>
                     <TableHead>
-                        Name
+                        {_("Document Name")}
                     </TableHead>
                     <TableHead>
-                        Invoice No
+                        {_("Invoice No")}
                     </TableHead>
                     <TableHead>
-                        Due Date
+                        {_("Due Date")}
                     </TableHead>
                     <TableHead className="text-end">
-                        Grand Total
+                        {_("Document Amount")}
                     </TableHead>
                     <TableHead className="text-end">
-                        Outstanding
+                        {_("Outstanding")}
                     </TableHead>
                 </TableRow>
             </TableHeader>
@@ -1071,7 +1071,7 @@ const FetchInvoicesModal = ({ currency, onClose }: { currency: string, onClose: 
                             />
                         </TableCell>
                         <TableCell>
-                            {ref.voucher_type}
+                            {_(ref.voucher_type)}
                         </TableCell>
                         <TableCell>
                             <a
@@ -1097,14 +1097,24 @@ const FetchInvoicesModal = ({ currency, onClose }: { currency: string, onClose: 
         </Table> : null}
         <div className="flex justify-between items-center sticky bottom-0 bg-surface-modal">
             <div className="flex gap-2">
-                <span className="text-ink-gray-5">Invoices: <span className="text-ink-gray-8 font-numeric font-medium">{selectedInvoices.length}</span></span> /
-                <span className="text-ink-gray-5">Total: <span className="text-ink-gray-8 font-numeric font-medium">{formatCurrency(selectedInvoices.reduce((acc, invoice) => acc + invoice.outstanding_amount, 0), selectedInvoices[0]?.currency ?? currency)}</span></span>
+                <span className="text-ink-gray-5">
+                    {_("Selected rows: {0}").split("{0}").map((part, index) => <Fragment key={index}>
+                        {index > 0 && <span className="text-ink-gray-8 font-numeric font-medium">{selectedInvoices.length}</span>}
+                        {part}
+                    </Fragment>)}
+                </span> {"/"}
+                <span className="text-ink-gray-5">
+                    {_("Total outstanding: {0}").split("{0}").map((part, index) => <Fragment key={index}>
+                        {index > 0 && <span className="text-ink-gray-8 font-numeric font-medium">{formatCurrency(selectedInvoices.reduce((acc, invoice) => acc + invoice.outstanding_amount, 0), selectedInvoices[0]?.currency ?? currency)}</span>}
+                        {part}
+                    </Fragment>)}
+                </span>
             </div>
             <DialogFooter className="pt-2">
                 <DialogClose asChild>
-                    <Button variant='outline' size='md' disabled={allocateAmountToReferencesLoading}>Cancel</Button>
+                    <Button variant='outline' size='md' disabled={allocateAmountToReferencesLoading}>{_("Cancel")}</Button>
                 </DialogClose>
-                <Button onClick={onSelect} size='md' disabled={allocateAmountToReferencesLoading}>Select</Button>
+                <Button onClick={onSelect} size='md' disabled={allocateAmountToReferencesLoading}>{_("Select")}</Button>
             </DialogFooter>
         </div>
 

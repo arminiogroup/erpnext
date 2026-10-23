@@ -236,11 +236,14 @@ def build_report_data(budget_map, filters):
 
 				if filters["period"] == "Yearly":
 					budget_label = _("Budget") + " " + fiscal_year
-					actual_label = _("Actual") + " " + fiscal_year
+					actual_label = _("Actual", context="Budget Variance Report") + " " + fiscal_year
 					variance_label = _("Variance") + " " + fiscal_year
 				else:
 					budget_label = _("Budget") + f" ({period['label_suffix']}) {fiscal_year}"
-					actual_label = _("Actual") + f" ({period['label_suffix']}) {fiscal_year}"
+					actual_label = (
+						_("Actual", context="Budget Variance Report")
+						+ f" ({period['label_suffix']}) {fiscal_year}"
+					)
 					variance_label = _("Variance") + f" ({period['label_suffix']}) {fiscal_year}"
 
 				row[frappe.scrub(budget_label)] = display_budget
@@ -322,7 +325,7 @@ def get_columns(filters):
 			if filters["period"] == "Yearly":
 				labels = [
 					_("Budget") + " " + str(year[0]),
-					_("Actual") + " " + str(year[0]),
+					_("Actual", context="Budget Variance Report") + " " + str(year[0]),
 					_("Variance") + " " + str(year[0]),
 				]
 				for label in labels:
@@ -332,7 +335,7 @@ def get_columns(filters):
 			else:
 				for label in [
 					_("Budget") + " (%s)" + " " + str(year[0]),
-					_("Actual") + " (%s)" + " " + str(year[0]),
+					_("Actual", context="Budget Variance Report") + " (%s)" + " " + str(year[0]),
 					_("Variance") + " (%s)" + " " + str(year[0]),
 				]:
 					if group_months:

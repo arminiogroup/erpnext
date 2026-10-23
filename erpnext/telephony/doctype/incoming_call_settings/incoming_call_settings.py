@@ -70,7 +70,7 @@ class IncomingCallSettings(Document):
 
 			for i in range(1, len(timeslots)):
 				if self.check_timeslots_overlap(timeslots[i - 1], timeslots[i]):
-					frappe.throw(_("Please fix overlapping time slots for {0}.").format(day))
+					frappe.throw(_("Please fix overlapping time slots for {0}.").format(_(day)))
 
 	@staticmethod
 	def check_timeslots_overlap(ts1: tuple[int, int], ts2: tuple[int, int]) -> bool:

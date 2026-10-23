@@ -65,7 +65,7 @@
   {
    "fieldname": "about",
    "fieldtype": "HTML",
-   "options": "<h3>About Product Bundle</h3>\n\n<p>Aggregate group of <b>Items</b> into another <b>Item</b>. This is useful if you are bundling a certain <b>Items</b> into a package and you maintain stock of the packed <b>Items</b> and not the aggregate <b>Item</b>.</p>\n<p>The package <b>Item</b> will have <code>Is Stock Item</code> as <b>No</b> and <code>Is Sales Item</code> as <b>Yes</b>.</p>\n<h4>Example:</h4>\n<p>If you are selling Laptops and Backpacks separately and have a special price if the customer buys both, then the Laptop + Backpack will be a new Product Bundle Item.</p>"
+   "options": "<h3>About Product Bundle</h3>\n\n<p>Aggregate group of <b>Items</b> into another <b>Item</b>. This is useful if you are bundling a certain <b>Items</b> into a package and you maintain stock of the packed <b>Items</b> and not the aggregate <b>Item</b>.</p>\n<p>For the package <b>Item</b>, set <code>Maintain Stock</code> to <b>No</b>. To sell the package, set <code>Allow Sales</code> to <b>Yes</b>.</p>\n<h4>Example:</h4>\n<p>If you are selling Laptops and Backpacks separately and have a special price if the customer buys both, then the Laptop + Backpack will be a new Product Bundle Item.</p>"
   },
   {
    "allow_on_submit": 1,
@@ -105,7 +105,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-08-21 23:11:46.161457",
+ "modified": "2026-10-21 09:27:48.791975",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Product Bundle",

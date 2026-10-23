@@ -56,7 +56,7 @@ class PutawayRule(Document):
 				_("Putaway Rule already exists for Item {0} in Warehouse {1}.").format(
 					frappe.bold(self.item_code), frappe.bold(self.warehouse)
 				),
-				title=_("Duplicate"),
+				title=_("Duplicate", context="Putaway Rule"),
 			)
 
 	def validate_priority(self):
@@ -93,7 +93,7 @@ class PutawayRule(Document):
 		if flt(self.stock_capacity) < flt(balance_qty):
 			frappe.throw(
 				_(
-					"Warehouse Capacity for Item '{0}' must be greater than the existing stock level of {1} {2}."
+					"Warehouse Capacity for Item '{0}' must be at least the existing stock level of {1} {2}."
 				).format(self.item_code, frappe.bold(balance_qty), stock_uom),
 				title=_("Insufficient Capacity"),
 			)

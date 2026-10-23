@@ -350,7 +350,7 @@
 {% if ageing %}
 <h4 class="text-center">
 	{{ _("Ageing Report based on {0} up to {1}").format(
-		ageing.ageing_based_on,
+		_(ageing.ageing_based_on),
 		frappe.format(filters.report_date, "Date")
 	) }}
 </h4>

@@ -199,7 +199,7 @@ class SubcontractingController(StockController):
 					if not item.get(order_item_field):
 						frappe.throw(
 							_("Row {0}: Item {1} must be linked to a {2}.").format(
-								item.idx, item.item_name, order_item_doctype
+								item.idx, item.item_name, _(order_item_doctype)
 							)
 						)
 
@@ -1125,7 +1125,7 @@ class SubcontractingController(StockController):
 						SerialBatchIdentity("Batch").get_label(batch_no) for batch_no in incorrect_batches
 					)
 				),
-				self.subcontract_data.order_doctype,
+				_(self.subcontract_data.order_doctype),
 				link,
 			)
 			frappe.throw(msg, title=_("Incorrect Batch Consumed"))
@@ -1142,7 +1142,7 @@ class SubcontractingController(StockController):
 					self.subcontract_data.order_doctype, row.get(self.subcontract_data.order_field)
 				)
 				msg = _("The Serial Nos {0} have not been supplied against the {1} {2}").format(
-					incorrect_sn, self.subcontract_data.order_doctype, link
+					incorrect_sn, _(self.subcontract_data.order_doctype), link
 				)
 				frappe.throw(msg, title=_("Incorrect Serial Number Consumed"))
 
@@ -1654,7 +1654,9 @@ def get_materials_from_supplier(source_name: str, target_doc: str | dict | Docum
 
 	if not doc.available_materials:
 		frappe.throw(
-			_("Materials are already received against the {0} {1}").format(order_doctype, subcontract_order)
+			_("No materials are available to return against {0} {1}.").format(
+				_(order_doctype), subcontract_order
+			)
 		)
 
 	return make_return_stock_entry_for_subcontract(doc.available_materials, doc, rm_details, order_doctype)

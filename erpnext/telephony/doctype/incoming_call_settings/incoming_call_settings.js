@@ -91,7 +91,7 @@ function validate_call_schedule_overlaps(schedule) {
 	let group_by_day = groupby(schedule, "day_of_week");
 	for (const [day, day_schedule] of Object.entries(group_by_day)) {
 		if (is_call_schedule_overlapped(day_schedule)) {
-			frappe.throw(__("Please fix overlapping time slots for {0}", [day]));
+			frappe.throw(__("Please fix overlapping time slots for {0}", [__(day)]));
 		}
 	}
 }

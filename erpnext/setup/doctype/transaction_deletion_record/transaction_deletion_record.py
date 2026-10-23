@@ -184,9 +184,15 @@ class TransactionDeletionRecord(Document):
 			# Check for duplicates using composite key
 			composite_key = (item.doctype_name, item.company_field or None)
 			if composite_key in seen_combinations:
-				field_desc = f" with company field '{item.company_field}'" if item.company_field else ""
+				message = (
+					_("Duplicate entry: {0} with company field {1}.").format(
+						_(item.doctype_name), item.company_field
+					)
+					if item.company_field
+					else _("Duplicate entry: {0}.").format(_(item.doctype_name))
+				)
 				frappe.throw(
-					_("Duplicate entry: {0}{1}").format(item.doctype_name, field_desc),
+					message,
 					title=_("Duplicate DocType"),
 				)
 			seen_combinations.add(composite_key)
@@ -1140,8 +1146,8 @@ def check_for_running_deletion_job(doc, method=None):
 		frappe.throw(
 			title=_("Deletion in Progress!"),
 			msg=_(
-				"Transaction Deletion Record {0} is currently deleting {1}. Cannot save documents until deletion completes."
+				"Transaction Deletion Record {0} is active for {1}. Cannot save documents of this type until deletion completes."
 			).format(
-				get_link_to_form("Transaction Deletion Record", deletion_name), frappe.bold(doc.doctype)
+				get_link_to_form("Transaction Deletion Record", deletion_name), frappe.bold(_(doc.doctype))
 			),
 		)

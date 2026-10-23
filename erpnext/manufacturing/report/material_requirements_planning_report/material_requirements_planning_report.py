@@ -1080,7 +1080,7 @@ class MaterialRequirementsPlanningReport:
 			},
 			{
 				"fieldname": "release_date",
-				"label": _("Release Date"),
+				"label": _("Release Date", context="Material Requirements Planning Report"),
 				"fieldtype": "Date",
 			},
 			{

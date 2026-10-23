@@ -293,7 +293,7 @@
    "description": "Users with this role can still submit invoices for customers who have crossed their Overdue Limit.",
    "fieldname": "role_allowed_to_bypass_overdue_billing",
    "fieldtype": "Link",
-   "label": "Role Allowed to Bypass Over Billing Restriction",
+   "label": "Role Allowed to Bypass Overdue Limit",
    "options": "Role"
   },
   {
@@ -804,10 +804,9 @@
  "grid_page_length": 50,
  "icon": "settings",
  "idx": 1,
- "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-12 12:14:32.301569",
+ "modified": "2026-10-21 00:43:15.151882",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Accounts Settings",

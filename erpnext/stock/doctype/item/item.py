@@ -577,7 +577,9 @@ class Item(Document):
 			bom_item = frappe.db.get_value("BOM", self.default_bom, "item")
 			if bom_item not in (self.name, self.variant_of):
 				frappe.throw(
-					_("Default BOM ({0}) must be active for this item or its template").format(bom_item)
+					_("Default BOM {0} is for Item {1}. Select a BOM for this item or its template.").format(
+						escape_html(self.default_bom), escape_html(bom_item)
+					)
 				)
 
 	def fill_customer_code(self):

@@ -244,7 +244,7 @@ frappe.tour["Employee"] = [
 		fieldname: "date_of_birth",
 		title: "Date of Birth",
 		description: __(
-			"Select Date of Birth. This will validate Employees age and prevent hiring of under-age staff."
+			"Select the employee's date of birth. It cannot be in the future or after the date of joining."
 		),
 	},
 	{

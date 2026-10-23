@@ -71,9 +71,9 @@ class InvoiceDiscounting(AccountsController):
 		for record in self.invoices:
 			if record.sales_invoice in discounted_invoices:
 				frappe.throw(
-					_("Row({0}): {1} is already discounted in {2}").format(
-						record.idx, frappe.bold(record.sales_invoice), frappe.bold(record.parent)
-					)
+					_(
+						"Row #{0}: Sales Invoice {1} is already included in a submitted Invoice Discounting document."
+					).format(record.idx, frappe.bold(record.sales_invoice))
 				)
 
 			actual_outstanding = frappe.db.get_value(

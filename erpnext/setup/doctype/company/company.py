@@ -121,9 +121,7 @@ class Company(NestedSet):
 		purchase_expense_account: DF.Link | None
 		purchase_expense_contra_account: DF.Link | None
 		reconcile_on_advance_payment_date: DF.Check
-		reconciliation_takes_effect_on: DF.Literal[
-			"Advance Payment Date", "Oldest Of Invoice Or Advance", "Reconciliation Date"
-		]
+		reconciliation_takes_effect_on: DF.Literal["Advance Payment Date", "Oldest Of Invoice Or Advance", "Reconciliation Date"]
 		registration_details: DF.Code | None
 		reporting_currency: DF.Link | None
 		rgt: DF.Int
@@ -358,59 +356,60 @@ class Company(NestedSet):
 		setup_taxes_and_charges(self.name, self.country)
 
 	def validate_default_accounts(self):
-		accounts = [
-			["Default Bank Account", "default_bank_account"],
-			["Default Cash Account", "default_cash_account"],
-			["Default Receivable Account", "default_receivable_account"],
-			["Default Payable Account", "default_payable_account"],
-			["Default Expense Account", "default_expense_account"],
-			["Default Income Account", "default_income_account"],
-			["Stock Received But Not Billed Account", "stock_received_but_not_billed"],
-			["Stock Delivered But Not Billed Account", "stock_delivered_but_not_billed"],
-			["Stock Adjustment Account", "stock_adjustment_account"],
-			["Write Off Account", "write_off_account"],
-			["Bank Charges Account", "bank_charges_account"],
-			["Default Payment Discount Account", "default_discount_account"],
-			["Unrealized Profit / Loss Account", "unrealized_profit_loss_account"],
-			["Exchange Gain / Loss Account", "exchange_gain_loss_account"],
-			["Exchange Gain Account", "exchange_gain_account"],
-			["Exchange Loss Account", "exchange_loss_account"],
-			["Unrealized Exchange Gain / Loss Account", "unrealized_exchange_gain_loss_account"],
-			["Round Off Account", "round_off_account"],
-			["Default Deferred Revenue Account", "default_deferred_revenue_account"],
-			["Default Deferred Expense Account", "default_deferred_expense_account"],
-			["Accumulated Depreciation Account", "accumulated_depreciation_account"],
-			["Depreciation Expense Account", "depreciation_expense_account"],
-			["Gain/Loss Account on Asset Disposal", "disposal_account"],
-		]
+		accounts = (
+			"default_bank_account",
+			"default_cash_account",
+			"default_receivable_account",
+			"default_payable_account",
+			"default_expense_account",
+			"default_income_account",
+			"stock_received_but_not_billed",
+			"stock_delivered_but_not_billed",
+			"stock_adjustment_account",
+			"write_off_account",
+			"bank_charges_account",
+			"default_discount_account",
+			"unrealized_profit_loss_account",
+			"exchange_gain_loss_account",
+			"exchange_gain_account",
+			"exchange_loss_account",
+			"unrealized_exchange_gain_loss_account",
+			"round_off_account",
+			"default_deferred_revenue_account",
+			"default_deferred_expense_account",
+			"accumulated_depreciation_account",
+			"depreciation_expense_account",
+			"disposal_account",
+		)
 
-		for account in accounts:
-			if self.get(account[1]):
+		for fieldname in accounts:
+			if self.get(fieldname):
 				for_company, is_group, disabled = frappe.db.get_value(
-					"Account", self.get(account[1]), ["company", "is_group", "disabled"]
+					"Account", self.get(fieldname), ["company", "is_group", "disabled"]
 				)
 
 				if disabled:
-					frappe.throw(_("Account {0} is disabled.").format(frappe.bold(self.get(account[1]))))
+					frappe.throw(_("Account {0} is disabled.").format(frappe.bold(self.get(fieldname))))
 
 				if is_group:
 					frappe.throw(
 						_("{0}: {1} is a group account.").format(
-							frappe.bold(account[0]), frappe.bold(self.get(account[1]))
+							frappe.bold(self.meta.get_translated_label(fieldname)),
+							frappe.bold(self.get(fieldname)),
 						)
 					)
 
 				if for_company != self.name:
 					frappe.throw(
 						_("Account {0} does not belong to company: {1}").format(
-							self.get(account[1]), self.name
+							self.get(fieldname), self.name
 						)
 					)
 
-				if get_account_currency(self.get(account[1])) != self.default_currency:
+				if get_account_currency(self.get(fieldname)) != self.default_currency:
 					error_message = _(
 						"{0} currency must be same as company's default currency. Please select another account."
-					).format(frappe.bold(account[0]))
+					).format(frappe.bold(self.meta.get_translated_label(fieldname)))
 					frappe.throw(error_message)
 
 	def validate_advance_account_currency(self):

@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { slug } from "@/lib/frappe"
 import SelectedTransactionDetails from "./SelectedTransactionDetails"
 import _ from "@/lib/translate"
+import ReactMarkdown from "react-markdown"
 
 const BankTransactionUnreconcileModalBody = () => {
 	const bankAccount = useAtomValue(selectedBankAccountAtom)
@@ -85,7 +86,11 @@ const BankTransactionUnreconcileModalBody = () => {
 				</Table>
 				<div className="py-4">
 					{vouchersWhichWillBeCancelled && vouchersWhichWillBeCancelled?.length > 0 && (
-						<span>The following documents will be <strong>cancelled</strong>:</span>
+						<span>
+							<ReactMarkdown allowedElements={["strong"]} unwrapDisallowed skipHtml>
+								{_("The following documents will be **cancelled**:")}
+							</ReactMarkdown>
+						</span>
 					)}
 					{vouchersWhichWillBeCancelled && vouchersWhichWillBeCancelled?.length > 0 && (
 						<ol className="ms-6 list-disc [&>li]:mt-2">

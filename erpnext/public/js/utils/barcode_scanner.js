@@ -608,7 +608,7 @@ erpnext.utils.BarcodeScanner = class BarcodeScanner {
 		this.frm.set_value("last_scanned_warehouse", warehouse);
 		this.show_alert(
 			__("{0} will be set as the {1} in subsequently scanned items", [
-				__(warehouse).bold(),
+				frappe.utils.bold(warehouse),
 				__(warehouse_field_label, null, cur_grid.doctype).bold(),
 			]),
 			"green",

@@ -206,16 +206,16 @@ class AccountsController(TransactionBase):
 			against_voucher_outstanding = frappe.get_value(
 				self.doctype, self.return_against, "outstanding_amount"
 			)
-			document_type = "Credit Note" if self.doctype == "Sales Invoice" else "Debit Note"
+			document_type = _("Credit Note") if self.doctype == "Sales Invoice" else _("Debit Note")
 
 			msg = ""
 			if self.get("update_outstanding_for_self"):
 				msg = _(
-					"We can see {0} is made against {1}. If you want {1}'s outstanding to be updated, uncheck the '{2}' checkbox."
+					"This document ({0}) references {1}. To update the outstanding amount of {1}, clear {2}."
 				).format(
 					frappe.bold(document_type),
 					get_link_to_form(self.doctype, self.get("return_against")),
-					frappe.bold(_("Update Outstanding for Self")),
+					frappe.bold(self.meta.get_translated_label("update_outstanding_for_self")),
 				)
 
 			elif not self.update_outstanding_for_self and (
@@ -610,7 +610,7 @@ class AccountsController(TransactionBase):
 				if company and company != self.company:
 					frappe.throw(
 						_("{0}: {1} does not belong to the Company: {2}").format(
-							dimension, frappe.bold(dimension_value), self.company
+							_(dimension), frappe.bold(dimension_value), self.company
 						)
 					)
 
@@ -1433,24 +1433,37 @@ class AccountsController(TransactionBase):
 
 	def raise_missing_debit_credit_account_error(self, party_type, party):
 		"""Raise an error if debit to/credit to account does not exist."""
-		db_or_cr = (
-			frappe.bold(_("Debit To")) if self.doctype == "Sales Invoice" else frappe.bold(_("Credit To"))
+		party_account_field = "debit_to" if party_type == "Customer" else "credit_to"
+		db_or_cr = frappe.bold(self.meta.get_translated_label(party_account_field))
+		company_account_field = (
+			"default_receivable_account" if party_type == "Customer" else "default_payable_account"
 		)
-		rec_or_pay = "Receivable" if self.doctype == "Sales Invoice" else "Payable"
+		party_meta = frappe.get_meta(party_type)
 
 		link_to_party = frappe.utils.get_link_to_form(party_type, party)
 		link_to_company = frappe.utils.get_link_to_form("Company", self.company)
 
-		message = _("{0} Account not found against Customer {1}.").format(db_or_cr, frappe.bold(party) or "")
+		message = _("No account is configured in {0} for {1}: {2}.").format(
+			db_or_cr, _(party_type), frappe.bold(party) or ""
+		)
 		message += "<br>" + _("Please set one of the following:") + "<br>"
 		message += (
 			"<br><ul><li>"
-			+ _("'Account' in the Accounting section of Customer {0}").format(link_to_party)
+			+ _("Field {0} in {1}, under {2}, for {3} {4}").format(
+				frappe.bold(frappe.get_meta("Party Account").get_translated_label("account")),
+				frappe.bold(party_meta.get_translated_label("accounts")),
+				frappe.bold(party_meta.get_translated_label("accounting_tab")),
+				_(party_type),
+				link_to_party,
+			)
 			+ "</li>"
 		)
 		message += (
 			"<li>"
-			+ _("'Default {0} Account' in Company {1}").format(rec_or_pay, link_to_company)
+			+ _("{0} in Company {1}").format(
+				frappe.bold(frappe.get_meta("Company").get_translated_label(company_account_field)),
+				link_to_company,
+			)
 			+ "</li></ul>"
 		)
 

@@ -101,7 +101,7 @@ class BankTransaction(Document):
 			if reference in references:
 				frappe.throw(
 					_("{0} {1} is allocated twice in this Bank Transaction").format(
-						row.payment_document, row.payment_entry
+						_(row.payment_document), row.payment_entry
 					)
 				)
 			references.add(reference)
@@ -450,7 +450,7 @@ def get_clearance_details(transaction, payment_entry, bt_allocations, gl_entries
 	if gl_bank_account not in gl_entries:
 		frappe.throw(
 			_("{0} {1} is not affecting bank account {2}").format(
-				payment_entry.payment_document, payment_entry.payment_entry, gl_bank_account
+				_(payment_entry.payment_document), payment_entry.payment_entry, gl_bank_account
 			)
 		)
 
@@ -458,7 +458,10 @@ def get_clearance_details(transaction, payment_entry, bt_allocations, gl_entries
 	if allocable_amount <= 0.0:
 		frappe.throw(
 			_("Invalid amount in accounting entries of {0} {1} for Account {2}: {3}").format(
-				payment_entry.payment_document, payment_entry.payment_entry, gl_bank_account, allocable_amount
+				_(payment_entry.payment_document),
+				payment_entry.payment_entry,
+				gl_bank_account,
+				allocable_amount,
 			)
 		)
 

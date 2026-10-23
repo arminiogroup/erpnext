@@ -55,7 +55,7 @@ frappe.ui.form.on("POS Settings", {
 			title: __("Invalid POS Fields"),
 			indicator: "orange",
 			message: __("The following rows are not valid fields of {0} and have to be removed: {1}", [
-				frm.doc.invoice_type.bold(),
+				__(frm.doc.invoice_type).bold(),
 				invalid_fields.join(", "),
 			]),
 		});

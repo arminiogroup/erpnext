@@ -44,7 +44,11 @@ class UnreconcilePayment(Document):
 	def validate(self):
 		self.supported_types = list(UNRECONCILABLE_DOCTYPES)
 		if self.voucher_type not in self.supported_types:
-			frappe.throw(_("Only {0} are supported").format(comma_and(self.supported_types)))
+			frappe.throw(
+				_("Only {0} are supported").format(
+					comma_and([_(doctype) for doctype in self.supported_types])
+				)
+			)
 
 	@frappe.whitelist()
 	def get_allocations_from_payment(self):
@@ -217,7 +221,11 @@ def create_unreconcile_doc_for_selection(selections: str | list | None = None):
 		for row in selections:
 			voucher_type = row.get("voucher_type")
 			if voucher_type not in UNRECONCILABLE_DOCTYPES:
-				frappe.throw(_("Only {0} are supported").format(comma_and(list(UNRECONCILABLE_DOCTYPES))))
+				frappe.throw(
+					_("Only {0} are supported").format(
+						comma_and([_(doctype) for doctype in UNRECONCILABLE_DOCTYPES])
+					)
+				)
 			row["voucher_no"] = cstr(row.get("voucher_no"))
 			if not row["voucher_no"] or not frappe.has_permission(
 				voucher_type, "write", doc=row["voucher_no"]

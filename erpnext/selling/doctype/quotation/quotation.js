@@ -80,7 +80,14 @@ frappe.ui.form.on("Quotation", {
 	},
 
 	set_label: function (frm) {
-		frm.fields_dict.customer_address.set_label(__(frm.doc.quotation_to + " Address"));
+		const quotation_to = frm.doc.quotation_to;
+		const labels = new Map([
+			["Customer", __("Customer Address")],
+			["Lead", __("Lead Address")],
+			["Prospect", __("Prospect Address")],
+			["CRM Deal", __("CRM Deal Address")],
+		]);
+		frm.fields_dict.customer_address.set_label(labels.get(quotation_to) || __(`${quotation_to} Address`));
 	},
 });
 
@@ -280,8 +287,9 @@ erpnext.selling.QuotationController = class QuotationController extends erpnext.
 	validate_company_and_party(party_field) {
 		if (!this.frm.doc.quotation_to) {
 			frappe.msgprint(
-				__("Please select a value for {0} quotation_to {1}", [
-					this.frm.doc.doctype,
+				__("Select a value for {0} in {1} {2}.", [
+					frappe.meta.get_translated_label(this.frm.doc.doctype, "quotation_to", this.frm.doc.name),
+					__(this.frm.doc.doctype),
 					this.frm.doc.name,
 				])
 			);

@@ -476,7 +476,11 @@ frappe.ui.form.on("Payment Entry", {
 		let party_types = Object.keys(frappe.boot.party_account_types);
 		if (frm.doc.party_type && !party_types.includes(frm.doc.party_type)) {
 			frm.set_value("party_type", "");
-			frappe.throw(__("Party can only be one of {0}", [party_types.join(", ")]));
+			frappe.throw(
+				__("Party Type must be one of {0}.", [
+					party_types.map((party_type) => __(party_type)).join(", "),
+				])
+			);
 		}
 
 		frm.set_query("party", function () {
@@ -983,18 +987,23 @@ frappe.ui.form.on("Payment Entry", {
 			"Advance Amount": ["from_posting_date", "to_posting_date"],
 		};
 
+		const field_labels = {
+			from_posting_date: "From Date",
+			to_posting_date: "To Date",
+		};
+
 		for (let key in fields) {
 			let from_field = fields[key][0];
 			let to_field = fields[key][1];
 
 			if (filters[from_field] && !filters[to_field]) {
-				frappe.throw(__("Error: {0} is a mandatory field", [to_field.replace(/_/g, " ")]));
+				frappe.throw(__("Error: {0} is a mandatory field", [__(field_labels[to_field])]));
 			} else if (filters[from_field] && filters[from_field] > filters[to_field]) {
 				frappe.throw(
-					__("{0}: {1} must be less than {2}", [
-						key,
-						from_field.replace(/_/g, " "),
-						to_field.replace(/_/g, " "),
+					__("{0}: {1} must be less than or equal to {2}", [
+						__(key),
+						__(field_labels[from_field]),
+						__(field_labels[to_field]),
 					])
 				);
 			}
@@ -1227,7 +1236,15 @@ frappe.ui.form.on("Payment Entry", {
 	check_mandatory_to_fetch: function (frm) {
 		$.each(["Company", "Party Type", "Party", "payment_type"], function (i, field) {
 			if (!frm.doc[frappe.model.scrub(field)]) {
-				frappe.msgprint(__("Please select {0} first", [field]));
+				frappe.msgprint(
+					__("Please select {0} first", [
+						frappe.meta.get_translated_label(
+							frm.doctype,
+							frappe.model.scrub(field),
+							frm.doc.name
+						),
+					])
+				);
 				return false;
 			}
 		});
@@ -1563,7 +1580,7 @@ frappe.ui.form.on("Payment Entry", {
 			let msg = __("For row {0} in {1}. To include {2} in Item rate, rows {3} must also be included", [
 				tax.idx,
 				__(tax.doctype),
-				tax.charge_type,
+				__(tax.charge_type, null, tax.doctype),
 				row_range,
 			]);
 			frappe.throw(msg);

@@ -1186,7 +1186,7 @@ erpnext.utils.map_current_doc = function (opts) {
 				args: opts.args,
 			},
 			freeze: true,
-			freeze_message: __("Mapping {0} ...", [opts.source_doctype]),
+			freeze_message: __("Mapping {0} ...", [__(opts.source_doctype)]),
 			callback: function (r) {
 				if (!r.exc) {
 					frappe.model.sync(r.message);
@@ -1238,7 +1238,7 @@ erpnext.utils.map_current_doc = function (opts) {
 			action: function (selections, args) {
 				let values = selections;
 				if (values.length === 0) {
-					frappe.msgprint(__("Please select {0}", [opts.source_doctype]));
+					frappe.msgprint(__("Please select {0}", [__(opts.source_doctype)]));
 					return;
 				}
 
@@ -1404,8 +1404,8 @@ $(document).on("app_ready", function () {
 
 					let agreement_status =
 						frm.doc.agreement_status == "Fulfilled"
-							? { indicator: "green", msg: "Service Level Agreement has been fulfilled" }
-							: { indicator: "red", msg: "Service Level Agreement Failed" };
+							? { indicator: "green", msg: __("Service Level Agreement has been fulfilled") }
+							: { indicator: "red", msg: __("Service Level Agreement is not fulfilled.") };
 
 					frm.dashboard.set_headline_alert(
 						'<div class="row">' +
@@ -1427,6 +1427,20 @@ $(document).on("app_ready", function () {
 function set_time_to_resolve_and_response(frm, apply_sla_for_resolution) {
 	frm.dashboard.clear_headline();
 
+	const get_timer_label = (deadline, completed_on, timer) => {
+		if (!deadline) {
+			return __("SLA deadline unavailable");
+		}
+		if (completed_on) {
+			return timer.diff_display == "Fulfilled" ? __("SLA deadline met") : __("SLA deadline missed");
+		}
+		const diff = moment(deadline).diff(frappe.datetime.system_datetime(true));
+		if (diff > 0) {
+			return diff < 44500 ? __("Less than a minute until the SLA deadline") : timer.diff_display;
+		}
+		return diff == 0 ? __("SLA deadline reached") : __("SLA deadline passed");
+	};
+
 	let time_to_respond;
 	if (!frm.doc.first_responded_on) {
 		time_to_respond = get_time_left(frm.doc.response_by, frm.doc.agreement_status);
@@ -1438,13 +1452,15 @@ function set_time_to_resolve_and_response(frm, apply_sla_for_resolution) {
 		<div class="row">
 			<div class="col-xs-12 col-sm-6">
 				<span class="indicator whitespace-nowrap ${time_to_respond.indicator}">
-					<span>Time to Respond: ${time_to_respond.diff_display}</span>
+					<span>${__("Time to Respond: {0}", [
+						get_timer_label(frm.doc.response_by, frm.doc.first_responded_on, time_to_respond),
+					])}</span>
 				</span>
 			</div>`;
 
 	if (apply_sla_for_resolution) {
 		let time_to_resolve;
-		if (!frm.doc.resolution_date) {
+		if (!frm.doc.sla_resolution_date) {
 			time_to_resolve = get_time_left(frm.doc.sla_resolution_by, frm.doc.agreement_status);
 		} else {
 			time_to_resolve = get_status(frm.doc.sla_resolution_by, frm.doc.sla_resolution_date);
@@ -1453,7 +1469,13 @@ function set_time_to_resolve_and_response(frm, apply_sla_for_resolution) {
 		alert += `
 			<div class="col-xs-12 col-sm-6">
 				<span class="indicator whitespace-nowrap ${time_to_resolve.indicator}">
-					<span>Time to Resolve: ${time_to_resolve.diff_display}</span>
+					<span>${__("Time to Resolve: {0}", [
+						get_timer_label(
+							frm.doc.sla_resolution_by,
+							frm.doc.sla_resolution_date,
+							time_to_resolve
+						),
+					])}</span>
 				</span>
 			</div>`;
 	}

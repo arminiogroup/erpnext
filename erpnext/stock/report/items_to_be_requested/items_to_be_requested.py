@@ -24,7 +24,12 @@ def get_columns():
 			"options": "Warehouse",
 			"width": 120,
 		},
-		{"label": _("Actual"), "fieldname": "actual_qty", "fieldtype": "Float", "width": 90},
+		{
+			"label": _("Actual", context="Items To Be Requested"),
+			"fieldname": "actual_qty",
+			"fieldtype": "Float",
+			"width": 90,
+		},
 		{"label": _("Requested"), "fieldname": "indented_qty", "fieldtype": "Float", "width": 90},
 		{"label": _("Reserved"), "fieldname": "reserved_qty", "fieldtype": "Float", "width": 90},
 		{"label": _("Ordered"), "fieldname": "ordered_qty", "fieldtype": "Float", "width": 90},

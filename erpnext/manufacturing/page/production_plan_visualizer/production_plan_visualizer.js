@@ -847,7 +847,9 @@ erpnext.ProductionPlanVisualizer = class ProductionPlanVisualizer {
 
 	append_document_chips(target, documents) {
 		if (!documents || !documents.length) {
-			target.append(`<span class="ppv-no-docs">${__("None")}</span>`);
+			target.append(
+				`<span class="ppv-no-docs">${__("None", null, "Production Plan Documents")}</span>`
+			);
 			return;
 		}
 		const icons = { "Purchase Order": "shopping-cart", "Material Request": "clipboard-list" };
@@ -895,7 +897,7 @@ erpnext.ProductionPlanVisualizer = class ProductionPlanVisualizer {
 
 	drawer_actions(doctype, name) {
 		const open = frappe.ui.button({
-			label: __("Open"),
+			label: __("Open", null, "Access"),
 			icon_right: "external-link",
 			variant: "subtle",
 			size: "sm",

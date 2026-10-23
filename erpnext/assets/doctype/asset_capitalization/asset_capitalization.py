@@ -235,7 +235,11 @@ class AssetCapitalization(StockController):
 			)
 
 		if target_asset.status in ("Scrapped", "Sold", "Capitalized"):
-			frappe.throw(_("Target Asset {0} cannot be {1}").format(target_asset.name, target_asset.status))
+			frappe.throw(
+				_("Target Asset {0} cannot be {1}").format(
+					target_asset.name, _(target_asset.status, context="Asset")
+				)
+			)
 
 		if target_asset.docstatus == 1:
 			frappe.throw(_("Target Asset {0} cannot be submitted").format(target_asset.name))
@@ -275,7 +279,7 @@ class AssetCapitalization(StockController):
 				if asset.status in ("Draft", "Scrapped", "Sold", "Capitalized"):
 					frappe.throw(
 						_("Row #{0}: Consumed Asset {1} cannot be {2}").format(
-							d.idx, asset.name, asset.status
+							d.idx, asset.name, _(asset.status, context="Asset")
 						)
 					)
 
@@ -322,7 +326,7 @@ class AssetCapitalization(StockController):
 					frappe.throw(_("Row #{0}: Qty must be a positive number").format(d.idx))
 
 				if flt(d.rate) <= 0:
-					frappe.throw(_("Row #{0}: Amount must be a positive number").format(d.idx))
+					frappe.throw(_("Row #{0}: Service rate must be a positive number").format(d.idx))
 
 				self.validate_item(item)
 

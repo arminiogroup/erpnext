@@ -26,33 +26,11 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
-const parseDateFormat = (dateFormat: string) => {
-
-    const charMap = {
-        "%d": "DD",
-        "%m": "MM",
-        "%Y": "YYYY",
-        "%y": "YY",
-        "%b": "MMM",
-        "%B": "MMMM",
-    }
-
-    let label = dateFormat
-
-    Object.keys(charMap).forEach((char) => {
-        label = label.replace(char, charMap[char as keyof typeof charMap])
-    })
-
-    return dateFormat
-
-}
-
 type Props = {
     data: GetStatementDetailsResponse,
 }
 
 const StatementDetails = ({ data }: Props) => {
-    const dateFormat = parseDateFormat(data.date_format)
 
     const { call, loading, error } = useFrappePostCall<{ docs: BankStatementImportLog[] }>('run_doc_method')
 
@@ -156,7 +134,7 @@ const StatementDetails = ({ data }: Props) => {
                         <TableRow>
                             <TableHead>{_("Account")}</TableHead>
                             <TableCell>
-                                <span title="GL Account" className="text-sm">{bank?.account}</span>
+                                <span title={_("GL Account")} className="text-sm">{bank?.account}</span>
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -218,8 +196,8 @@ const StatementDetails = ({ data }: Props) => {
                                 </div>
                             </TableHead>
                             <TableCell>
-                                {dateFormat || data.date_format} (e.g.{" "}
-                                {formatDate(new Date(), dateFormat || "YYYY-MM-DD")})
+                                {data.date_format}
+                                {data.date_format_example && <> ({_("Example: {0}", [data.date_format_example])})</>}
                             </TableCell>
                         </TableRow>
                     </TableBody>

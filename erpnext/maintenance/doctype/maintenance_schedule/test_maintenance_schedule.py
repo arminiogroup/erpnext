@@ -430,7 +430,7 @@ class TestMaintenanceSchedule(ERPNextTestSuite):
 		)
 
 		ms = make_maintenance_schedule(item_code=item_code, serial_no=serial.serial_no, start_date=today())
-		self.assertRaisesRegex(frappe.ValidationError, "before delivery date", ms.submit)
+		self.assertRaisesRegex(frappe.ValidationError, "must be after the delivery date", ms.submit)
 
 	def test_serial_in_stock_is_refused(self):
 		item_code = "_Test Serial Item"

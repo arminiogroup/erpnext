@@ -15,9 +15,11 @@ class OverAllowanceError(frappe.ValidationError):
 	pass
 
 
-def validate_status(status, options):
+def validate_status(status, options, doc=None):
 	if status not in options:
-		frappe.throw(_("Status must be one of {0}").format(comma_or(options)))
+		df = doc.meta.get_field("status") if doc else None
+		display_options = [frappe.format_value(option, df, translated=True) for option in options]
+		frappe.throw(_("Status must be one of {0}").format(comma_or(display_options)))
 
 
 status_map = {
@@ -363,26 +365,31 @@ class StatusUpdater(Document):
 			# get unique transactions to update
 			for d in self.get_all_children():
 				if hasattr(d, "qty") and flt(d.qty) < 0 and not self.get("is_return"):
-					frappe.throw(_("For an item {0}, quantity must be a positive number").format(d.item_code))
+					frappe.throw(_("Quantity for item {0} cannot be negative.").format(d.item_code))
 
 				if hasattr(d, "qty") and flt(d.qty) > 0 and self.get("is_return"):
-					frappe.throw(_("For an item {0}, quantity must be a negative number").format(d.item_code))
+					frappe.throw(
+						_("Quantity for item {0} cannot be positive in a return.").format(d.item_code)
+					)
 
 				if (not selling_negative_rate_allowed and self.doctype in selling_doctypes) or (
 					not buying_negative_rate_allowed and self.doctype in buying_doctypes
 				):
 					if hasattr(d, "item_code") and hasattr(d, "rate") and flt(d.rate) < 0:
+						settings_doctype = (
+							"Selling Settings" if self.doctype in selling_doctypes else "Buying Settings"
+						)
 						frappe.throw(
 							_(
-								"For item {0}, rate must be a positive number. To allow negative rates, enable {1} in {2}"
+								"The rate for item {0} cannot be negative. To allow negative rates, enable {1} in {2}."
 							).format(
 								frappe.bold(d.item_code),
-								frappe.bold(_("`Allow Negative rates for Items`")),
-								get_link_to_form(
-									"Selling Settings"
-									if self.doctype in selling_doctypes
-									else "Buying Settings"
+								frappe.bold(
+									frappe.get_meta(settings_doctype).get_translated_label(
+										"allow_negative_rates_for_items"
+									)
 								),
+								get_link_to_form(settings_doctype),
 							),
 						)
 

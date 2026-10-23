@@ -147,14 +147,20 @@ class OpeningInvoiceCreationTool(Document):
 			if not frappe.db.exists(row.party_type, row.party):
 				frappe.throw(
 					_("Row #{0}: {1} {2} does not exist.").format(
-						row.idx, frappe.bold(row.party_type), frappe.bold(row.party)
+						row.idx, frappe.bold(_(row.party_type)), frappe.bold(row.party)
 					)
 				)
 
-		mandatory_error_msg = _("Row #{0}: {1} is required to create the Opening {2} Invoices")
+		mandatory_error_msg = _("Row #{0}: {1} is required to create an opening invoice of type {2}.")
 		for d in ("Outstanding Amount", "Temporary Opening Account"):
 			if not row.get(scrub(d)):
-				frappe.throw(mandatory_error_msg.format(row.idx, d, self.invoice_type))
+				frappe.throw(
+					mandatory_error_msg.format(
+						row.idx,
+						_(d),
+						_("Sales Invoice") if self.invoice_type == "Sales" else _("Purchase Invoice"),
+					)
+				)
 
 		self.validate_temporary_opening_account(row)
 
@@ -163,7 +169,7 @@ class OpeningInvoiceCreationTool(Document):
 		if account_type != "Temporary":
 			frappe.throw(
 				_("Row #{0}: {1} account is not of type {2}").format(
-					row.idx, row.temporary_opening_account, "Temporary"
+					row.idx, row.temporary_opening_account, _("Temporary")
 				)
 			)
 
@@ -358,7 +364,7 @@ def start_import(invoices):
 	if errors:
 		frappe.msgprint(
 			_("You had {0} errors while creating opening invoices. Check {1} for more details").format(
-				errors, "<a href='/app/List/Error Log' class='variant-click'>Error Log</a>"
+				errors, "<a href='/app/List/Error Log' class='variant-click'>{}</a>".format(_("Error Log"))
 			),
 			indicator="red",
 			title=_("Error Occurred"),
@@ -371,7 +377,7 @@ def publish(index, total, doctype, errors=None):
 		"opening_invoice_creation_progress",
 		dict(
 			title=_("Opening Invoice Creation In Progress"),
-			message=_("Creating {} out of {} {}").format(index + 1, total, doctype),
+			message=_("Creating {0} out of {1} documents of type {2}").format(index + 1, total, _(doctype)),
 			count=index + 1,
 			total=total,
 			errors=errors,

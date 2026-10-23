@@ -399,7 +399,7 @@ class RequestforQuotation(BuyingController):
 
 		for supplier in self.suppliers:
 			if sup_name is None or supplier.supplier == sup_name:
-				quote_status = _("Received")
+				quote_status = "Received"
 				for item in self.items:
 					query = (
 						frappe.qb.from_(SQ_Item)
@@ -415,7 +415,7 @@ class RequestforQuotation(BuyingController):
 					sqi_count = result[0] if result else frappe._dict(count=0)
 
 					if sqi_count.count == 0:
-						quote_status = _("Pending")
+						quote_status = "Pending"
 				supplier.quote_status = quote_status
 
 

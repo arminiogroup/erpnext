@@ -629,10 +629,9 @@ class ExchangeRateRevaluation(Document):
 				pluck="name",
 				as_list=1,
 			):
-				part = "journals are" if len(drafts) > 1 else "journal is"
 				doc_links = ", ".join(["{}".format(get_link_to_form("Journal Entry", x)) for x in drafts])
 				frappe.throw(
-					msg=_("Reverse {0} already available in draft status: {1}").format(part, doc_links),
+					msg=_("Existing draft reversals: {0}").format(doc_links),
 				)
 			else:
 				for x in journals:
@@ -713,7 +712,13 @@ def get_account_details(
 	)
 
 	if account_type in ["Receivable", "Payable"] and not (party_type and party):
-		frappe.throw(_("Party Type and Party is mandatory for {0} account").format(account_type))
+		frappe.throw(
+			_("Party Type and Party is mandatory for {0} account").format(
+				frappe.format_value(
+					account_type, frappe.get_meta("Account").get_field("account_type"), translated=True
+				)
+			)
+		)
 
 	account_details = {}
 	erpnext.get_company_currency(company)

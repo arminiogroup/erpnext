@@ -169,7 +169,7 @@ class PaymentRequest(Document):
 		if self.reference_doctype not in ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST:
 			frappe.throw(
 				_("Payment Requests cannot be created against: {0}").format(
-					frappe.bold(self.reference_doctype)
+					frappe.bold(_(self.reference_doctype))
 				)
 			)
 
@@ -222,7 +222,7 @@ class PaymentRequest(Document):
 			):
 				frappe.throw(
 					_("Total Payment Request amount cannot be greater than {0} amount").format(
-						self.reference_doctype
+						_(self.reference_doctype)
 					)
 				)
 
@@ -786,7 +786,7 @@ def make_payment_request(**args):
 
 	args = frappe._dict(args)
 	if args.dt not in ALLOWED_DOCTYPES_FOR_PAYMENT_REQUEST:
-		frappe.throw(_("Payment Requests cannot be created against: {0}").format(frappe.bold(args.dt)))
+		frappe.throw(_("Payment Requests cannot be created against: {0}").format(frappe.bold(_(args.dt))))
 
 	if args.dn and not isinstance(args.dn, str):
 		frappe.throw(_("Invalid parameter. 'dn' should be of type str"))
@@ -835,10 +835,14 @@ def make_payment_request(**args):
 						)
 						existing_pr = existing_ref.get("parent")
 						duplicate_schedules.append(
-							f"Payment Term: {row.get('payment_term')}, "
-							f"Due Date: {row.get('due_date')}, "
-							f"Amount: {row.get('payment_amount')} "
-							f"(already requested in PR {existing_pr})"
+							_(
+								"Payment Term: {0}, Due Date: {1}, Amount: {2} (already requested in PR {3})"
+							).format(
+								row.get("payment_term"),
+								row.get("due_date"),
+								row.get("payment_amount"),
+								existing_pr,
+							)
 						)
 				frappe.throw(
 					_("The following payment schedule(s) already exist:\n{0}").format(

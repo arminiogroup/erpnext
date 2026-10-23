@@ -1,3 +1,4 @@
+import _ from "@/lib/translate"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
 import { useTheme } from "./theme-provider"
@@ -13,6 +14,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
     return (
         <Sonner
+            containerAriaLabel={_("Notifications")}
             theme={themeMap[theme as keyof typeof themeMap] as ToasterProps["theme"]}
             className="toaster group"
             icons={{

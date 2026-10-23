@@ -58,7 +58,7 @@ class AccountingDimension(Document):
 			"Account",
 			"Finance Book",
 		):
-			msg = _("Not allowed to create accounting dimension for {0}").format(self.document_type)
+			msg = _("Not allowed to create accounting dimension for {0}").format(_(self.document_type))
 			frappe.throw(msg)
 
 		meta = frappe.get_meta(self.document_type)
@@ -66,7 +66,7 @@ class AccountingDimension(Document):
 			frappe.throw(
 				_(
 					"{0} cannot be used as an accounting dimension as it is not a standalone document type."
-				).format(frappe.bold(self.document_type))
+				).format(frappe.bold(_(self.document_type)))
 			)
 
 		exists = frappe.db.get_value("Accounting Dimension", {"document_type": self.document_type}, ["name"])

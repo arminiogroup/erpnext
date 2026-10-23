@@ -29,9 +29,15 @@ frappe.ui.form.on("Service Level Agreement", {
 	default_service_level_agreement: function (frm) {
 		const field = frm.get_field("default_service_level_agreement");
 		if (frm.doc.default_service_level_agreement) {
-			field.set_description(__("SLA will be applied on every {0}", [frm.doc.document_type]));
+			field.set_description(
+				__("This SLA is the default for documents of type {0}.", [__(frm.doc.document_type)])
+			);
 		} else {
-			field.set_description(__("Enable to apply SLA on every {0}", [frm.doc.document_type]));
+			field.set_description(
+				__("Enable to make this SLA the default for documents of type {0}.", [
+					__(frm.doc.document_type),
+				])
+			);
 		}
 	},
 
@@ -47,15 +53,18 @@ frappe.ui.form.on("Service Level Agreement", {
 	entity: function (frm) {
 		const field = frm.get_field("entity");
 		if (frm.doc.entity) {
-			const and_descendants = frm.doc.entity_type != "Customer" ? " " + __("or its descendants") : "";
-			field.set_description(
-				__("SLA will be applied if {1} is set as {2}{3}", [
-					frm.doc.document_type,
-					frm.doc.entity_type,
-					frm.doc.entity,
-					and_descendants,
-				])
-			);
+			const description =
+				frm.doc.entity_type != "Customer"
+					? __(
+							"SLA applies to documents of type {0} associated with {1}: {2}, including descendants.",
+							[__(frm.doc.document_type), __(frm.doc.entity_type), frm.doc.entity]
+					  )
+					: __("SLA applies to documents of type {0} associated with {1}: {2}.", [
+							__(frm.doc.document_type),
+							__(frm.doc.entity_type),
+							frm.doc.entity,
+					  ]);
+			field.set_description(description);
 		} else {
 			field.set_description("");
 		}

@@ -841,7 +841,7 @@
   {
    "fieldname": "advance_paid",
    "fieldtype": "Currency",
-   "label": "Advance Paid (Company Currency)",
+   "label": "Advance Paid (Supplier Account Currency)",
    "no_copy": 1,
    "options": "party_account_currency",
    "print_hide": 1,
@@ -1309,7 +1309,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-12 18:16:58.531757",
+ "modified": "2026-10-21 08:14:20.460972",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",

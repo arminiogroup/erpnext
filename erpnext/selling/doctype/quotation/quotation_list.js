@@ -36,11 +36,11 @@ frappe.listview_settings["Quotation"] = {
 
 	get_indicator: function (doc) {
 		if (doc.status === "Lost") {
-			return [__("Lost"), "gray", "status,=,Lost"];
+			return [__("Lost", null, "Quotation"), "gray", "status,=,Lost"];
 		} else if (doc.docstatus === 1 && !doc.is_active) {
 			return [__("Inactive"), "red", "is_active,=,0"];
 		} else if (doc.status === "Open" && doc.is_latest_revision) {
-			return [__("Latest"), "orange", "is_latest_revision,=,1"];
+			return [__("Latest", null, "Quotation"), "orange", "is_latest_revision,=,1"];
 		} else if (doc.status === "Open") {
 			return [__("Open"), "orange", "status,=,Open"];
 		} else if (doc.status === "Partially Ordered") {

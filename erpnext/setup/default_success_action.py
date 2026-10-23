@@ -1,4 +1,4 @@
-from frappe import _
+from frappe import N_
 
 doctype_list = [
 	"Purchase Receipt",
@@ -11,8 +11,8 @@ doctype_list = [
 
 
 def get_message(doctype):
-	# Properly format the string with translated doctype
-	return _("{0} has been submitted successfully").format(doctype)
+	# Store the source message; the form translates it for the current user.
+	return N_("{0} has been submitted successfully").format(doctype)
 
 
 def get_first_success_message(doctype):

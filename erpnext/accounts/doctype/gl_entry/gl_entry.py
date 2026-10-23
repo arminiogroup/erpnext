@@ -143,13 +143,13 @@ class GLEntry(Document):
 				if account_type == "Receivable":
 					frappe.throw(
 						_("{0} {1}: Customer is required against Receivable account {2}").format(
-							self.voucher_type, self.voucher_no, self.account
+							_(self.voucher_type), self.voucher_no, self.account
 						)
 					)
 				elif account_type == "Payable":
 					frappe.throw(
 						_("{0} {1}: Supplier is required against Payable account {2}").format(
-							self.voucher_type, self.voucher_no, self.account
+							_(self.voucher_type), self.voucher_no, self.account
 						)
 					)
 
@@ -165,7 +165,7 @@ class GLEntry(Document):
 		):
 			frappe.throw(
 				_("{0} {1}: Either debit or credit amount is required for {2}").format(
-					self.voucher_type, self.voucher_no, self.account
+					_(self.voucher_type), self.voucher_no, self.account
 				)
 			)
 
@@ -177,12 +177,12 @@ class GLEntry(Document):
 
 		if frappe.get_cached_value("Account", self.account, "report_type") == "Profit and Loss":
 			msg = _("{0} {1}: Cost Center is required for 'Profit and Loss' account {2}.").format(
-				self.voucher_type, self.voucher_no, self.account
+				_(self.voucher_type), self.voucher_no, self.account
 			)
 			msg += " "
 			msg += _(
 				"Please set the cost center field in {0} or setup a default Cost Center for the Company."
-			).format(self.voucher_type)
+			).format(_(self.voucher_type))
 
 			frappe.throw(msg, title=_("Missing Cost Center"))
 
@@ -224,7 +224,7 @@ class GLEntry(Document):
 		):
 			frappe.throw(
 				_("{0} {1}: 'Profit and Loss' type account {2} not allowed in Opening Entry").format(
-					self.voucher_type, self.voucher_no, self.account
+					_(self.voucher_type), self.voucher_no, self.account
 				)
 			)
 
@@ -239,18 +239,20 @@ class GLEntry(Document):
 			frappe.throw(
 				_(
 					"""{0} {1}: Account {2} is a Group Account and group accounts cannot be used in transactions"""
-				).format(self.voucher_type, self.voucher_no, self.account)
+				).format(_(self.voucher_type), self.voucher_no, self.account)
 			)
 
 		if account.docstatus == 2:
 			frappe.throw(
-				_("{0} {1}: Account {2} is inactive").format(self.voucher_type, self.voucher_no, self.account)
+				_("{0} {1}: Account {2} is inactive").format(
+					_(self.voucher_type), self.voucher_no, self.account
+				)
 			)
 
 		if account.company != self.company:
 			frappe.throw(
 				_("{0} {1}: Account {2} does not belong to Company {3}").format(
-					self.voucher_type, self.voucher_no, self.account, self.company
+					_(self.voucher_type), self.voucher_no, self.account, self.company
 				)
 			)
 
@@ -263,7 +265,7 @@ class GLEntry(Document):
 		if company != self.company:
 			frappe.throw(
 				_("{0} {1}: Cost Center {2} does not belong to Company {3}").format(
-					self.voucher_type, self.voucher_no, self.cost_center, self.company
+					_(self.voucher_type), self.voucher_no, self.cost_center, self.company
 				)
 			)
 
@@ -271,7 +273,7 @@ class GLEntry(Document):
 			frappe.throw(
 				_(
 					"""{0} {1}: Cost Center {2} is a group cost center and group cost centers cannot be used in transactions"""
-				).format(self.voucher_type, self.voucher_no, frappe.bold(self.cost_center))
+				).format(_(self.voucher_type), self.voucher_no, frappe.bold(self.cost_center))
 			)
 
 	def validate_party(self):
@@ -291,7 +293,10 @@ class GLEntry(Document):
 		if account_currency != self.account_currency:
 			frappe.throw(
 				_("{0} {1}: Accounting Entry for {2} can only be made in currency: {3}").format(
-					self.voucher_type, self.voucher_no, self.account, (account_currency or company_currency)
+					_(self.voucher_type),
+					self.voucher_no,
+					self.account,
+					(account_currency or company_currency),
 				),
 				InvalidAccountCurrency,
 			)

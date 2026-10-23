@@ -481,7 +481,7 @@ class BOM(WebsiteGenerator):
 			if item.process_loss_per >= 100:
 				frappe.throw(
 					_("Row #{0}: Process Loss Percentage should be less than 100% for {1} Item {2}").format(
-						item.idx, item.secondary_item_type, get_link_to_form("Item", item.item_code)
+						item.idx, _(item.secondary_item_type), get_link_to_form("Item", item.item_code)
 					)
 				)
 

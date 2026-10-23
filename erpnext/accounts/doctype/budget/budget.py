@@ -144,7 +144,7 @@ class Budget(Document):
 			frappe.throw(
 				_(
 					"Another Budget record '{0}' already exists against {1} '{2}' and account '{3}' with overlapping fiscal years."
-				).format(d.name, self.budget_against, budget_against, d.account),
+				).format(d.name, _(self.budget_against), budget_against, d.account),
 				DuplicateBudgetError,
 			)
 
@@ -565,7 +565,7 @@ def compare_expense_with_budget(params, budget_amount, action_for, action, budge
 		msg = _msg.format(
 			_(action_for),
 			frappe.bold(params.account),
-			frappe.unscrub(params.budget_against_field),
+			frappe.get_meta("Budget").get_translated_label(params.budget_against_field),
 			frappe.bold(budget_against),
 			frappe.bold(fmt_money(budget_amount, currency=currency)),
 			frappe.bold(fmt_money(diff, currency=currency)),

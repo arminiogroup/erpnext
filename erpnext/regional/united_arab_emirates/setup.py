@@ -3,6 +3,7 @@
 
 
 import frappe
+from frappe import N_
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.permissions import add_permission, update_permission_property
 
@@ -78,7 +79,7 @@ def make_custom_fields():
 		),
 		dict(
 			fieldname="reverse_charge",
-			label="Reverse Charge Applicable",
+			label=N_("Reverse Charge Applicable"),
 			fieldtype="Select",
 			insert_after="recoverable_standard_rated_expenses",
 			print_hide=1,

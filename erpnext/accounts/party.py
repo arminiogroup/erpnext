@@ -649,9 +649,9 @@ def validate_party_gle_currency(party_type, party, company, party_account_curren
 	if existing_gle_currency and party_account_currency != existing_gle_currency:
 		frappe.throw(
 			_(
-				"{0} {1} has accounting entries in currency {2} for company {3}. Please select a receivable or payable account with currency {2}."
+				"{0} {1} has accounting entries in currency {2} for company {3}. Please select an account with currency {2}."
 			).format(
-				frappe.bold(party_type),
+				frappe.bold(_(party_type)),
 				frappe.bold(party),
 				frappe.bold(existing_gle_currency),
 				frappe.bold(company),
@@ -668,7 +668,7 @@ def validate_party_accounts(doc):
 	for account in doc.get("accounts"):
 		if account.company in companies:
 			frappe.throw(
-				_("There can only be 1 Account per Company in {0} {1}").format(doc.doctype, doc.name),
+				_("There can only be 1 Account per Company in {0} {1}").format(_(doc.doctype), doc.name),
 				DuplicatePartyAccountError,
 			)
 		else:
@@ -909,17 +909,17 @@ def validate_party_frozen_disabled(company, party_type, party_name):
 		if party_type in ("Customer", "Supplier"):
 			party = frappe.get_cached_value(party_type, party_name, ["is_frozen", "disabled"], as_dict=True)
 			if party.disabled:
-				frappe.throw(_("{0} {1} is disabled").format(party_type, party_name), PartyDisabled)
+				frappe.throw(_("{0} {1} is disabled").format(_(party_type), party_name), PartyDisabled)
 			elif party.get("is_frozen"):
 				role_allowed_for_frozen_entries = frappe.get_cached_value(
 					"Company", company, "role_allowed_for_frozen_entries"
 				)
 				if role_allowed_for_frozen_entries not in frappe.get_roles():
-					frappe.throw(_("{0} {1} is frozen").format(party_type, party_name), PartyFrozen)
+					frappe.throw(_("{0} {1} is frozen").format(_(party_type), party_name), PartyFrozen)
 
 		elif party_type == "Employee":
 			if frappe.db.get_value("Employee", party_name, "status") != "Active":
-				frappe.msgprint(_("{0} {1} is not active").format(party_type, party_name), alert=True)
+				frappe.msgprint(_("{0} {1} is not active").format(_(party_type), party_name), alert=True)
 
 
 def validate_account_party_type(self):
@@ -1190,7 +1190,7 @@ def validate_party_currency_before_merging(party_type, old_party, new_party):
 				_(
 					"Cannot merge {0} '{1}' into '{2}' as both have existing accounting entries in different currencies for company '{3}'."
 				).format(
-					party_type,
+					_(party_type),
 					old_party,
 					new_party,
 					company.name,

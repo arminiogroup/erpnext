@@ -132,7 +132,11 @@ class Analytics:
 		if self.filters.tree_type in ["Customer", "Supplier", "Item"]:
 			self.columns.append(
 				{
-					"label": _(self.filters.tree_type + " Name"),
+					"label": {
+						"Customer": _("Customer Name"),
+						"Supplier": _("Supplier Name"),
+						"Item": _("Item Name"),
+					}[self.filters.tree_type],
 					"fieldname": "entity_name",
 					"fieldtype": "Data",
 					"width": 140,

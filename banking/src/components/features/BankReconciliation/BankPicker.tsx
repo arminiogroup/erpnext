@@ -109,7 +109,7 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
 
     return <div
         role="button"
-        title={`Select ${bank.account_name}`}
+        title={_("Select {0}", [bank.account_name])}
         onClick={onSelect}
         // `shrink-0`: this is a horizontally scrolling row, so cards keep their own width
         // instead of being compressed to fit the container.

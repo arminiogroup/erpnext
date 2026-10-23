@@ -22,7 +22,7 @@ frappe.query_reports["Account Balance"] = {
 			label: __("Root Type"),
 			fieldtype: "Select",
 			options: [
-				{ value: "Asset", label: __("Asset") },
+				{ value: "Asset", label: __("Asset", null, "Account") },
 				{ value: "Liability", label: __("Liability") },
 				{ value: "Income", label: __("Income") },
 				{ value: "Expense", label: __("Expense") },

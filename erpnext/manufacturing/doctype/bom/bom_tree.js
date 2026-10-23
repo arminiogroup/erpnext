@@ -92,7 +92,7 @@ function get_bom_node(node) {
 			label += `: ${escape(node.data.item_name)}`;
 		}
 		return `${label} <span class="badge badge-pill badge-light">${node.data.qty} ${escape(
-			__(node.data.stock_uom)
+			__(node.data.stock_uom, null, "UOM")
 		)}</span>`;
 	} else {
 		return node.data.item_code || node.data.value;

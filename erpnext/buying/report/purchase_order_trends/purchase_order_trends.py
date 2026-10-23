@@ -59,7 +59,10 @@ def get_chart_data(data, conditions, filters):
 		"data": {
 			"labels": labels,
 			"datasets": [
-				{"name": _(filters.get("period")) + " " + _("Purchase Value"), "values": datapoints}
+				{
+					"name": _("Net purchase order value ({0})").format(_(filters.get("period"))),
+					"values": datapoints,
+				}
 			],
 		},
 		"type": "line",

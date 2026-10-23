@@ -859,7 +859,9 @@ def reconcile_dr_cr_note(dr_cr_notes, company, active_dimensions=None):
 			< 0
 		):
 			frappe.throw(
-				_("{0} has been modified after you pulled it. Please pull it again.").format(inv.voucher_type)
+				_(
+					"{0}: the allocated amount exceeds the current outstanding amount. Fetch the document again."
+				).format(_(inv.voucher_type))
 			)
 
 		voucher_type = "Credit Note" if inv.voucher_type == "Sales Invoice" else "Debit Note"

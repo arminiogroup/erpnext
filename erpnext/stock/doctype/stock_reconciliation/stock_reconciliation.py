@@ -398,9 +398,9 @@ class StockReconciliation(StockController):
 				if save:
 					if not item.current_qty:
 						frappe.throw(
-							_("Row # {0}: Please enter quantity for Item {1} as it is not zero.").format(
-								item.idx, item.item_code
-							)
+							_(
+								"Row #{0}: Current Qty for Item {1} must be set and nonzero to save the current serial and batch bundle details."
+							).format(item.idx, item.item_code)
 						)
 
 					if (
@@ -965,18 +965,18 @@ class StockReconciliation(StockController):
 			msg = ""
 			if len(data) == 1:
 				msg = _(
-					"{0} units are reserved for Item {1} in Warehouse {2}, please un-reserve the same to {3} the Stock Reconciliation."
-				).format(bold(data[0][2]), bold(data[0][0]), bold(data[0][1]), self._action)
+					"{0} units are reserved for Item {1} in Warehouse {2}. Release the reserved stock before proceeding with the Stock Reconciliation."
+				).format(bold(data[0][2]), bold(data[0][0]), bold(data[0][1]))
 			else:
 				items_html = ""
 				for d in data:
-					items_html += "<li>{} units of Item {} in Warehouse {}</li>".format(
+					items_html += _("<li>{0} units of Item {1} in Warehouse {2}</li>").format(
 						bold(d[2]), bold(d[0]), bold(d[1])
 					)
 
 				msg = _(
-					"The stock has been reserved for the following Items and Warehouses, un-reserve the same to {0} the Stock Reconciliation: <br /><br /> {1}"
-				).format(self._action, items_html)
+					"Release the reserved stock for the following items and warehouses before proceeding with the Stock Reconciliation:<br /><br />{0}"
+				).format(items_html)
 
 			frappe.throw(
 				msg,

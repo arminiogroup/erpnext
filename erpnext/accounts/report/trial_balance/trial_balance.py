@@ -616,7 +616,9 @@ def execute_snapshot_report(filters):
 		data = get_data_duckdb(filters, conn)
 		return columns, data
 	else:
-		frappe.throw(_("Trial Balance requires {0} to be synced to DuckDB").format(frappe.bold("GL Entry")))
+		frappe.throw(
+			_("Trial Balance requires {0} to be synced to DuckDB").format(frappe.bold(_("GL Entry")))
+		)
 
 
 def get_data_duckdb(filters, conn):

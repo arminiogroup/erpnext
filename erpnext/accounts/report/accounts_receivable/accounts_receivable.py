@@ -1401,6 +1401,6 @@ def get_nested_set_children(doctype, values):
 			children = frappe.get_all(doctype, filters={"lft": [">=", lft], "rgt": ["<=", rgt]}, pluck="name")
 			all_values += children
 		else:
-			frappe.throw(_("{0}: {1} does not exist").format(doctype, d))
+			frappe.throw(_("{0}: {1} does not exist").format(_(doctype), d))
 
 	return list(set(all_values))

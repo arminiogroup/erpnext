@@ -1,6 +1,9 @@
 const COUNT = {
 	bills: (n) => (n === 1 ? __("1 bill") : __("{0} bills", [n])),
-	quotations: (n) => (n === 1 ? __("1 quotation") : __("{0} quotations", [n])),
+	quotations: (n) =>
+		n === 1
+			? __("1 quotation", null, "Supplier Quotation")
+			: __("{0} quotations", [n], "Supplier Quotation"),
 	orders: (n) => (n === 1 ? __("1 order") : __("{0} orders", [n])),
 	days_late: (n) => (n === 1 ? __("oldest 1 day late") : __("oldest {0} days late", [n])),
 	reconcile: (n) =>

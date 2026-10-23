@@ -614,7 +614,7 @@ def get_tax_accounts(
 		account = tax_columns[column_key]
 		columns.append(
 			{
-				"label": _(account + " Rate"),
+				"label": _("Rate for {0}").format(account),
 				"fieldname": f"{column_key}_rate",
 				"fieldtype": "Float",
 				"width": 100,
@@ -623,7 +623,7 @@ def get_tax_accounts(
 
 		columns.append(
 			{
-				"label": _(account + " Amount"),
+				"label": _("Amount for {0}").format(account),
 				"fieldname": f"{column_key}_amount",
 				"fieldtype": "Currency",
 				"options": "currency",

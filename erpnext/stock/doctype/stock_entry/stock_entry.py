@@ -263,6 +263,55 @@ class StockEntry(StockController, SubcontractingInwardController):
 		super().before_print(settings)
 		self.update_items_from_bin_details()
 
+		if title := self._get_stock_entry_type_print_title():
+			key, context = title
+			name = self.get("stock_entry_type")
+			titles = self.get("__link_titles") or {}
+			if titles.get(key, name) == name:
+				titles[key] = _(name, context=context)
+				setattr(self, "__link_titles", titles)
+
+	def _get_stock_entry_type_print_title(self):
+		df = self.meta.get_field("stock_entry_type")
+		if not df or df.fieldtype != "Link" or df.options != "Stock Entry Type":
+			return
+		meta = frappe.get_meta(df.options)
+		purpose = meta.get_field("purpose")
+		name = self.get("stock_entry_type")
+		if not meta.translated_doctype or not purpose or purpose.fieldtype != "Select":
+			return
+		if name not in (purpose.options or "").splitlines():
+			return
+		entry_type = frappe.get_cached_value(df.options, name, ["is_standard", "purpose"], as_dict=True)
+		if not entry_type or entry_type.is_standard != 1 or entry_type.purpose != name:
+			return
+		return f"{df.options}::{name}", meta.name
+
+	def get_formatted(
+		self, fieldname, doc=None, currency=None, absolute_value=False, translated=False, format=None
+	):
+		value = super().get_formatted(
+			fieldname,
+			doc=doc,
+			currency=currency,
+			absolute_value=absolute_value,
+			translated=translated,
+			format=format,
+		)
+		if (
+			fieldname != "stock_entry_type"
+			or (doc is not None and doc is not self)
+			or currency is not None
+			or absolute_value
+			or translated
+			or format is not None
+			or value != self.get("stock_entry_type")
+		):
+			return value
+		if title := self._get_stock_entry_type_print_title():
+			return _(self.get("stock_entry_type"), context=title[1])
+		return value
+
 	def update_items_from_bin_details(self):
 		for item in self.get("items"):
 			item.update(get_bin_details(item.item_code, item.s_warehouse or item.t_warehouse))

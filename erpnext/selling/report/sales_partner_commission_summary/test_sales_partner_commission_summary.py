@@ -22,7 +22,9 @@ class SalesPartnerSummaryReportTestMixin(ERPNextTestSuite):
 
 		with self.assertRaisesRegex(
 			frappe.ValidationError,
-			_("DocType can be one of {0}").format(comma_or(SALES_TRANSACTION_DOCTYPES)),
+			_("DocType can be one of {0}").format(
+				comma_or([_(doctype) for doctype in SALES_TRANSACTION_DOCTYPES])
+			),
 		):
 			run(self.report_name, self.filters)
 

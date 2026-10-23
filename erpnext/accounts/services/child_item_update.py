@@ -262,11 +262,12 @@ class ChildItemUpdater:
 		try:
 			self.parent.check_permission(perm_type)
 		except frappe.PermissionError:
-			actions = {"create": "add", "write": "update"}
+			messages = {
+				"create": _("{0}: you do not have permission to add items."),
+				"write": _("{0}: you do not have permission to update items."),
+			}
 			frappe.throw(
-				_("You do not have permissions to {0} items in a {1}.").format(
-					actions[perm_type], self.parent_doctype
-				),
+				messages[perm_type].format(_(self.parent_doctype)),
 				title=_("Insufficient Permissions"),
 			)
 

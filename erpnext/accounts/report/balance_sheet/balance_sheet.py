@@ -285,7 +285,7 @@ def get_chart_data(filters, chart_columns, asset, liability, equity, currency):
 
 	datasets = []
 	if asset_data:
-		datasets.append({"name": _("Assets"), "values": asset_data})
+		datasets.append({"name": _("Assets", context="Balance Sheet"), "values": asset_data})
 	if liability_data:
 		datasets.append({"name": _("Liabilities"), "values": liability_data})
 	if equity_data:

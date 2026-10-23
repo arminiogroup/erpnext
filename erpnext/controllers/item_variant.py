@@ -411,7 +411,7 @@ def enqueue_multiple_variant_creation(item: str, args: dict | str, use_template_
 	for key in variants:
 		total_variants *= len(variants[key])
 	if total_variants >= 600:
-		frappe.throw(_("Please do not create more than 500 items at a time"))
+		frappe.throw(_("Select fewer than 600 combinations of attribute values at a time."))
 		return
 	if total_variants < 10:
 		return create_multiple_variants(item, args, use_template_image)

@@ -57,7 +57,7 @@ frappe.ui.form.on("Pricing Rule", {
 						</li>
 						<li>
 							${__(
-								"To not apply Pricing Rule in a particular transaction, all applicable Pricing Rules should be disabled."
+								"To skip pricing rules for a single transaction, enable that transaction's Ignore Pricing Rule option, where available."
 							)}
 						</li>
 					</ul>

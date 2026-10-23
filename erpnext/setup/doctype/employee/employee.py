@@ -124,7 +124,7 @@ class Employee(NestedSet):
 	def validate(self):
 		from erpnext.controllers.status_updater import validate_status
 
-		validate_status(self.status, ["Active", "Inactive", "Suspended", "Left"])
+		validate_status(self.status, ["Active", "Inactive", "Suspended", "Left"], self)
 
 		self.employee = self.name
 		self.set_employee_name()
@@ -363,7 +363,9 @@ class Employee(NestedSet):
 
 	def validate_preferred_email(self):
 		if self.prefered_contact_email and not self.get(scrub(self.prefered_contact_email)):
-			frappe.msgprint(_("Please enter {0}").format(self.prefered_contact_email))
+			frappe.msgprint(
+				_("Please enter {0}").format(_(self.prefered_contact_email, context=self.doctype))
+			)
 
 	def reset_employee_emails_cache(self):
 		prev_doc = self.get_doc_before_save() or {}

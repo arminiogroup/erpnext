@@ -226,7 +226,9 @@ def execute_snapshot_report(filters):
 
 	if not (conn := get_latest_sync("GL Entry")):
 		frappe.throw(
-			_("Profit and Loss Statement requires {0} to be synced to DuckDB").format(frappe.bold("GL Entry"))
+			_("Profit and Loss Statement requires {0} to be synced to DuckDB").format(
+				frappe.bold(_("GL Entry"))
+			)
 		)
 
 	period_list = build_period_list(filters)

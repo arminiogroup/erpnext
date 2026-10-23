@@ -152,7 +152,7 @@ const Row = ({ item, index, isLast, action }: { item: ActionLogItem, index: numb
                             href={`/desk/${slug(item.voucher.reference_doctype)}/${item.voucher.reference_name}`}
                             target='_blank'
                             className='underline underline-offset-4 text-base'>
-                            {["Payment Entry", "Journal Entry"].includes(item.voucher.reference_doctype) ? "" : _("{} :", [item.voucher.reference_doctype])} {item.voucher.reference_name}
+                            {["Payment Entry", "Journal Entry"].includes(item.voucher.reference_doctype) ? "" : _("{} :", [_(item.voucher.reference_doctype)])} {item.voucher.reference_name}
                         </a>
                         {item.voucher.reference_doctype === "Payment Entry" && item.voucher.doc && <PaymentEntryDetails item={item} />}
                         {item.voucher.reference_doctype === "Journal Entry" && <JournalEntryDetails item={item} bank={bank} />}
@@ -251,7 +251,7 @@ const PaymentEntryDetails = ({ item, className }: { item: ActionLogItem, classNa
                             </TableHeader>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell><a href={`/desk/${slug(invoice.reference_doctype)}/${invoice.reference_name}`} target='_blank' className='underline underline-offset-4'>{invoice.reference_doctype}: {invoice.reference_name}</a></TableCell>
+                                    <TableCell><a href={`/desk/${slug(invoice.reference_doctype)}/${invoice.reference_name}`} target='_blank' className='underline underline-offset-4'>{_(invoice.reference_doctype)}: {invoice.reference_name}</a></TableCell>
                                     <TableCell>{invoice.bill_no ?? "-"}</TableCell>
                                     <TableCell>{formatDate(invoice.due_date)}</TableCell>
                                     <TableCell className='text-end font-numeric'>{formatCurrency(invoice.total_amount, currency ?? '')}</TableCell>
@@ -375,7 +375,7 @@ const CancelActionLogItem = ({ item, type, timestamp, bank }: { item: ActionLogI
         </Tooltip>
         <AlertDialogContent className='min-w-3xl'>
             <AlertDialogHeader>
-                <AlertDialogTitle>{type === 'match' ? _("Unmatch Transaction?") : _("Undo {}?", [item.voucher.reference_doctype])}</AlertDialogTitle>
+                <AlertDialogTitle>{type === 'match' ? _("Unmatch Transaction?") : _("Undo {}?", [_(item.voucher.reference_doctype)])}</AlertDialogTitle>
                 <AlertDialogDescription>{type === 'match' ? _("Are you sure you want to unmatch the voucher from this transaction?") : _("Are you sure you want to cancel this {} {}?", [_(item.voucher.reference_doctype), item.voucher.reference_name])}</AlertDialogDescription>
             </AlertDialogHeader>
             {error && <ErrorBanner error={error} />}

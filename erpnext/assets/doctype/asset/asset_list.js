@@ -19,7 +19,7 @@ frappe.listview_settings["Asset"] = {
 		} else if (doc.status === "Out of Order") {
 			return [__("Out of Order"), "grey", "status,=,Out of Order"];
 		} else if (doc.status === "Issue") {
-			return [__("Issue"), "orange", "status,=,Issue"];
+			return [__("Issue", null, "Asset"), "orange", "status,=,Issue"];
 		} else if (doc.status === "Receipt") {
 			return [__("Receipt"), "green", "status,=,Receipt"];
 		} else if (doc.status === "Submitted") {

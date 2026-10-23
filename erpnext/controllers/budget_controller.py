@@ -323,7 +323,7 @@ class BudgetValidation:
 					"Annual Budget for Account {0} against {1}: {2} is {3}. It will be exceeded by {4}"
 				).format(
 					frappe.bold(key[2]),
-					frappe.bold(frappe.unscrub(key[0])),
+					frappe.bold(frappe.get_meta("Budget").get_translated_label(key[0])),
 					frappe.bold(key[1]),
 					frappe.bold(fmt_money(budget_amt, currency=currency)),
 					frappe.bold(fmt_money(annual_diff, currency=currency)),
@@ -336,7 +336,7 @@ class BudgetValidation:
 					"Accumulated Monthly Budget for Account {0} against {1}: {2} is {3}. It will be exceeded by {4}"
 				).format(
 					frappe.bold(key[2]),
-					frappe.bold(frappe.unscrub(key[0])),
+					frappe.bold(frappe.get_meta("Budget").get_translated_label(key[0])),
 					frappe.bold(key[1]),
 					frappe.bold(fmt_money(acc_monthly_budget, currency=currency)),
 					frappe.bold(fmt_money(monthly_diff, currency=currency)),
@@ -410,13 +410,13 @@ class BudgetValidation:
 		budget_doc = v_map.budget_doc
 		doctypes = []
 		if budget_doc.applicable_on_purchase_order and v_map.ordered_amount:
-			doctypes.append("Purchase Order")
+			doctypes.append(_("Purchase Order"))
 		if budget_doc.applicable_on_material_request and v_map.requested_amount:
-			doctypes.append("Material Request")
+			doctypes.append(_("Material Request"))
 		if budget_doc.applicable_on_booking_actual_expenses and v_map.actual_expense:
-			doctypes.append("Actual Expense")
+			doctypes.append(_("Actual Expense"))
 		if current_amt:
-			doctypes.append("This Document")
+			doctypes.append(_("This Document"))
 
 		doctypes = [f"'{x}'" for x in doctypes]
 		return "+".join(doctypes)
@@ -434,7 +434,7 @@ class BudgetValidation:
 				"Accumulated Monthly Budget for Account {0} against {1} {2} is {3}. It will be collectively ({4}) exceeded by {5}"
 			).format(
 				frappe.bold(key[2]),
-				frappe.bold(frappe.unscrub(key[0])),
+				frappe.bold(frappe.get_meta("Budget").get_translated_label(key[0])),
 				frappe.bold(key[1]),
 				frappe.bold(fmt_money(v_map.accumulated_monthly_budget, currency=currency)),
 				self.budget_applicable_for(v_map, current_amt),
@@ -458,7 +458,7 @@ class BudgetValidation:
 				"Annual Budget for Account {0} against {1} {2} is {3}. It will be collectively ({4}) exceeded by {5}"
 			).format(
 				frappe.bold(key[2]),
-				frappe.bold(frappe.unscrub(key[0])),
+				frappe.bold(frappe.get_meta("Budget").get_translated_label(key[0])),
 				frappe.bold(key[1]),
 				frappe.bold(fmt_money(v_map.budget_amount, currency=currency)),
 				self.budget_applicable_for(v_map, current_amt),

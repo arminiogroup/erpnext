@@ -784,7 +784,7 @@ erpnext.PointOfSale.ItemCart = class {
 
 		if (action_is_field_edit) {
 			if (!action_is_allowed) {
-				const label = current_action == "rate" ? "Rate".bold() : "Discount".bold();
+				const label = current_action == "rate" ? __("Rate").bold() : __("Discount").bold();
 				const message = __("Editing {0} is not allowed as per POS Profile settings", [label]);
 				frappe.show_alert({
 					indicator: "red",

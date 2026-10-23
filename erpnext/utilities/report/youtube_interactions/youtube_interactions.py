@@ -22,7 +22,7 @@ def get_columns():
 		{"label": _("Published Date"), "fieldname": "publish_date", "fieldtype": "Date", "width": 100},
 		{"label": _("Title"), "fieldname": "title", "fieldtype": "Data", "width": 200},
 		{"label": _("Duration"), "fieldname": "duration", "fieldtype": "Duration", "width": 100},
-		{"label": _("Views"), "fieldname": "view_count", "fieldtype": "Float", "width": 200},
+		{"label": _("Views", context="Video"), "fieldname": "view_count", "fieldtype": "Float", "width": 200},
 		{"label": _("Likes"), "fieldname": "like_count", "fieldtype": "Float", "width": 200},
 		{"label": _("Dislikes"), "fieldname": "dislike_count", "fieldtype": "Float", "width": 100},
 		{"label": _("Comments"), "fieldname": "comment_count", "fieldtype": "Float", "width": 100},
@@ -67,7 +67,10 @@ def get_chart_summary_data(data):
 	chart_data = {
 		"data": {
 			"labels": labels,
-			"datasets": [{"name": "Likes", "values": likes}, {"name": "Views", "values": views}],
+			"datasets": [
+				{"name": _("Likes"), "values": likes},
+				{"name": _("Views", context="Video"), "values": views},
+			],
 		},
 		"type": "bar",
 		"barOptions": {"stacked": 1},

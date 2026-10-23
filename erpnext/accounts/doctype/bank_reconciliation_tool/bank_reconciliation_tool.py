@@ -460,7 +460,7 @@ def update_clearance_date(
 	frappe.has_permission("Bank Clearance", ptype="write", throw=True)
 
 	if payment_document not in get_doctypes_for_bank_reconciliation():
-		frappe.throw(_("{0} is not a voucher this tool can clear").format(payment_document))
+		frappe.throw(_("{0} is not a voucher this tool can clear").format(_(payment_document)))
 
 	payment_entry = cstr(payment_entry)
 	if not payment_entry or not frappe.has_permission(payment_document, "write", doc=payment_entry):
@@ -1209,7 +1209,7 @@ def reconcile_vouchers(bank_transaction_name: str | int, vouchers: str | list, i
 	for voucher in vouchers:
 		payment_doctype = voucher.get("payment_doctype")
 		if payment_doctype not in reconcilable_doctypes:
-			frappe.throw(_("{0} cannot be reconciled against a bank transaction").format(payment_doctype))
+			frappe.throw(_("{0} cannot be reconciled against a bank transaction").format(_(payment_doctype)))
 		voucher["payment_name"] = cstr(voucher.get("payment_name"))
 		if not voucher["payment_name"] or not frappe.has_permission(
 			payment_doctype, "write", doc=voucher["payment_name"]

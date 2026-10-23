@@ -41,6 +41,6 @@ class Vehicle(Document):
 
 	def validate(self):
 		if getdate(self.start_date) > getdate(self.end_date):
-			frappe.throw(_("Insurance Start date should be less than Insurance End date"))
+			frappe.throw(_("Insurance Start Date cannot be after Insurance End Date."))
 		if getdate(self.carbon_check_date) > getdate():
 			frappe.throw(_("Last carbon check date cannot be a future date"))

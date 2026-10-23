@@ -68,11 +68,11 @@ class JournalEntryReferenceValidator:
 		"""An order can only be linked on the side that records an advance."""
 		if row.reference_type == "Sales Order" and flt(row.debit) > 0:
 			frappe.throw(
-				_("Row {0}: Debit entry can not be linked with a {1}").format(row.idx, row.reference_type)
+				_("Row {0}: Debit entry can not be linked with a {1}").format(row.idx, _(row.reference_type))
 			)
 		if row.reference_type == "Purchase Order" and flt(row.credit) > 0:
 			frappe.throw(
-				_("Row {0}: Credit entry can not be linked with a {1}").format(row.idx, row.reference_type)
+				_("Row {0}: Credit entry can not be linked with a {1}").format(row.idx, _(row.reference_type))
 			)
 
 	def _register_reference(self, row) -> None:
@@ -105,7 +105,7 @@ class JournalEntryReferenceValidator:
 		if against_party != cstr(row.party) or party_account != row.account:
 			frappe.throw(
 				_("Row {0}: Party / Account does not match with {1} / {2} in {3} {4}").format(
-					row.idx, party_fields[0], party_fields[1], row.reference_type, row.reference_name
+					row.idx, _(party_fields[0]), _(party_fields[1]), _(row.reference_type), row.reference_name
 				)
 			)
 
@@ -130,7 +130,7 @@ class JournalEntryReferenceValidator:
 		if against_voucher != row.party:
 			frappe.throw(
 				_("Row {0}: {1} {2} does not match with {3}").format(
-					row.idx, row.party_type, row.party, row.reference_type
+					row.idx, _(row.party_type), row.party, _(row.reference_type)
 				)
 			)
 
@@ -148,11 +148,11 @@ class JournalEntryReferenceValidator:
 
 	def _validate_order_status(self, order, reference_type, reference_name) -> None:
 		if order.docstatus != 1:
-			frappe.throw(_("{0} {1} is not submitted").format(reference_type, reference_name))
+			frappe.throw(_("{0} {1} is not submitted").format(_(reference_type), reference_name))
 		if flt(order.per_billed) >= 100:
-			frappe.throw(_("{0} {1} is fully billed").format(reference_type, reference_name))
+			frappe.throw(_("{0} {1} is fully billed").format(_(reference_type), reference_name))
 		if cstr(order.status) == "Closed":
-			frappe.throw(_("{0} {1} is closed").format(reference_type, reference_name))
+			frappe.throw(_("{0} {1} is closed").format(_(reference_type), reference_name))
 
 	def _validate_order_advance_total(self, order, account, total, reference_type, reference_name) -> None:
 		"""The advance paid against an order cannot exceed its grand total."""
@@ -170,7 +170,7 @@ class JournalEntryReferenceValidator:
 			)
 			frappe.throw(
 				_("Advance paid against {0} {1} cannot be greater than Grand Total {2}").format(
-					reference_type, reference_name, formatted_voucher_total
+					_(reference_type), reference_name, formatted_voucher_total
 				)
 			)
 
@@ -189,13 +189,13 @@ class JournalEntryReferenceValidator:
 	def _validate_invoice_outstanding(self, invoice, total, reference_type, reference_name) -> None:
 		"""Payment booked against an invoice cannot exceed its outstanding amount."""
 		if invoice.docstatus != 1:
-			frappe.throw(_("{0} {1} is not submitted").format(reference_type, reference_name))
+			frappe.throw(_("{0} {1} is not submitted").format(_(reference_type), reference_name))
 
 		precision = invoice.precision("outstanding_amount")
 		if total and flt(invoice.outstanding_amount, precision) < flt(total, precision):
 			frappe.throw(
 				_("Payment against {0} {1} cannot be greater than Outstanding Amount {2}").format(
-					reference_type, reference_name, invoice.outstanding_amount
+					_(reference_type), reference_name, invoice.outstanding_amount
 				)
 			)
 
@@ -205,8 +205,10 @@ class JournalEntryReferenceValidator:
 			return
 
 		if invoice.invoice_is_blocked():
-			frappe.throw(
-				_("{0} {1} is blocked and on hold until {2}.").format(
-					invoice.doctype, invoice.name, invoice.release_date
+			if invoice.release_date:
+				message = _("{0} {1} is blocked and on hold until {2}.").format(
+					_(invoice.doctype), invoice.name, invoice.release_date
 				)
-			)
+			else:
+				message = _("{0} {1} is blocked and on hold.").format(_(invoice.doctype), invoice.name)
+			frappe.throw(message)

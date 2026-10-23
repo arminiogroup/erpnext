@@ -389,7 +389,11 @@ class OperationsService:
 		max_allowed_qty_for_wo = flt(self.doc.qty) + (allowance_percentage / 100 * flt(self.doc.qty))
 
 		if self._operation_qty(d) > flt(max_allowed_qty_for_wo, d.precision("completed_qty")):
-			frappe.throw(_("Completed Qty cannot be greater than 'Qty to Manufacture'"))
+			frappe.throw(
+				_(
+					"The sum of Completed Qty and Process Loss Qty cannot exceed the maximum quantity allowed for the Work Order, including the overproduction allowance."
+				)
+			)
 
 	def _operation_status(self, d):
 		qty = self._operation_qty(d)

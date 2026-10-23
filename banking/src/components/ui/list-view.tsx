@@ -1,3 +1,4 @@
+import _ from "@/lib/translate"
 import * as React from "react"
 import {
     type Cell,
@@ -245,7 +246,7 @@ function ListViewInner<TData>({
             header: ({ table }) => (
                 <div className="flex size-full items-center justify-center">
                     <Checkbox
-                        aria-label="Select all rows"
+                        aria-label={_("Select all rows")}
                         checked={
                             table.getIsAllRowsSelected()
                                 ? true
@@ -261,7 +262,7 @@ function ListViewInner<TData>({
             cell: ({ row }) => (
                 <div className="flex size-full items-center justify-center">
                     <Checkbox
-                        aria-label="Select row"
+                        aria-label={_("Select row")}
                         checked={row.getIsSelected()}
                         onCheckedChange={(value) => row.toggleSelected(value === true)}
                         onClick={(e) => e.stopPropagation()}
@@ -346,7 +347,7 @@ function ListViewInner<TData>({
                     className,
                 )}
             >
-                {emptyState ?? "No data"}
+                {emptyState ?? _("No data")}
             </div>
         )
     }
@@ -407,7 +408,7 @@ function ListViewInner<TData>({
                                             <div
                                                 role="separator"
                                                 aria-orientation="vertical"
-                                                aria-label="Resize column"
+                                                aria-label={_("Resize column")}
                                                 onMouseDown={(e) => {
                                                     e.preventDefault()
                                                     document.body.classList.add("select-none", "cursor-col-resize")

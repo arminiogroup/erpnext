@@ -170,7 +170,7 @@
    "label": "Actual Time and Cost"
   },
   {
-   "description": "Updated via 'Time Log' (In Minutes)",
+   "description": "Updated from Job Card time logs.",
    "fieldname": "actual_start_time",
    "fieldtype": "Datetime",
    "label": "Actual Start Time",
@@ -178,7 +178,7 @@
    "read_only": 1
   },
   {
-   "description": "Updated via 'Time Log' (In Minutes)",
+   "description": "Updated from Job Card time logs.",
    "fieldname": "actual_end_time",
    "fieldtype": "Datetime",
    "label": "Actual End Time",
@@ -190,7 +190,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "description": "Updated via 'Time Log' (In Minutes)",
+   "description": "Time recorded in Job Card time logs, in minutes.",
    "fieldname": "actual_operation_time",
    "fieldtype": "Float",
    "label": "Actual Operation Time",
@@ -339,10 +339,9 @@
   }
  ],
  "grid_page_length": 50,
- "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-10-20 13:00:00.000000",
+ "modified": "2026-10-22 10:57:14.407543",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Work Order Operation",

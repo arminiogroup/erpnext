@@ -140,7 +140,7 @@ frappe.ui.form.on("Process Statement Of Accounts", {
 	customer_collection: function (frm) {
 		frm.set_value("collection_name", "");
 		if (frm.doc.customer_collection) {
-			frm.get_field("collection_name").set_label(frm.doc.customer_collection);
+			frm.get_field("collection_name").set_label(__(frm.doc.customer_collection));
 		}
 	},
 	frequency: function (frm) {
@@ -177,7 +177,7 @@ frappe.ui.form.on("Process Statement Of Accounts", {
 				},
 			});
 		} else {
-			frappe.throw(__("Enter {0} name.", [frm.doc.customer_collection]));
+			frappe.throw(__("Enter {0} name.", [__(frm.doc.customer_collection)]));
 		}
 	},
 });

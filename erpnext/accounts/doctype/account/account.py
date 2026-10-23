@@ -135,7 +135,9 @@ class Account(NestedSet):
 			]:
 				parent_account_type = frappe.db.get_value("Account", self.parent_account, ["account_type"])
 				if parent_account_type == self.account_type:
-					throw(_("Only Parent can be of type {0}").format(self.account_type))
+					throw(
+						_("Only Parent can be of type {0}").format(_(self.account_type, context=self.doctype))
+					)
 
 	def validate_parent(self):
 		"""Fetch Parent Details and validate parent account"""
@@ -206,9 +208,15 @@ class Account(NestedSet):
 			# check for ledger entries
 			if frappe.db.get_all("GL Entry", filters={"account": self.name, "is_cancelled": 0}, limit=1):
 				msg = _(
-					"There are ledger entries against this account. Changing {0} to non-{1} in live system will cause incorrect output in 'Accounts {2}' report"
+					"Ledger entries exist for this account. Changing {0} from {1} can produce incorrect results in the {2} report."
 				).format(
-					frappe.bold(_("Account Type")), doc_before_save.account_type, doc_before_save.account_type
+					frappe.bold(self.meta.get_translated_label("account_type")),
+					frappe.format_value(
+						doc_before_save.account_type, self.meta.get_field("account_type"), translated=True
+					),
+					_("Accounts Receivable")
+					if doc_before_save.account_type == "Receivable"
+					else _("Accounts Payable"),
 				)
 				frappe.msgprint(msg)
 				self.add_comment("Comment", msg)
@@ -330,7 +338,7 @@ class Account(NestedSet):
 				throw(
 					msg.format(
 						frappe.bold(self.name),
-						frappe.bold(default_account_fields.get(d)),
+						frappe.bold(_(default_account_fields.get(d))),
 						frappe.bold(self.company),
 					)
 				)

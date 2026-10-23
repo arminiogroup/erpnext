@@ -77,7 +77,7 @@ class LoyaltyService:
 				_(
 					"{0} cannot be cancelled since the Loyalty Points earned has been redeemed. "
 					"First cancel the {1} No {2}"
-				).format(doc.doctype, doc.doctype, invoice_list)
+				).format(_(doc.doctype), _(doc.doctype), invoice_list)
 			)
 		else:
 			frappe.db.delete("Loyalty Point Entry", filters={"invoice": doc.name})

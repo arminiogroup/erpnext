@@ -140,7 +140,7 @@ erpnext.PointOfSale.PastOrderSummary = class {
 			}
 
 			return `<div class="item-row-refund">
-				<strong>${r.message.qty}</strong> ${__("Returned")}
+				${__("Returned quantity: <strong>{0}</strong>", [r.message.qty])}
 			</div>`;
 		}
 	}
