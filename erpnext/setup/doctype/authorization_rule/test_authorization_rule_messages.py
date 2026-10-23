@@ -18,10 +18,10 @@ class TestAuthorizationRuleMessages(UnitTestCase):
 		frappe.local.response = frappe._dict()
 		self.enterContext(patch.dict(frappe.flags, {"mute_messages": False, "print_messages": False}))
 		self.unsupported = "Cannot set authorization on basis of Discount for {0}"
-		self.percentage_limit = "Average Discount cannot exceed 100%."
+		self.percentage_limit = "Discount must be between 0 and 100"
 		self.translations = {
 			self.unsupported: "Non è possibile impostare un’autorizzazione basata sullo sconto per il tipo di documento «{0}».",
-			self.percentage_limit: "Lo sconto medio non può superare il 100%.",
+			self.percentage_limit: "Lo sconto deve essere compreso tra 0 e 100.",
 			"Purchase Order": "Ordine di acquisto",
 			"Purchase Receipt": "Ricevimento di acquisto",
 			"Purchase Invoice": "Fattura di acquisto",
@@ -60,6 +60,7 @@ class TestAuthorizationRuleMessages(UnitTestCase):
 			based_on="Average Discount",
 			value=100,
 			master_name=None,
+			company=None,
 		)
 		rule.__dict__.update(values)
 		return rule
@@ -90,20 +91,28 @@ class TestAuthorizationRuleMessages(UnitTestCase):
 							(transaction, basis, 101, "Rate"),
 						)
 
-	def test_average_discount_limit_accepts_one_hundred_and_keeps_other_values(self):
+	def test_all_discount_bases_accept_inclusive_percent_range_without_changing_values(self):
 		for lang in ("it", "en"):
-			for value in (99.99, 100, 100.01, -1, None, "100"):
-				with self.subTest(lang=lang, value=value):
-					frappe.local.lang = lang
-					rule = self.make_rule(value=value)
-					if value == 100.01:
-						with self.assertRaises(frappe.ValidationError) as error:
-							rule.validate_rule()
-						self.assertIs(type(error.exception), frappe.ValidationError)
-						self.assertEqual(str(error.exception), self.expected(self.percentage_limit))
-					else:
-						self.assertIsNone(rule.validate_rule())
-					self.assertEqual(rule.value, value)
+			for basis in (
+				"Average Discount",
+				"Customerwise Discount",
+				"Itemwise Discount",
+				"Item Group wise Discount",
+			):
+				for value in (0, 99.99, 100, 100.01, -1, None, "100"):
+					with self.subTest(lang=lang, basis=basis, value=value):
+						frappe.local.lang = lang
+						rule = self.make_rule(based_on=basis, value=value, master_name="Rate")
+						if value in (100.01, -1):
+							with self.assertRaises(frappe.ValidationError) as error:
+								rule.validate_rule()
+							self.assertIs(type(error.exception), frappe.ValidationError)
+							self.assertEqual(str(error.exception), self.expected(self.percentage_limit))
+						else:
+							self.assertIsNone(rule.validate_rule())
+						self.assertEqual(
+							(rule.based_on, rule.value, rule.master_name), (basis, value, "Rate")
+						)
 		rule = self.make_rule(based_on="Grand Total", value=101)
 		self.assertIsNone(rule.validate_rule())
 		self.assertEqual(rule.value, 101)
@@ -113,6 +122,7 @@ class TestAuthorizationRuleMessages(UnitTestCase):
 			(None, "Sales Order"),
 			(100, "Sales Order"),
 			(100.01, "Sales Order"),
+			(-1, "Sales Order"),
 			(100, "Purchase Order"),
 		)
 		for value, transaction in cases:
@@ -120,34 +130,40 @@ class TestAuthorizationRuleMessages(UnitTestCase):
 				rule = self.make_rule(value=value, transaction=transaction)
 				query = Mock(return_value=[])
 				with patch("frappe.get_all", query):
-					if value == 100.01 or transaction == "Purchase Order":
+					if value in (100.01, -1) or transaction == "Purchase Order":
 						with self.assertRaises(frappe.ValidationError) as error:
 							rule.validate()
 						expected = (
 							self.expected(self.percentage_limit)
-							if value == 100.01
+							if value in (100.01, -1)
 							else self.expected(self.unsupported, self.translations[transaction])
 						)
 						self.assertEqual(str(error.exception), expected)
 					else:
 						self.assertIsNone(rule.validate())
 				self.assertEqual(rule.value, value or 0.0)
-				query.assert_called_once_with(
-					"Authorization Rule",
-					filters={
-						"transaction": transaction,
-						"based_on": "Average Discount",
-						"system_user": "",
-						"system_role": "",
-						"approving_user": "",
-						"approving_role": "Rate",
-						"to_emp": "",
-						"to_designation": "",
-						"name": ["!=", "AUTH-MEMORY"],
-					},
-					pluck="name",
-				)
-		rule = self.make_rule(value=101)
+				if value in (100.01, -1) or transaction == "Purchase Order":
+					query.assert_not_called()
+				else:
+					query.assert_called_once_with(
+						"Authorization Rule",
+						filters={
+							"transaction": transaction,
+							"based_on": "Average Discount",
+							"system_user": "",
+							"system_role": "",
+							"approving_user": "",
+							"approving_role": "Rate",
+							"to_emp": "",
+							"to_designation": "",
+							"master_name": "",
+							"company": "",
+							"value": value or 0,
+							"name": ["!=", "AUTH-MEMORY"],
+						},
+						pluck="name",
+					)
+		rule = self.make_rule(value=100)
 		with patch("frappe.get_all", return_value=["RULE-EXISTING"]):
 			with self.assertRaises(frappe.ValidationError) as error:
 				rule.validate()

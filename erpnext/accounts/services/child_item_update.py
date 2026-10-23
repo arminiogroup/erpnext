@@ -16,7 +16,7 @@ from erpnext.buying.utils import update_last_purchase_rate
 from erpnext.stock.doctype.item.item import validate_item_uoms
 from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
 from erpnext.stock.get_item_details import (
-	get_bin_details,
+	_get_bin_details,
 	get_conversion_factor,
 	get_item_warehouse_,
 )
@@ -146,6 +146,7 @@ class ChildItemUpdater:
 					child_item.insert()
 				else:
 					child_item.save(ignore_permissions=True)
+					self._sync_delivery_schedule(child_item, change_state)
 
 			self._validate_blanket_order_changes()
 		except Exception:
@@ -155,6 +156,21 @@ class ChildItemUpdater:
 		self._post_update(
 			any_qty_changed, items_added_or_removed, any_conversion_factor_changed, had_mapped_discount
 		)
+
+	def _sync_delivery_schedule(self, child_item, change_state) -> None:
+		if self.parent_doctype != "Sales Order":
+			return
+
+		if (
+			change_state.qty_unchanged
+			and change_state.uom_unchanged
+			and change_state.conversion_factor_unchanged
+		):
+			return
+
+		from erpnext.selling.doctype.sales_order.services.delivery_schedule import DeliveryScheduleService
+
+		DeliveryScheduleService(self.parent).sync_schedule_with_item(child_item)
 
 	def _post_update(
 		self,
@@ -178,7 +194,7 @@ class ChildItemUpdater:
 			parent.set_gross_profit()
 
 		frappe.get_cached_doc("Authorization Control").validate_approving_authority(
-			parent.doctype, parent.company, parent.base_grand_total
+			parent.doctype, parent.company, parent.base_grand_total, parent
 		)
 
 		if self.parent_doctype != "Supplier Quotation":
@@ -197,6 +213,10 @@ class ChildItemUpdater:
 
 		for idx, row in enumerate(parent.get(self.child_docname), start=1):
 			row.idx = idx
+
+		from erpnext.accounts.services.party_validation import PartyValidator
+
+		PartyValidator(parent).validate_party_specific_items()
 
 		parent.save()
 
@@ -505,7 +525,7 @@ def set_order_defaults(
 	child_item.warehouse = get_new_child_item_warehouse(p_doc, item, trans_item, child_doctype)
 	conversion_factor = flt(get_conversion_factor(item.item_code, child_item.uom).get("conversion_factor"))
 	child_item.conversion_factor = flt(trans_item.get("conversion_factor")) or conversion_factor
-	child_item.update(get_bin_details(child_item.item_code, child_item.warehouse, p_doc.get("company")))
+	child_item.update(_get_bin_details(child_item.item_code, child_item.warehouse, p_doc.get("company")))
 
 	if child_doctype in ("Purchase Order Item", "Supplier Quotation Item"):
 		child_item.base_rate = 1
@@ -680,6 +700,13 @@ def validate_and_delete_children(parent, data, ordered_item=None) -> bool:
 		d.flags.ignore_permissions = True
 		d.cancel()
 		d.delete()
+
+	if parent.doctype == "Sales Order" and deleted_children:
+		from erpnext.selling.doctype.sales_order.services.delivery_schedule import DeliveryScheduleService
+
+		service = DeliveryScheduleService(parent)
+		for d in deleted_children:
+			service.delete_delivery_schedule_items(d.name)
 
 	if parent.doctype == "Purchase Order":
 		parent.update_ordered_qty_in_so_for_removed_items(deleted_children)

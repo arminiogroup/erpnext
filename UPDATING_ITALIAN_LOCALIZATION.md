@@ -198,6 +198,8 @@ print(f"Total: {total}; linguistic and runtime review still required")
 PY
 ~~~
 
+Regeneration can infer printf directives from literal percent text. This snapshot records eight reviewed `no-python-format` annotations: the Onboarding wildcard, the Item Tax Template percentage description, three cumulative-progress labels, Task progress validation, the BOM process-loss message and the project completion percentage. Check their actual consumers and preserve the literal-percent annotations in both PO and POT; retain genuine brace/printf checks. Do not clear format flags to hide a real mismatch.
+
 These checks do not replace linguistic review or prove semantic placeholder/markup correctness. Check placeholders and rendered markup against the source, run the affected localization regressions and repository-required checks, and review any new format-check failures rather than suppressing them.
 
 Test the **pair** on a staging site. From its bench root, replacing the example site name:

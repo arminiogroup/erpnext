@@ -22,6 +22,7 @@ from erpnext.accounts.doctype.payment_request import payment_request
 
 UNSUPPORTED = "Payment Requests cannot be created against: {0}"
 LIMIT = "Total Payment Request amount cannot be greater than {0} amount"
+BANK_PARTY = "Bank Account {0} does not belong to {1} {2}"
 TARGETS = {
 	UNSUPPORTED: "Non è possibile creare richieste di pagamento per questo tipo di documento: {0}.",
 	LIMIT: "L’importo complessivo delle richieste di pagamento non può superare l’importo disponibile per il documento di riferimento ({0}).",
@@ -37,6 +38,9 @@ TARGETS = {
 	"Amount": "Importo",
 	"Invalid Amount": "Importo non valido",
 	"Payment Entry is already created": "Il pagamento è già stato registrato",
+	BANK_PARTY: "Il conto bancario {0} non appartiene a {1} {2}",
+	"Customer": "Cliente",
+	"Supplier": "Fornitore",
 }
 
 
@@ -88,6 +92,7 @@ def request_meta():
 	meta.__dict__.update(
 		doctype="DocType",
 		name="Payment Request",
+		istable=0,
 		fields=fields,
 		_fields={field.fieldname: field for field in fields},
 	)
@@ -157,6 +162,7 @@ class TestReferenceMessageTranslation(UnitTestCase):
 			grand_total=amount,
 			payment_account="Sales Invoice",
 			payment_reference=[],
+			bank_account=None,
 		)
 		doc.__dict__.update(values)
 		return doc
@@ -446,3 +452,142 @@ class TestReferenceMessageTranslation(UnitTestCase):
 			"accepted": sum(not row[6] for row in cases),
 			"rejected": sum(row[6] for row in cases),
 		}
+
+	def test_bank_account_party_mismatch_translates_only_the_type_caption(self):
+		self.assertEqual(frappe.session.user, "translator@example.com")
+		providers = (
+			("it", TARGETS),
+			("en", {}),
+			("it", {BANK_PARTY: TARGETS[BANK_PARTY]}),
+			("it", {}),
+		)
+		for (language, provider), party_type in itertools.product(
+			providers, ("Customer", "Supplier", "Custom Party Type")
+		):
+			with self.subTest(language=language, provider=list(provider), party_type=party_type):
+				frappe.local.lang = language
+				doc = self.request(bank_account="Customer", party_type=party_type, party="Supplier")
+				bank_account = frappe._dict(
+					disabled=0, is_company_account=0, party_type=party_type, party="OTHER RAW PARTY"
+				)
+				before_bank = deepcopy(bank_account)
+				with patch(
+					"frappe.translate.get_all_translations",
+					side_effect=lambda lang: provider if lang == language else {},
+				), patch("frappe.get_cached_value", return_value=bank_account) as read:
+					self.assert_message(
+						doc.validate_bank_account,
+						provider.get(BANK_PARTY, BANK_PARTY).format(
+							"Customer", provider.get(party_type, party_type), "Supplier"
+						),
+						doc,
+					)
+					read.assert_called_once_with(
+						"Bank Account",
+						"Customer",
+						["disabled", "is_company_account", "company", "party_type", "party"],
+						as_dict=True,
+					)
+				self.assertEqual(bank_account, before_bank)
+
+	def test_bank_account_matching_selectors_and_optional_bank_stay_canonical(self):
+		doc = self.request(bank_account=None)
+		with patch("frappe.get_cached_value") as read:
+			doc.validate_bank_account()
+			read.assert_not_called()
+
+		for party_type in ("Customer", "Supplier"):
+			for stored_type in (party_type, TARGETS[party_type]):
+				with self.subTest(party_type=party_type, stored_type=stored_type):
+					doc = self.request(bank_account="Supplier", party_type=party_type, party="Customer")
+					bank_account = frappe._dict(
+						disabled=0, is_company_account=0, party_type=stored_type, party="Customer"
+					)
+					before = self.business_state(doc)
+					before_bank = deepcopy(bank_account)
+					with patch("frappe.get_cached_value", return_value=bank_account) as read, patch(
+						"frappe.translate.get_all_translations", return_value=TARGETS
+					) as translations:
+						if stored_type == party_type:
+							doc.validate_bank_account()
+							translations.assert_not_called()
+						else:
+							self.assert_message(
+								doc.validate_bank_account,
+								TARGETS[BANK_PARTY].format("Supplier", TARGETS[party_type], "Customer"),
+								doc,
+							)
+						read.assert_called_once_with(
+							"Bank Account",
+							"Supplier",
+							["disabled", "is_company_account", "company", "party_type", "party"],
+							as_dict=True,
+						)
+					self.assertEqual(self.business_state(doc), before)
+					self.assertEqual(bank_account, before_bank)
+
+		doc = self.request(bank_account="Supplier", company="Customer")
+		before = self.business_state(doc)
+		with patch(
+			"frappe.get_cached_value",
+			return_value=frappe._dict(disabled=0, is_company_account=1, company="Customer"),
+		), patch("frappe.translate.get_all_translations") as translations:
+			doc.validate_bank_account()
+			translations.assert_not_called()
+		self.assertEqual(self.business_state(doc), before)
+
+	def test_bank_account_check_stays_after_reference_read_permission(self):
+		for allowed in (False, True):
+			with self.subTest(allowed=allowed), patch.dict(frappe.flags):
+				reference = Document.__new__(Document)
+				reference.__dict__.update(self.reference(), flags=frappe._dict(), company="Project")
+				doc = self.request(
+					amount=80,
+					mode_of_payment=None,
+					company="Project",
+					print_format=None,
+					is_a_subscription=0,
+					bank_account="Supplier",
+					party_type="Supplier",
+					party="Customer",
+				)
+				before = self.business_state(doc)
+				before_reference = self.business_state(reference)
+				events = []
+
+				def permission(*args, **kwargs):
+					events.append("permission")
+					return allowed
+
+				def bank_read(*args, **kwargs):
+					events.append("bank")
+					return frappe._dict(
+						disabled=0, is_company_account=0, party_type="Customer", party="Customer"
+					)
+
+				with patch("frappe.get_doc", return_value=reference) as reference_read, patch(
+					"frappe.permissions.has_permission", side_effect=permission
+				) as check, patch("frappe.permissions.check_doctype_permission") as doctype_check, patch(
+					"frappe.get_cached_value", side_effect=bank_read
+				) as read:
+					if allowed:
+						self.assert_message(
+							doc.validate, TARGETS[BANK_PARTY].format("Supplier", "Fornitore", "Customer"), doc
+						)
+						read.assert_called_once_with(
+							"Bank Account",
+							"Supplier",
+							["disabled", "is_company_account", "company", "party_type", "party"],
+							as_dict=True,
+						)
+						doctype_check.assert_not_called()
+					else:
+						with self.assertRaises(frappe.PermissionError):
+							doc.validate()
+						read.assert_not_called()
+						doctype_check.assert_called_once_with("Sales Invoice", "read")
+					reference_read.assert_called_once_with("Sales Invoice", "Project")
+					check.assert_called_once_with("Sales Invoice", "read", reference, debug=False, user=None)
+				self.assertEqual(events, ["permission", "bank"] if allowed else ["permission"])
+				self.assertEqual(self.business_state(doc), before)
+				self.assertEqual(self.business_state(reference), before_reference)
