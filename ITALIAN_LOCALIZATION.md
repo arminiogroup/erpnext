@@ -15,4 +15,6 @@ Catalogue review is complete for this snapshot. Broader standard-module, ordinar
 
 These are independently maintained forks. Upstream source fixes and translation submissions are a separate contribution process; publication here does not imply upstream acceptance. `develop` is reserved for upstream tracking.
 
+For upstream synchronization, translation-conflict handling and deployment checks, see the [update guide](UPDATING_ITALIAN_LOCALIZATION.md).
+
 The upstream [license](license.txt) remains unchanged.
